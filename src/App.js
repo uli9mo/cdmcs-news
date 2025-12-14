@@ -84,7 +84,7 @@ const App = () => {
   const serverStats = {
     playersOnline: 0,
     totalPlayers: 0,
-    uptime: "30 minutes",
+    uptime: "0",
     version: "1.21.10 FABRIC",
     worldSize: "Unknown"
   };
@@ -406,7 +406,7 @@ const App = () => {
                   </h3>
                 </div>
                 <p className="text-gray-400 text-sm mb-4">
-                  Daily anti-cheat logs😄 (In the links below)
+                  Daily server logs😄 (In the links below)
                 </p>
                 
                 {/* Simple paste area */}
@@ -416,7 +416,7 @@ const App = () => {
                     <div className="flex items-start">
                       <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
                       <span>
-                        <a href="https://example.com/logs/dec14  " 
+                        <a href="https://mclo.gs/zQjJY4i  " 
                            className="text-blue-300 hover:text-blue-200 hover:underline"
                            target="_blank" rel="noopener noreferrer">
                           Dec 14, 2025 Server Log
