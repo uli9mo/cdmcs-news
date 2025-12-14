@@ -1,8 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Clock, Users, MessageSquare, Shield, Server, Gamepad2, Trophy } from 'lucide-react';
+import { Calendar, Clock, Users, MessageSquare, Shield, Server, Gamepad2, Trophy, Send, Mail, User } from 'lucide-react';
 
 const App = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [comments, setComments] = useState({});
+  const [userEmail, setUserEmail] = useState('');
+  const [userName, setUserName] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Initialize comments for each news item
+  useEffect(() => {
+    const initialComments = {};
+    newsItems.forEach(item => {
+      initialComments[item.id] = [
+        {
+          id: 1,
+          author: "Jiemos",
+          email: "admin@classicduels.com",
+          content: "Can't wait to see what everyone builds in the new world!",
+          timestamp: new Date(Date.now() - 3600000)
+        }
+      ];
+    });
+    setComments(initialComments);
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -74,17 +95,17 @@ const App = () => {
     worldSize: "Unknown"
   };
 
-  // Active players (mock data)  const activePlayers = [ { name: "Alex", status: "Exploring", time: "2h 15m" }, { name: "Jamie", status: "Building", time: "1h 42m" }, { name: "Taylor", status: "Mining", time: "3h 08m" }, { name: "Morgan", status: "Redstone", time: "45m" }, { name: "Riley", status: "Admin", time: "5h 22m" }, { name: "Casey", status: "Farming", time: "1h 10m" }, { name: "Jordan", status: "PvP", time: "32m" }, { name: "Sam", status: "Exploring", time: "2h 47m" } ];
-const activePlayers = [
-  { name: "", status: "", time: "" },
-  { name: "", status: "", time: "" },
-  { name: "", status: "", time: "" },
-  { name: "", status: "", time: "" },
-  { name: "", status: "", time: "" },
-  { name: "", status: "", time: "" },
-  { name: "", status: "", time: "" },
-  { name: "", status: "", time: "" }
-];
+  const activePlayers = [
+    { name: "", status: "", time: "" },
+    { name: "", status: "", time: "" },
+    { name: "", status: "", time: "" },
+    { name: "", status: "", time: "" },
+    { name: "", status: "", time: "" },
+    { name: "", status: "", time: "" },
+    { name: "", status: "", time: "" },
+    { name: "", status: "", time: "" }
+  ];
+
   const getCategoryColor = (category) => {
     switch (category) {
       case 'major-update': return 'bg-purple-500';
@@ -94,6 +115,47 @@ const activePlayers = [
       case 'event': return 'bg-pink-500';
       default: return 'bg-gray-500';
     }
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (userEmail && userName) {
+      setIsAuthenticated(true);
+      // In a real app, you'd validate credentials with a backend
+    }
+  };
+
+  const handleCommentSubmit = (e, newsId) => {
+    e.preventDefault();
+    const commentInput = document.getElementById(`comment-input-${newsId}`);
+    const content = commentInput.value.trim();
+    
+    if (content && isAuthenticated) {
+      const newComment = {
+        id: Date.now(),
+        author: userName,
+        email: userEmail,
+        content,
+        timestamp: new Date()
+      };
+      
+      setComments(prev => ({
+        ...prev,
+        [newsId]: [...(prev[newsId] || []), newComment]
+      }));
+      
+      commentInput.value = '';
+    }
+  };
+
+  const formatTimeAgo = (timestamp) => {
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - timestamp) / 1000);
+    
+    if (diffInSeconds < 60) return 'Just now';
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+    return `${Math.floor(diffInSeconds / 86400)}d ago`;
   };
 
   return (
@@ -197,9 +259,129 @@ const activePlayers = [
                     </div>
                     <button className="text-blue-400 hover:text-blue-300 flex items-center space-x-1">
                       <MessageSquare className="h-4 w-4" />
-                      <span className="text-sm">Discuss</span>
+                      <span className="text-sm">
+                        {comments[news.id]?.length || 0} comments
+                      </span>
                     </button>
                   </div>
+                </div>
+
+                {/* Discussion Section */}
+                <div className="border-t border-gray-700 bg-gray-900/30 p-6">
+                  <h4 className="text-lg font-bold text-white mb-4 flex items-center">
+                    <MessageSquare className="h-5 w-5 mr-2 text-blue-400" />
+                    Discussion
+                  </h4>
+                  
+                  {/* Comments List */}
+                  <div className="space-y-4 mb-6 max-h-96 overflow-y-auto pr-2">
+                    {comments[news.id]?.map(comment => (
+                      <div key={comment.id} className="bg-gray-800/50 rounded-lg p-4">
+                        <div className="flex items-start">
+                          <div className="flex-shrink-0 mr-3">
+                            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                              <span className="text-white font-bold">{comment.author[0]}</span>
+                            </div>
+                          </div>
+                          <div className="flex-grow">
+                            <div className="flex items-center mb-1">
+                              <span className="font-medium text-white">{comment.author}</span>
+                              <span className="text-gray-500 text-xs ml-2">
+                                {formatTimeAgo(comment.timestamp)}
+                              </span>
+                            </div>
+                            <p className="text-gray-300">{comment.content}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    {(!comments[news.id] || comments[news.id].length === 0) && (
+                      <p className="text-gray-500 text-center py-4">No comments yet. Be the first to discuss!</p>
+                    )}
+                  </div>
+
+                  {/* Comment Form */}
+                  {!isAuthenticated ? (
+                    <div className="bg-gray-800 rounded-lg p-4">
+                      <h5 className="font-medium text-white mb-3">Join the discussion</h5>
+                      <form onSubmit={handleLogin} className="space-y-3">
+                        <div className="flex space-x-3">
+                          <div className="flex-1">
+                            <label htmlFor="name" className="sr-only">Name</label>
+                            <div className="relative">
+                              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <User className="h-5 w-5 text-gray-400" />
+                              </div>
+                              <input
+                                type="text"
+                                id="name"
+                                value={userName}
+                                onChange={(e) => setUserName(e.target.value)}
+                                placeholder="Your Minecraft name"
+                                className="block w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                required
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex space-x-3">
+                          <div className="flex-1">
+                            <label htmlFor="email" className="sr-only">Email</label>
+                            <div className="relative">
+                              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <Mail className="h-5 w-5 text-gray-400" />
+                              </div>
+                              <input
+                                type="email"
+                                id="email"
+                                value={userEmail}
+                                onChange={(e) => setUserEmail(e.target.value)}
+                                placeholder="your@email.com"
+                                className="block w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                required
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                          type="submit"
+                          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2"
+                        >
+                          <Shield className="h-4 w-4" />
+                          <span>Sign In to Comment</span>
+                        </button>
+                      </form>
+                    </div>
+                  ) : (
+                    <form onSubmit={(e) => handleCommentSubmit(e, news.id)} className="space-y-3">
+                      <div className="flex items-start space-x-3">
+                        <div className="flex-shrink-0 mt-1">
+                          <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center">
+                            <span className="text-white font-bold text-sm">{userName[0]}</span>
+                          </div>
+                        </div>
+                        <div className="flex-grow">
+                          <textarea
+                            id={`comment-input-${news.id}`}
+                            rows="2"
+                            placeholder={`What are your thoughts on "${news.title}"?`}
+                            className="block w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-gray-400">Signed in as {userName}</span>
+                        <button
+                          type="submit"
+                          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 flex items-center space-x-2"
+                        >
+                          <Send className="h-4 w-4" />
+                          <span>Post Comment</span>
+                        </button>
+                      </div>
+                    </form>
+                  )}
                 </div>
               </article>
             ))}
@@ -279,26 +461,26 @@ const activePlayers = [
               
               <div className="space-y-3">
                 <div className="p-3 bg-yellow-900/30 rounded-lg">
-                  <p className="text-yellow-200 font-medium"></p>
-                  <p className="text-yellow-300 text-sm"></p>
-                  <p className="text-gray-400 text-xs mt-1"></p>
+                  <p className="text-yellow-200 font-medium">Jiemos</p>
+                  <p className="text-yellow-300 text-sm">Server Founder</p>
+                  <p className="text-gray-400 text-xs mt-1">Dec 13, 2025</p>
                 </div>
                 <div className="p-3 bg-green-900/30 rounded-lg">
-                  <p className="text-green-200 font-medium"></p>
-                  <p className="text-green-300 text-sm"></p>
-                  <p className="text-gray-400 text-xs mt-1"></p>
+                  <p className="text-green-200 font-medium">Eyewatercanwaters2</p>
+                  <p className="text-green-300 text-sm">Website Creator</p>
+                  <p className="text-gray-400 text-xs mt-1">Dec 13, 2025</p>
                 </div>
                 <div className="p-3 bg-purple-900/30 rounded-lg">
-                  <p className="text-purple-200 font-medium"></p>
-                  <p className="text-purple-300 text-sm"></p>
-                  <p className="text-gray-400 text-xs mt-1"></p>
+                  <p className="text-purple-200 font-medium">Ashborn</p>
+                  <p className="text-purple-300 text-sm">Build Contest Organizer</p>
+                  <p className="text-gray-400 text-xs mt-1">Dec 13, 2025</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </main>
-// Trigger redeploy
+
       {/* Footer */}
       <footer className="bg-gray-900/80 backdrop-blur-sm border-t border-gray-800 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -320,4 +502,3 @@ const activePlayers = [
 };
 
 export default App;
-
