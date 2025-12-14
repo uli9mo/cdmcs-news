@@ -77,13 +77,13 @@ const App = () => {
   // Active players (mock data)  const activePlayers = [ { name: "Alex", status: "Exploring", time: "2h 15m" }, { name: "Jamie", status: "Building", time: "1h 42m" }, { name: "Taylor", status: "Mining", time: "3h 08m" }, { name: "Morgan", status: "Redstone", time: "45m" }, { name: "Riley", status: "Admin", time: "5h 22m" }, { name: "Casey", status: "Farming", time: "1h 10m" }, { name: "Jordan", status: "PvP", time: "32m" }, { name: "Sam", status: "Exploring", time: "2h 47m" } ];
   const activePlayers = [
     { name: "Asparagus21345", status: ''Testing", time: "30m" },
-    { name: 
-    { name: 
-    { name: 
-    { name: 
-    { name: 
-    { name: 
-    { name: 
+    { name: "Asparagus21345", status: ''Testing", time: "30m" },
+    { name: "Asparagus21345", status: ''Testing", time: "30m" },
+    { name: "Asparagus21345", status: ''Testing", time: "30m" },
+    { name: "Asparagus21345", status: ''Testing", time: "30m" },
+    { name: "Asparagus21345", status: ''Testing", time: "30m" },
+    { name: "Asparagus21345", status: ''Testing", time: "30m" },
+    { name: "Asparagus21345", status: ''Testing", time: "30m" },
   ];
 
   const getCategoryColor = (category) => {
