@@ -76,14 +76,14 @@ const App = () => {
 
   // Active players (mock data)  const activePlayers = [ { name: "Alex", status: "Exploring", time: "2h 15m" }, { name: "Jamie", status: "Building", time: "1h 42m" }, { name: "Taylor", status: "Mining", time: "3h 08m" }, { name: "Morgan", status: "Redstone", time: "45m" }, { name: "Riley", status: "Admin", time: "5h 22m" }, { name: "Casey", status: "Farming", time: "1h 10m" }, { name: "Jordan", status: "PvP", time: "32m" }, { name: "Sam", status: "Exploring", time: "2h 47m" } ];
 const activePlayers = [
-  { name: "Aspargus21345", status: "Testing", time: "14m" },
-  { name: "ibikl", status: "Testing", time: "28m" },
-  { name: "baldminor", status: "Testing", time: "1m" },
-  { name: "UNKNOWN", status: "UNKNOWN", time: "UNKNOWN" },
-  { name: "UNKNOWN", status: "UNKNOWN", time: "UNKNOWN" },
-  { name: "UNKNOWN", status: "UNKNOWN", time: "UNKNOWN" },
-  { name: "UNKNOWN", status: "UNKNOWN", time: "UNKNOWN" },
-  { name: "UNKNOWN", status: "UNKNOWN", time: "UNKNOWN" }
+  { name: "", status: "", time: "" },
+  { name: "", status: "", time: "" },
+  { name: "", status: "", time: "" },
+  { name: "", status: "", time: "" },
+  { name: "", status: "", time: "" },
+  { name: "", status: "", time: "" },
+  { name: "", status: "", time: "" },
+  { name: "", status: "", time: "" }
 ];
   const getCategoryColor = (category) => {
     switch (category) {
@@ -279,19 +279,19 @@ const activePlayers = [
               
               <div className="space-y-3">
                 <div className="p-3 bg-yellow-900/30 rounded-lg">
-                  <p className="text-yellow-200 font-medium">PLACEHOLDER</p>
-                  <p className="text-yellow-300 text-sm">PLACEHOLDER</p>
-                  <p className="text-gray-400 text-xs mt-1">PLACEHOLDER</p>
+                  <p className="text-yellow-200 font-medium"></p>
+                  <p className="text-yellow-300 text-sm"></p>
+                  <p className="text-gray-400 text-xs mt-1"></p>
                 </div>
                 <div className="p-3 bg-green-900/30 rounded-lg">
-                  <p className="text-green-200 font-medium">PLACEHOLDER</p>
-                  <p className="text-green-300 text-sm">PLACEHOLDER</p>
-                  <p className="text-gray-400 text-xs mt-1">PLACEHOLDER</p>
+                  <p className="text-green-200 font-medium"></p>
+                  <p className="text-green-300 text-sm"></p>
+                  <p className="text-gray-400 text-xs mt-1"></p>
                 </div>
                 <div className="p-3 bg-purple-900/30 rounded-lg">
-                  <p className="text-purple-200 font-medium">PLACEHOLDER</p>
-                  <p className="text-purple-300 text-sm">PLACEHOLDER</p>
-                  <p className="text-gray-400 text-xs mt-1">PLACEHOLDER</p>
+                  <p className="text-purple-200 font-medium"></p>
+                  <p className="text-purple-300 text-sm"></p>
+                  <p className="text-gray-400 text-xs mt-1"></p>
                 </div>
               </div>
             </div>
