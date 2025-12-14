@@ -406,7 +406,7 @@ const App = () => {
                   </h3>
                 </div>
                 <p className="text-gray-400 text-sm mb-4">
-                  Daily anti-cheat logs (paste links below)
+                  Daily anti-cheat logs😄 (In the links below)
                 </p>
                 
                 {/* Simple paste area */}
