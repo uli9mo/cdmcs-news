@@ -415,7 +415,7 @@ const App = () => {
                     <div className="flex items-start">
                       <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
                       <span>
-                        <a href="https://example.com/logs/dec14" 
+                        <a href="https://example.com/logs/dec14  " 
                            className="text-blue-300 hover:text-blue-200 hover:underline"
                            target="_blank" rel="noopener noreferrer">
                           Dec 14, 2025 Server Log
@@ -426,7 +426,7 @@ const App = () => {
                     <div className="flex items-start">
                       <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
                       <span>
-                        <a href="https://example.com/logs/dec13" 
+                        <a href="https://example.com/logs/dec13  " 
                            className="text-blue-300 hover:text-blue-200 hover:underline"
                            target="_blank" rel="noopener noreferrer">
                           Dec 13, 2025 Server Log
@@ -437,7 +437,7 @@ const App = () => {
                     <div className="flex items-start">
                       <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
                       <span>
-                        <a href="https://example.com/logs/dec12" 
+                        <a href="https://example.com/logs/dec12  " 
                            className="text-blue-300 hover:text-blue-200 hover:underline"
                            target="_blank" rel="noopener noreferrer">
                           Dec 12, 2025 Server Log
@@ -453,14 +453,14 @@ const App = () => {
               </div>
             </div>
 
-            {/* Active Players - your original */}
+            {/* Active Players - your original with count changed to 0 */}
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-xl font-bold text-white flex items-center">
                   <Users className="h-5 w-5 mr-2 text-blue-400" />
                   Active Players
                 </h3>
-                <span className="text-blue-400 font-bold">{activePlayers.length}</span>
+                <span className="text-blue-400 font-bold">0</span>
               </div>
               
               <div className="space-y-3">
@@ -545,7 +545,7 @@ const App = () => {
         </div>
       </main>
 
-      {/* Footer - your original */}
+      {/* Footer - your original with credit added */}
       <footer className="bg-gray-900/80 backdrop-blur-sm border-t border-gray-800 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
@@ -554,6 +554,9 @@ const App = () => {
             </div>
             <p className="text-gray-400">
               Made with ❤️ by your friend group for the Classic Duels Minecraft Server
+            </p>
+            <p className="text-gray-500 text-sm mt-2">
+              Thanks to Jelly, Ashborn, and ibiklackeur for building this website.
             </p>
             <p className="text-gray-500 text-sm mt-2">
               "Where friendships are built block by block"
