@@ -80,6 +80,7 @@ const App = () => {
   ];
 
   // Server stats - your original content
+  // Trigger first deploy
   const serverStats = {
     playersOnline: 0,
     totalPlayers: 0,
