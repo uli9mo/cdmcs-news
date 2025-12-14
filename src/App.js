@@ -513,7 +513,7 @@ const App = () => {
 
               <button className="w-full mt-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2">
                 <Shield className="h-4 w-4" />
-                <span>Join Server</span>
+                <span>Copy server address!</span>
               </button>
             </div>
 
@@ -526,9 +526,9 @@ const App = () => {
               
               <div className="space-y-3">
                 <div className="p-3 bg-yellow-900/30 rounded-lg">
-                  <p className="text-yellow-200 font-medium"></p>
-                  <p className="text-yellow-300 text-sm"></p>
-                  <p className="text-gray-400 text-xs mt-1"></p>
+                  <p className="text-yellow-200 font-medium">First to find a Trial Chamber!😄</p>
+                  <p className="text-yellow-300 text-sm">Kira</p>
+                  <p className="text-gray-400 text-xs mt-1">Congrats!</p>
                 </div>
                 <div className="p-3 bg-green-900/30 rounded-lg">
                   <p className="text-green-200 font-medium"></p>
