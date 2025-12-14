@@ -10,6 +10,7 @@ const App = () => {
   const [verifyingComment, setVerifyingComment] = useState({});
 
   // Initialize visible state for each news item
+  // redeploy trigger 2025-12-14
   useEffect(() => {
     const initialVisible = {};
     [1, 2, 3, 4, 5].forEach(id => {
