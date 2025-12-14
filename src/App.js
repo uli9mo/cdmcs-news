@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Clock, Users, MessageSquare, Shield, Server, Gamepad2, Trophy, Send, Mail, User } from 'lucide-react';
+import { Calendar, Clock, Users, MessageSquare, Shield, Server, Gamepad2, Trophy, Send, Mail, User, Eye, EyeOff } from 'lucide-react';
 
 const App = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -7,10 +7,12 @@ const App = () => {
   const [userEmail, setUserEmail] = useState('');
   const [userName, setUserName] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [visibleComments, setVisibleComments] = useState({});
 
-  // Initialize comments for each news item
+  // Initialize comments and visible state for each news item
   useEffect(() => {
     const initialComments = {};
+    const initialVisible = {};
     newsItems.forEach(item => {
       initialComments[item.id] = [
         {
@@ -21,8 +23,10 @@ const App = () => {
           timestamp: new Date(Date.now() - 3600000)
         }
       ];
+      initialVisible[item.id] = false; // Start with comments hidden
     });
     setComments(initialComments);
+    setVisibleComments(initialVisible);
   }, []);
 
   useEffect(() => {
@@ -141,11 +145,18 @@ const App = () => {
       
       setComments(prev => ({
         ...prev,
-        [newsId]: [...(prev[newsId] || []), newComment]
+        [newsId]: [...(prev[news.id] || []), newComment]
       }));
       
       commentInput.value = '';
     }
+  };
+
+  const toggleComments = (newsId) => {
+    setVisibleComments(prev => ({
+      ...prev,
+      [newsId]: !prev[newsId]
+    }));
   };
 
   const formatTimeAgo = (timestamp) => {
@@ -257,132 +268,140 @@ const App = () => {
                       </div>
                       <span className="text-blue-300 font-medium">{news.author}</span>
                     </div>
-                    <button className="text-blue-400 hover:text-blue-300 flex items-center space-x-1">
-                      <MessageSquare className="h-4 w-4" />
+                    <button 
+                      onClick={() => toggleComments(news.id)}
+                      className="text-blue-400 hover:text-blue-300 flex items-center space-x-1"
+                    >
+                      {visibleComments[news.id] ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       <span className="text-sm">
-                        {comments[news.id]?.length || 0} comments
+                        {visibleComments[news.id] ? 'Hide' : 'Show'} Comments 
+                        <span className="ml-1 bg-blue-900/50 px-2 py-0.5 rounded-full">
+                          {comments[news.id]?.length || 0}
+                        </span>
                       </span>
                     </button>
                   </div>
                 </div>
 
-                {/* Discussion Section */}
-                <div className="border-t border-gray-700 bg-gray-900/30 p-6">
-                  <h4 className="text-lg font-bold text-white mb-4 flex items-center">
-                    <MessageSquare className="h-5 w-5 mr-2 text-blue-400" />
-                    Discussion
-                  </h4>
-                  
-                  {/* Comments List */}
-                  <div className="space-y-4 mb-6 max-h-96 overflow-y-auto pr-2">
-                    {comments[news.id]?.map(comment => (
-                      <div key={comment.id} className="bg-gray-800/50 rounded-lg p-4">
-                        <div className="flex items-start">
-                          <div className="flex-shrink-0 mr-3">
-                            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                              <span className="text-white font-bold">{comment.author[0]}</span>
+                {/* Discussion Section - Toggleable */}
+                {visibleComments[news.id] && (
+                  <div className="border-t border-gray-700 bg-gray-900/30 p-6">
+                    <h4 className="text-lg font-bold text-white mb-4 flex items-center">
+                      <MessageSquare className="h-5 w-5 mr-2 text-blue-400" />
+                      Discussion
+                    </h4>
+                    
+                    {/* Comments List */}
+                    <div className="space-y-4 mb-6 max-h-96 overflow-y-auto pr-2">
+                      {comments[news.id]?.map(comment => (
+                        <div key={comment.id} className="bg-gray-800/50 rounded-lg p-4 transition-all hover:bg-gray-800/70">
+                          <div className="flex items-start">
+                            <div className="flex-shrink-0 mr-3">
+                              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                                <span className="text-white font-bold">{comment.author[0]}</span>
+                              </div>
+                            </div>
+                            <div className="flex-grow">
+                              <div className="flex items-center mb-1">
+                                <span className="font-medium text-white">{comment.author}</span>
+                                <span className="text-gray-500 text-xs ml-2">
+                                  {formatTimeAgo(comment.timestamp)}
+                                </span>
+                              </div>
+                              <p className="text-gray-300">{comment.content}</p>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                      {(!comments[news.id] || comments[news.id].length === 0) && (
+                        <p className="text-gray-500 text-center py-4">No comments yet. Be the first to discuss!</p>
+                      )}
+                    </div>
+
+                    {/* Comment Form */}
+                    {!isAuthenticated ? (
+                      <div className="bg-gray-800 rounded-lg p-4">
+                        <h5 className="font-medium text-white mb-3">Join the discussion</h5>
+                        <form onSubmit={handleLogin} className="space-y-3">
+                          <div className="flex space-x-3">
+                            <div className="flex-1">
+                              <label htmlFor="name" className="sr-only">Name</label>
+                              <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                  <User className="h-5 w-5 text-gray-400" />
+                                </div>
+                                <input
+                                  type="text"
+                                  id="name"
+                                  value={userName}
+                                  onChange={(e) => setUserName(e.target.value)}
+                                  placeholder="Your Minecraft name"
+                                  className="block w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                  required
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex space-x-3">
+                            <div className="flex-1">
+                              <label htmlFor="email" className="sr-only">Email</label>
+                              <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                  <Mail className="h-5 w-5 text-gray-400" />
+                                </div>
+                                <input
+                                  type="email"
+                                  id="email"
+                                  value={userEmail}
+                                  onChange={(e) => setUserEmail(e.target.value)}
+                                  placeholder="your@email.com"
+                                  className="block w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                  required
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <button
+                            type="submit"
+                            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2"
+                          >
+                            <Shield className="h-4 w-4" />
+                            <span>Sign In to Comment</span>
+                          </button>
+                        </form>
+                      </div>
+                    ) : (
+                      <form onSubmit={(e) => handleCommentSubmit(e, news.id)} className="space-y-3">
+                        <div className="flex items-start space-x-3">
+                          <div className="flex-shrink-0 mt-1">
+                            <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center">
+                              <span className="text-white font-bold text-sm">{userName[0]}</span>
                             </div>
                           </div>
                           <div className="flex-grow">
-                            <div className="flex items-center mb-1">
-                              <span className="font-medium text-white">{comment.author}</span>
-                              <span className="text-gray-500 text-xs ml-2">
-                                {formatTimeAgo(comment.timestamp)}
-                              </span>
-                            </div>
-                            <p className="text-gray-300">{comment.content}</p>
+                            <textarea
+                              id={`comment-input-${news.id}`}
+                              rows="2"
+                              placeholder={`What are your thoughts on "${news.title}"?`}
+                              className="block w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                              required
+                            />
                           </div>
                         </div>
-                      </div>
-                    ))}
-                    {(!comments[news.id] || comments[news.id].length === 0) && (
-                      <p className="text-gray-500 text-center py-4">No comments yet. Be the first to discuss!</p>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-gray-400">Signed in as {userName}</span>
+                          <button
+                            type="submit"
+                            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 flex items-center space-x-2"
+                          >
+                            <Send className="h-4 w-4" />
+                            <span>Post Comment</span>
+                          </button>
+                        </div>
+                      </form>
                     )}
                   </div>
-
-                  {/* Comment Form */}
-                  {!isAuthenticated ? (
-                    <div className="bg-gray-800 rounded-lg p-4">
-                      <h5 className="font-medium text-white mb-3">Join the discussion</h5>
-                      <form onSubmit={handleLogin} className="space-y-3">
-                        <div className="flex space-x-3">
-                          <div className="flex-1">
-                            <label htmlFor="name" className="sr-only">Name</label>
-                            <div className="relative">
-                              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <User className="h-5 w-5 text-gray-400" />
-                              </div>
-                              <input
-                                type="text"
-                                id="name"
-                                value={userName}
-                                onChange={(e) => setUserName(e.target.value)}
-                                placeholder="Your Minecraft name"
-                                className="block w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                required
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex space-x-3">
-                          <div className="flex-1">
-                            <label htmlFor="email" className="sr-only">Email</label>
-                            <div className="relative">
-                              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <Mail className="h-5 w-5 text-gray-400" />
-                              </div>
-                              <input
-                                type="email"
-                                id="email"
-                                value={userEmail}
-                                onChange={(e) => setUserEmail(e.target.value)}
-                                placeholder="your@email.com"
-                                className="block w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                required
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <button
-                          type="submit"
-                          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2"
-                        >
-                          <Shield className="h-4 w-4" />
-                          <span>Sign In to Comment</span>
-                        </button>
-                      </form>
-                    </div>
-                  ) : (
-                    <form onSubmit={(e) => handleCommentSubmit(e, news.id)} className="space-y-3">
-                      <div className="flex items-start space-x-3">
-                        <div className="flex-shrink-0 mt-1">
-                          <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center">
-                            <span className="text-white font-bold text-sm">{userName[0]}</span>
-                          </div>
-                        </div>
-                        <div className="flex-grow">
-                          <textarea
-                            id={`comment-input-${news.id}`}
-                            rows="2"
-                            placeholder={`What are your thoughts on "${news.title}"?`}
-                            className="block w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-400">Signed in as {userName}</span>
-                        <button
-                          type="submit"
-                          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 flex items-center space-x-2"
-                        >
-                          <Send className="h-4 w-4" />
-                          <span>Post Comment</span>
-                        </button>
-                      </div>
-                    </form>
-                  )}
-                </div>
+                )}
               </article>
             ))}
           </div>
