@@ -109,7 +109,7 @@ const activePlayers = [
               </div>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
-              FriendCraft News
+              CDDMCS NEWS!
             </h1>
             <p className="text-xl text-emerald-100 max-w-3xl mx-auto">
               Your daily update on what's happening in our friend group Minecraft server
@@ -248,7 +248,7 @@ const activePlayers = [
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-gray-400">IP Address</span>
-                  <span className="text-white font-mono">friendcraft.mcserver.com</span>
+                  <span className="text-white font-mono">OfficialClassicDuels.</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-400">Port</span>
@@ -256,7 +256,7 @@ const activePlayers = [
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-400">Version</span>
-                  <span className="text-green-400">1.21.1</span>
+                  <span className="text-green-400">1.21.10 Fabric</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-400">World Size</span>
@@ -279,19 +279,19 @@ const activePlayers = [
               
               <div className="space-y-3">
                 <div className="p-3 bg-yellow-900/30 rounded-lg">
-                  <p className="text-yellow-200 font-medium">Alex</p>
-                  <p className="text-yellow-300 text-sm">First player to reach the End</p>
-                  <p className="text-gray-400 text-xs mt-1">Dec 12, 2025</p>
+                  <p className="text-yellow-200 font-medium">PLACEHOLDER</p>
+                  <p className="text-yellow-300 text-sm">PLACEHOLDER</p>
+                  <p className="text-gray-400 text-xs mt-1">PLACEHOLDER</p>
                 </div>
                 <div className="p-3 bg-green-900/30 rounded-lg">
-                  <p className="text-green-200 font-medium">Taylor</p>
-                  <p className="text-green-300 text-sm">Built 1000-block railroad</p>
-                  <p className="text-gray-400 text-xs mt-1">Dec 10, 2025</p>
+                  <p className="text-green-200 font-medium">PLACEHOLDER</p>
+                  <p className="text-green-300 text-sm">PLACEHOLDER</p>
+                  <p className="text-gray-400 text-xs mt-1">PLACEHOLDER</p>
                 </div>
                 <div className="p-3 bg-purple-900/30 rounded-lg">
-                  <p className="text-purple-200 font-medium">Morgan</p>
-                  <p className="text-purple-300 text-sm">Created automated farm</p>
-                  <p className="text-gray-400 text-xs mt-1">Dec 8, 2025</p>
+                  <p className="text-purple-200 font-medium">PLACEHOLDER</p>
+                  <p className="text-purple-300 text-sm">PLACEHOLDER</p>
+                  <p className="text-gray-400 text-xs mt-1">PLACEHOLDER</p>
                 </div>
               </div>
             </div>
@@ -307,7 +307,7 @@ const activePlayers = [
               <Gamepad2 className="h-8 w-8 text-emerald-400" />
             </div>
             <p className="text-gray-400">
-              Made with ❤️ by your friend group for the FriendCraft Minecraft Server
+              Made with ❤️ by your friend group for the Classic Duels Minecraft Server
             </p>
             <p className="text-gray-500 text-sm mt-2">
               "Where friendships are built block by block"
