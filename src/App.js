@@ -16,48 +16,48 @@ const App = () => {
     {
       id: 1,
       title: "New Survival World Launched!",
-      content: "After months of planning, our new survival world 'Frontier Realms' is now live! Featuring custom biomes, hidden dungeons, and a completely revamped economy system. First 10 players to reach the End get special rewards!",
-      author: "Alex",
-      date: "Dec 12, 2025",
-      time: "18:30",
+      content: "After weeks of planning our new survival world for our Classic Duels's Minecraft server, we finally launched it with an official website!",
+      author: "Eyewatercanwaters2",
+      date: "Dec 13, 2025",
+      time: "13:30",
       category: "major-update",
-      readTime: "2 min"
+      readTime: "1 min"
     },
     {
       id: 2,
       title: "Weekly Build Contest Results",
-      content: "Congratulations to Maya for winning this week's build contest with her incredible floating castle! The theme was 'Sky Islands' and the submissions were absolutely mind-blowing. Check out the gallery in the Discord!",
-      author: "Jamie",
-      date: "Dec 10, 2025",
-      time: "20:15",
+      content: "Would anyone wan't to participate in a weekly Build Contest? If so then make sure you send beautiful screenshots of your build in our channel on Discord.",
+      author: "Ashborn",
+      date: "Dec 13, 2025",
+      time: "13:15",
       category: "contest",
       readTime: "1 min"
     },
     {
       id: 3,
-      title: "Server Maintenance Scheduled",
-      content: "We'll be performing essential server maintenance this Tuesday at 8 PM EST. Downtime expected to be 30-45 minutes. We'll be upgrading to Minecraft 1.21.1 and optimizing performance for the holiday season!",
-      author: "Taylor",
-      date: "Dec 8, 2025",
-      time: "14:00",
+      title: "Server Start-up Scheduled.",
+      content: "We'll be adding essential mods and features to our server, be sure to wait for the announcements of the release. We plan to officaly start the server on Dec 14, 10:50 AM.",
+      author: "Jiemos",
+      date: "Dec 13, 2025",
+      time: "13:09",
       category: "maintenance",
       readTime: "1 min"
     },
     {
       id: 4,
-      title: "New Plugin: FriendCraft Economy",
-      content: "Introducing our custom economy plugin! Earn coins through mining, farming, and quests. Spend them at the new marketplace in spawn town. Special thanks to Riley for coding this amazing system!",
-      author: "Riley",
-      date: "Dec 5, 2025",
-      time: "16:45",
+      title: "New Plugin Reccomendation: Tough As Nails.",
+      content: "Adding this mod would help give a challange to all players, including myself.",
+      author: "Ibiklackeur",
+      date: "Dec 13, 2025",
+      time: "6:45",
       category: "feature",
-      readTime: "3 min"
+      readTime: "30 sec"
     },
     {
       id: 5,
       title: "Holiday Event Planning",
-      content: "The annual 'Winter Wonderland' event is being planned! Expect snow golems, gift exchanges, mini-games, and special holiday-themed builds. DM Morgan if you want to help organize!",
-      author: "Morgan",
+      content: "A beautiful, nice, fun event for this Christmas. We plan to have a theme park built by then, DM Jiemos if you would wanna help!",
+      author: "Jiemos",
       date: "Dec 1, 2025",
       time: "19:20",
       category: "event",
@@ -67,23 +67,23 @@ const App = () => {
 
   // Server stats
   const serverStats = {
-    playersOnline: 8,
-    totalPlayers: 15,
-    uptime: "14 days, 7 hours",
-    version: "1.21.1",
-    worldSize: "3.2 GB"
+    playersOnline: 0,
+    totalPlayers: 11,
+    uptime: "30 minutes",
+    version: "1.21.10 FABRIC",
+    worldSize: "Unknown"
   };
 
-  // Active players (mock data)
+  // Active players (mock data)  const activePlayers = [ { name: "Alex", status: "Exploring", time: "2h 15m" }, { name: "Jamie", status: "Building", time: "1h 42m" }, { name: "Taylor", status: "Mining", time: "3h 08m" }, { name: "Morgan", status: "Redstone", time: "45m" }, { name: "Riley", status: "Admin", time: "5h 22m" }, { name: "Casey", status: "Farming", time: "1h 10m" }, { name: "Jordan", status: "PvP", time: "32m" }, { name: "Sam", status: "Exploring", time: "2h 47m" } ];
   const activePlayers = [
-    { name: "Alex", status: "Exploring", time: "2h 15m" },
-    { name: "Jamie", status: "Building", time: "1h 42m" },
-    { name: "Taylor", status: "Mining", time: "3h 08m" },
-    { name: "Morgan", status: "Redstone", time: "45m" },
-    { name: "Riley", status: "Admin", time: "5h 22m" },
-    { name: "Casey", status: "Farming", time: "1h 10m" },
-    { name: "Jordan", status: "PvP", time: "32m" },
-    { name: "Sam", status: "Exploring", time: "2h 47m" }
+    { name: "Asparagus21345", status: ''Testing", time: "30m" },
+    { name: 
+    { name: 
+    { name: 
+    { name: 
+    { name: 
+    { name: 
+    { name: 
   ];
 
   const getCategoryColor = (category) => {
