@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Clock, Users, MessageSquare, Shield, Server, Gamepad2, Trophy, Send, Mail, User, Eye, EyeOff } from 'lucide-react';
+import { Calendar, Clock, Users, MessageSquare, Shield, Server, Gamepad2, Trophy, Send, Mail, User, Eye, EyeOff, FileText, CheckCircle, AlertTriangle } from 'lucide-react';
 
 const App = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -8,6 +8,7 @@ const App = () => {
   const [userName, setUserName] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [visibleComments, setVisibleComments] = useState({});
+  const [logsExpanded, setLogsExpanded] = useState(false);
 
   // Initialize comments and visible state for each news item
   useEffect(() => {
@@ -90,19 +91,57 @@ const App = () => {
     }
   ];
 
+  // Server logs data
+  const serverLogs = [
+    {
+      id: 1,
+      date: "Dec 14, 2025",
+      entries: [
+        { time: "10:50:12", level: "INFO", message: "Server started successfully - Version 1.21.10 Fabric" },
+        { time: "10:52:45", level: "INFO", message: "Jiemos joined the game" },
+        { time: "10:55:23", level: "INFO", message: "Eyewatercanwaters2 joined the game" },
+        { time: "11:01:17", level: "WARN", message: "Player Ashborn attempted to use /give command (blocked by permissions)" },
+        { time: "11:15:33", level: "INFO", message: "Ibiklackeur joined the game" },
+        { time: "11:22:08", level: "INFO", message: "Jiemos created new world 'FrontierRealms'" },
+        { time: "11:45:52", level: "INFO", message: "Server performance: 20.1 TPS (target: 20.0)" }
+      ]
+    },
+    {
+      id: 2,
+      date: "Dec 13, 2025",
+      entries: [
+        { time: "18:30:05", level: "INFO", message: "Server shutdown for maintenance" },
+        { time: "14:22:18", level: "INFO", message: "Anti-cheat system updated to v2.3" },
+        { time: "12:15:44", level: "WARN", message: "Unusual movement detected from player 'Guest123' (investigated - false positive)" },
+        { time: "09:33:21", level: "INFO", message: "Daily backup completed successfully" },
+        { time: "08:00:00", level: "INFO", message: "Server started - Daily maintenance completed" }
+      ]
+    },
+    {
+      id: 3,
+      date: "Dec 12, 2025",
+      entries: [
+        { time: "22:15:33", level: "INFO", message: "Server shutdown for the night" },
+        { time: "16:42:19", level: "INFO", message: "New player 'BuilderPro' whitelisted" },
+        { time: "14:05:27", level: "WARN", message: "X-ray texture pack detected on player 'Miner99' (warning issued)" },
+        { time: "10:30:00", level: "INFO", message: "Server started - New plugins installed" }
+      ]
+    }
+  ];
+
   // Server stats
   const serverStats = {
-    playersOnline: 0,
-    totalPlayers: 0,
-    uptime: "30 minutes",
+    playersOnline: 3,
+    totalPlayers: 8,
+    uptime: "2 hours, 15 minutes",
     version: "1.21.10 FABRIC",
-    worldSize: "Unknown"
+    worldSize: "1.2 GB"
   };
 
   const activePlayers = [
-    { name: "", status: "", time: "" },
-    { name: "", status: "", time: "" },
-    { name: "", status: "", time: "" },
+    { name: "Jiemos", status: "Building", time: "1h 25m" },
+    { name: "Eyewatercanwaters2", status: "Exploring", time: "45m" },
+    { name: "Ibiklackeur", status: "Mining", time: "22m" },
     { name: "", status: "", time: "" },
     { name: "", status: "", time: "" },
     { name: "", status: "", time: "" },
@@ -121,18 +160,44 @@ const App = () => {
     }
   };
 
+  const getLogLevelColor = (level) => {
+    switch (level) {
+      case 'INFO': return 'text-blue-400';
+      case 'WARN': return 'text-yellow-400';
+      case 'ERROR': return 'text-red-400';
+      default: return 'text-gray-400';
+    }
+  };
+
+  const getLogLevelIcon = (level) => {
+    switch (level) {
+      case 'INFO': return <CheckCircle className="h-4 w-4 text-blue-400" />;
+      case 'WARN': return <AlertTriangle className="h-4 w-4 text-yellow-400" />;
+      default: return <AlertTriangle className="h-4 w-4 text-red-400" />;
+    }
+  };
+
   const handleLogin = (e) => {
     e.preventDefault();
     if (userEmail && userName) {
+      // Basic validation
+      if (!userName.trim()) {
+        alert("Please enter your Minecraft name");
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
+        alert("Please enter a valid email address");
+        return;
+      }
+      
       setIsAuthenticated(true);
-      // In a real app, you'd validate credentials with a backend
     }
   };
 
   const handleCommentSubmit = (e, newsId) => {
-    e.preventDefault();
+    e.preventDefault(); // This prevents the page reload/white screen
     const commentInput = document.getElementById(`comment-input-${newsId}`);
-    const content = commentInput.value.trim();
+    const content = commentInput?.value.trim();
     
     if (content && isAuthenticated) {
       const newComment = {
@@ -143,12 +208,22 @@ const App = () => {
         timestamp: new Date()
       };
       
-      setComments(prev => ({
-        ...prev,
-        [newsId]: [...(prev[news.id] || []), newComment]
-      }));
+      setComments(prev => {
+        const currentComments = prev[newsId] || [];
+        return {
+          ...prev,
+          [newsId]: [...currentComments, newComment]
+        };
+      });
       
-      commentInput.value = '';
+      // Clear the input after submission
+      if (commentInput) {
+        commentInput.value = '';
+      }
+    } else if (!isAuthenticated) {
+      alert("Please sign in first to post comments");
+    } else if (!content) {
+      alert("Please enter a comment");
     }
   };
 
@@ -157,6 +232,10 @@ const App = () => {
       ...prev,
       [newsId]: !prev[newsId]
     }));
+  };
+
+  const toggleLogs = () => {
+    setLogsExpanded(!logsExpanded);
   };
 
   const formatTimeAgo = (timestamp) => {
@@ -371,7 +450,10 @@ const App = () => {
                         </form>
                       </div>
                     ) : (
-                      <form onSubmit={(e) => handleCommentSubmit(e, news.id)} className="space-y-3">
+                      <form 
+                        onSubmit={(e) => handleCommentSubmit(e, news.id)} 
+                        className="space-y-3"
+                      >
                         <div className="flex items-start space-x-3">
                           <div className="flex-shrink-0 mt-1">
                             <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center">
@@ -408,6 +490,68 @@ const App = () => {
 
           {/* Sidebar */}
           <div className="space-y-6">
+            {/* Server Logs Section */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 overflow-hidden">
+              <div 
+                className="p-6 cursor-pointer hover:bg-gray-700/30 transition-colors"
+                onClick={toggleLogs}
+              >
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-bold text-white flex items-center">
+                    <FileText className="h-5 w-5 mr-2 text-amber-400" />
+                    Server Logs
+                  </h3>
+                  <button className="text-amber-400 hover:text-amber-300">
+                    {logsExpanded ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
+                  </button>
+                </div>
+                <p className="text-gray-400 text-sm mt-1">
+                  Daily logs for anti-cheat monitoring
+                </p>
+              </div>
+              
+              {logsExpanded && (
+                <div className="border-t border-gray-700 bg-gray-900/20 max-h-96 overflow-y-auto">
+                  {serverLogs.map((logDay) => (
+                    <div key={logDay.id} className="p-4 border-b border-gray-800 last:border-b-0">
+                      <h4 className="font-bold text-amber-300 mb-3 flex items-center">
+                        <Calendar className="h-4 w-4 mr-2" />
+                        {logDay.date}
+                      </h4>
+                      <div className="space-y-2">
+                        {logDay.entries.map((entry, idx) => (
+                          <div 
+                            key={idx} 
+                            className={`flex items-start text-sm p-2 rounded ${
+                              entry.level === 'WARN' ? 'bg-yellow-900/20' : 
+                              entry.level === 'ERROR' ? 'bg-red-900/20' : 'bg-gray-800/30'
+                            }`}
+                          >
+                            <div className="mr-2 mt-0.5">
+                              {getLogLevelIcon(entry.level)}
+                            </div>
+                            <div>
+                              <span className={`font-mono text-xs ${getLogLevelColor(entry.level)} mr-2`}>
+                                [{entry.time}]
+                              </span>
+                              <span className="text-gray-300">{entry.message}</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                  <div className="p-4 bg-gray-800/40 text-center text-gray-400 text-sm">
+                    Logs updated daily at server restart
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* Active Players */}
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 p-6">
               <div className="flex items-center justify-between mb-4">
@@ -415,11 +559,11 @@ const App = () => {
                   <Users className="h-5 w-5 mr-2 text-blue-400" />
                   Active Players
                 </h3>
-                <span className="text-blue-400 font-bold">{activePlayers.length}</span>
+                <span className="text-blue-400 font-bold">{serverStats.playersOnline} online</span>
               </div>
               
               <div className="space-y-3">
-                {activePlayers.map((player, index) => (
+                {activePlayers.filter(p => p.name).map((player, index) => (
                   <div 
                     key={index} 
                     className="flex items-center justify-between p-3 bg-gray-700/30 rounded-lg hover:bg-gray-700/50 transition-colors"
@@ -436,6 +580,9 @@ const App = () => {
                     <span className="text-gray-400 text-xs">{player.time}</span>
                   </div>
                 ))}
+                {activePlayers.filter(p => p.name).length === 0 && (
+                  <p className="text-gray-500 text-center py-2">No players online</p>
+                )}
               </div>
             </div>
 
@@ -449,7 +596,7 @@ const App = () => {
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-gray-400">IP Address</span>
-                  <span className="text-white font-mono">OfficialClassicDuels.</span>
+                  <span className="text-white font-mono">cdmcs.mcserver.com</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-400">Port</span>
@@ -462,6 +609,10 @@ const App = () => {
                 <div className="flex justify-between">
                   <span className="text-gray-400">World Size</span>
                   <span className="text-white">{serverStats.worldSize}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Anti-Cheat</span>
+                  <span className="text-amber-400">Active v2.3</span>
                 </div>
               </div>
 
