@@ -68,7 +68,7 @@ const App = () => {
   // Server stats
   const serverStats = {
     playersOnline: 0,
-    totalPlayers: 11,
+    totalPlayers: 0,
     uptime: "30 minutes",
     version: "1.21.10 FABRIC",
     worldSize: "Unknown"
