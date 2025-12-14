@@ -39,7 +39,7 @@ const App = () => {
     },
     {
       id: 2,
-      title: "Weekly Build Contest Results",
+      title: "Weekly Build Contest",
       content: "Would anyone wan't to participate in a weekly Build Contest? If so then make sure you send beautiful screenshots of your build in our channel on Discord.",
       author: "Ashborn",
       date: "Dec 13, 2025",
@@ -270,7 +270,7 @@ const App = () => {
                             <span className="font-medium">Comment Policy:</span> All comments are manually reviewed by admins for server security.
                           </p>
                           <p className="text-blue-300 text-xs mt-1">
-                            ⏱️ Verification typically takes 1-2 minutes. Approved comments appear on the Discord server.
+                            ⏱️ Verification typically takes 1-2 minutes. Approved comments will appear.
                           </p>
                         </div>
                       </div>
@@ -494,7 +494,7 @@ const App = () => {
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-gray-400">IP Address</span>
-                  <span className="text-white font-mono">OfficialClassicDuels.</span>
+                  <span className="text-white font-mono">cdmcs-official.aternos.me.</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-400">Port</span>
