@@ -109,7 +109,7 @@ const activePlayers = [
               </div>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
-              CDDMCS NEWS!
+              CDMCS NEWS!
             </h1>
             <p className="text-xl text-emerald-100 max-w-3xl mx-auto">
               Your daily update on what's happening in our friend group Minecraft server
