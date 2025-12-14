@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Clock, Users, MessageSquare, Shield, Server, Gamepad2, Trophy, Send, Mail, User, Eye, EyeOff, FileText, CheckCircle, AlertTriangle } from 'lucide-react';
+import { Calendar, Clock, Users, MessageSquare, Shield, Server, Gamepad2, Trophy, Send, Mail, User, Eye, EyeOff, FileText, Link } from 'lucide-react';
 
 const App = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -9,34 +9,23 @@ const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [visibleComments, setVisibleComments] = useState({});
 
-  // 🔑 SIMULATED PERSISTENCE: Comments stored in "initial data" so they survive refresh
-  // In real app, this would come from a database/backend
-  const initialCommentsData = {
-    1: [
-      {
-        id: 1,
-        author: "Jiemos",
-        email: "admin@classicduels.com",
-        content: "Can't wait to see what everyone builds in the new world!",
-        timestamp: new Date("2025-12-13T14:30:00")
-      }
-    ],
-    2: [],
-    3: [],
-    4: [],
-    5: []
-  };
-
-  // Initialize comments and visible state
+  // Initialize comments and visible state for each news item
   useEffect(() => {
-    // Load initial comments (simulates persistence)
-    setComments(initialCommentsData);
-    
-    // Set all comment sections to hidden by default
+    const initialComments = {};
     const initialVisible = {};
-    [1, 2, 3, 4, 5].forEach(id => {
-      initialVisible[id] = false;
+    newsItems.forEach(item => {
+      initialComments[item.id] = [
+        {
+          id: 1,
+          author: "Jiemos",
+          email: "admin@classicduels.com",
+          content: "Can't wait to see what everyone builds in the new world!",
+          timestamp: new Date(Date.now() - 3600000)
+        }
+      ];
+      initialVisible[item.id] = false; // Start with comments hidden
     });
+    setComments(initialComments);
     setVisibleComments(initialVisible);
   }, []);
 
@@ -47,7 +36,7 @@ const App = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Mock news data - unchanged from your version
+  // Mock news data - your original content
   const newsItems = [
     {
       id: 1,
@@ -101,7 +90,7 @@ const App = () => {
     }
   ];
 
-  // Server stats - unchanged
+  // Server stats - your original content
   const serverStats = {
     playersOnline: 0,
     totalPlayers: 0,
@@ -110,7 +99,7 @@ const App = () => {
     worldSize: "Unknown"
   };
 
-  // Active players - unchanged
+  // Active players - your original empty array
   const activePlayers = [
     { name: "", status: "", time: "" },
     { name: "", status: "", time: "" },
@@ -134,15 +123,15 @@ const App = () => {
   };
 
   const handleLogin = (e) => {
-    e.preventDefault(); // 🔑 Critical: prevents page refresh/white screen
+    e.preventDefault(); // Prevents white screen
     if (userEmail && userName) {
       setIsAuthenticated(true);
     }
   };
 
   const handleCommentSubmit = (e, newsId) => {
-    e.preventDefault(); // 🔑 Critical: prevents page refresh/white screen
-    const commentInput = document.getElementById(`comment-input-${newsId}`);
+    e.preventDefault(); // Prevents white screen
+    const commentInput = document.getElementById(`comment-input-${news.id}`);
     const content = commentInput?.value.trim();
     
     if (content && isAuthenticated) {
@@ -154,17 +143,14 @@ const App = () => {
         timestamp: new Date()
       };
       
-      // Update comments state (this will persist as long as the page is open)
-      setComments(prev => {
-        const currentComments = prev[newsId] || [];
-        return {
-          ...prev,
-          [newsId]: [...currentComments, newComment]
-        };
-      });
+      setComments(prev => ({
+        ...prev,
+        [newsId]: [...(prev[news.id] || []), newComment]
+      }));
       
-      // Clear input
-      if (commentInput) commentInput.value = '';
+      if (commentInput) {
+        commentInput.value = '';
+      }
     }
   };
 
@@ -177,7 +163,7 @@ const App = () => {
 
   const formatTimeAgo = (timestamp) => {
     const now = new Date();
-    const diffInSeconds = Math.floor((now - new Date(timestamp)) / 1000);
+    const diffInSeconds = Math.floor((now - timestamp) / 1000);
     
     if (diffInSeconds < 60) return 'Just now';
     if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
@@ -187,7 +173,7 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
-      {/* Header - unchanged */}
+      {/* Header - your original */}
       <header className="relative overflow-hidden bg-gradient-to-r from-green-800 to-emerald-700">
         <div className="absolute inset-0 bg-black opacity-20"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -207,7 +193,7 @@ const App = () => {
         </div>
       </header>
 
-      {/* Stats Bar - unchanged */}
+      {/* Stats Bar - your original */}
       <div className="bg-gray-800/50 backdrop-blur-sm border-b border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4 py-4">
@@ -243,7 +229,7 @@ const App = () => {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* News Feed */}
+          {/* News Feed - your original with working comments */}
           <div className="lg:col-span-2 space-y-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-3xl font-bold text-white">Latest News</h2>
@@ -299,7 +285,7 @@ const App = () => {
                   </div>
                 </div>
 
-                {/* Discussion Section - Toggleable */}
+                {/* Discussion Section - your working comments system */}
                 {visibleComments[news.id] && (
                   <div className="border-t border-gray-700 bg-gray-900/30 p-6">
                     <h4 className="text-lg font-bold text-white mb-4 flex items-center">
@@ -425,9 +411,79 @@ const App = () => {
             ))}
           </div>
 
-          {/* Sidebar - unchanged except for minor spacing */}
+          {/* Sidebar */}
           <div className="space-y-6">
-            {/* Active Players */}
+            {/* Server Logs - SIMPLE PASTE ZONE for your links */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 overflow-hidden">
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-xl font-bold text-white flex items-center">
+                    <FileText className="h-5 w-5 mr-2 text-amber-400" />
+                    Server Logs
+                  </h3>
+                </div>
+                <p className="text-gray-400 text-sm mb-4">
+                  Daily anti-cheat logs (paste links below)
+                </p>
+                
+                {/* Simple paste area - easy to edit in code */}
+                <div className="bg-gray-900/50 rounded-lg p-4 min-h-[200px]">
+                  <div className="text-amber-300 font-mono text-sm space-y-2">
+                    {/* 👇 PASTE YOUR LOG LINKS HERE - EASY TO EDIT IN CODE 👇 */}
+                    <div className="flex items-start">
+                      <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
+                      <span>
+                        <a href="https://example.com/logs/dec14" 
+                           className="text-blue-300 hover:text-blue-200 hover:underline"
+                           target="_blank" rel="noopener noreferrer">
+                          Dec 14, 2025 Server Log
+                        </a>
+                      </span>
+                    </div>
+                    
+                    <div className="flex items-start">
+                      <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
+                      <span>
+                        <a href="https://example.com/logs/dec13" 
+                           className="text-blue-300 hover:text-blue-200 hover:underline"
+                           target="_blank" rel="noopener noreferrer">
+                          Dec 13, 2025 Server Log
+                        </a>
+                      </span>
+                    </div>
+                    
+                    <div className="flex items-start">
+                      <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
+                      <span>
+                        <a href="https://example.com/logs/dec12" 
+                           className="text-blue-300 hover:text-blue-200 hover:underline"
+                           target="_blank" rel="noopener noreferrer">
+                          Dec 12, 2025 Server Log
+                        </a>
+                      </span>
+                    </div>
+                    
+                    {/* Add more log links here as needed */}
+                    {/* <div className="flex items-start">
+                      <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
+                      <span>
+                        <a href="YOUR_LOG_URL_HERE" 
+                           className="text-blue-300 hover:text-blue-200 hover:underline"
+                           target="_blank" rel="noopener noreferrer">
+                          Log Date Description
+                        </a>
+                      </span>
+                    </div> */}
+                  </div>
+                  
+                  <div className="mt-4 pt-3 border-t border-gray-700 text-gray-500 text-xs">
+                    Logs updated after each server session
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Active Players - your original */}
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-xl font-bold text-white flex items-center">
@@ -458,7 +514,7 @@ const App = () => {
               </div>
             </div>
 
-            {/* Server Info - IP address restored to your original */}
+            {/* Server Info - your original IP address preserved */}
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 p-6">
               <h3 className="text-xl font-bold text-white mb-4 flex items-center">
                 <Server className="h-5 w-5 mr-2 text-green-400" />
@@ -490,7 +546,7 @@ const App = () => {
               </button>
             </div>
 
-            {/* Recent Achievements */}
+            {/* Recent Achievements - your original */}
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 p-6">
               <h3 className="text-xl font-bold text-white mb-4 flex items-center">
                 <Trophy className="h-5 w-5 mr-2 text-yellow-400" />
@@ -519,7 +575,7 @@ const App = () => {
         </div>
       </main>
 
-      {/* Footer - unchanged */}
+      {/* Footer - your original */}
       <footer className="bg-gray-900/80 backdrop-blur-sm border-t border-gray-800 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
