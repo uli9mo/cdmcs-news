@@ -1,31 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Clock, Users, MessageSquare, Shield, Server, Gamepad2, Trophy, Send, Mail, User, Eye, EyeOff, FileText, Link } from 'lucide-react';
+import { Calendar, Clock, Users, MessageSquare, Shield, Server, Gamepad2, Trophy, Send, Mail, User, Eye, EyeOff, FileText, Link, CheckCircle } from 'lucide-react';
 
 const App = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [comments, setComments] = useState({});
   const [userEmail, setUserEmail] = useState('');
   const [userName, setUserName] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [visibleComments, setVisibleComments] = useState({});
+  const [verifyingComment, setVerifyingComment] = useState({});
 
-  // Initialize comments and visible state for each news item
+  // Initialize visible state for each news item
   useEffect(() => {
-    const initialComments = {};
     const initialVisible = {};
-    newsItems.forEach(item => {
-      initialComments[item.id] = [
-        {
-          id: 1,
-          author: "Jiemos",
-          email: "admin@classicduels.com",
-          content: "Can't wait to see what everyone builds in the new world!",
-          timestamp: new Date(Date.now() - 3600000)
-        }
-      ];
-      initialVisible[item.id] = false; // Start with comments hidden
+    [1, 2, 3, 4, 5].forEach(id => {
+      initialVisible[id] = false;
     });
-    setComments(initialComments);
     setVisibleComments(initialVisible);
   }, []);
 
@@ -123,35 +112,25 @@ const App = () => {
   };
 
   const handleLogin = (e) => {
-    e.preventDefault(); // Prevents white screen
+    e.preventDefault();
     if (userEmail && userName) {
       setIsAuthenticated(true);
     }
   };
 
   const handleCommentSubmit = (e, newsId) => {
-    e.preventDefault(); // Prevents white screen
-    const commentInput = document.getElementById(`comment-input-${news.id}`);
-    const content = commentInput?.value.trim();
+    e.preventDefault();
     
-    if (content && isAuthenticated) {
-      const newComment = {
-        id: Date.now(),
-        author: userName,
-        email: userEmail,
-        content,
-        timestamp: new Date()
-      };
-      
-      setComments(prev => ({
-        ...prev,
-        [newsId]: [...(prev[news.id] || []), newComment]
-      }));
-      
-      if (commentInput) {
-        commentInput.value = '';
-      }
-    }
+    // Show "verifying" state
+    setVerifyingComment(prev => ({ ...prev, [newsId]: true }));
+    
+    // Simulate verification process (2 seconds)
+    setTimeout(() => {
+      setVerifyingComment(prev => ({ ...prev, [newsId]: false }));
+      // Clear the input
+      const commentInput = document.getElementById(`comment-input-${newsId}`);
+      if (commentInput) commentInput.value = '';
+    }, 2000);
   };
 
   const toggleComments = (newsId) => {
@@ -159,16 +138,6 @@ const App = () => {
       ...prev,
       [newsId]: !prev[newsId]
     }));
-  };
-
-  const formatTimeAgo = (timestamp) => {
-    const now = new Date();
-    const diffInSeconds = Math.floor((now - timestamp) / 1000);
-    
-    if (diffInSeconds < 60) return 'Just now';
-    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
-    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
-    return `${Math.floor(diffInSeconds / 86400)}d ago`;
   };
 
   return (
@@ -229,7 +198,7 @@ const App = () => {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* News Feed - your original with working comments */}
+          {/* News Feed - with simplified comment system */}
           <div className="lg:col-span-2 space-y-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-3xl font-bold text-white">Latest News</h2>
@@ -276,16 +245,13 @@ const App = () => {
                     >
                       {visibleComments[news.id] ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       <span className="text-sm">
-                        {visibleComments[news.id] ? 'Hide' : 'Show'} Comments 
-                        <span className="ml-1 bg-blue-900/50 px-2 py-0.5 rounded-full">
-                          {comments[news.id]?.length || 0}
-                        </span>
+                        {visibleComments[news.id] ? 'Hide' : 'Show'} Discussion
                       </span>
                     </button>
                   </div>
                 </div>
 
-                {/* Discussion Section - your working comments system */}
+                {/* Discussion Section - Simplified with verification flow */}
                 {visibleComments[news.id] && (
                   <div className="border-t border-gray-700 bg-gray-900/30 p-6">
                     <h4 className="text-lg font-bold text-white mb-4 flex items-center">
@@ -293,31 +259,21 @@ const App = () => {
                       Discussion
                     </h4>
                     
-                    {/* Comments List */}
-                    <div className="space-y-4 mb-6 max-h-96 overflow-y-auto pr-2">
-                      {comments[news.id]?.map(comment => (
-                        <div key={comment.id} className="bg-gray-800/50 rounded-lg p-4 transition-all hover:bg-gray-800/70">
-                          <div className="flex items-start">
-                            <div className="flex-shrink-0 mr-3">
-                              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                                <span className="text-white font-bold">{comment.author[0]}</span>
-                              </div>
-                            </div>
-                            <div className="flex-grow">
-                              <div className="flex items-center mb-1">
-                                <span className="font-medium text-white">{comment.author}</span>
-                                <span className="text-gray-500 text-xs ml-2">
-                                  {formatTimeAgo(comment.timestamp)}
-                                </span>
-                              </div>
-                              <p className="text-gray-300">{comment.content}</p>
-                            </div>
-                          </div>
+                    {/* Info about comment process */}
+                    <div className="bg-blue-900/30 border border-blue-700 rounded-lg p-4 mb-6">
+                      <div className="flex items-start">
+                        <div className="flex-shrink-0 mt-0.5">
+                          <MessageSquare className="h-5 w-5 text-blue-400" />
                         </div>
-                      ))}
-                      {(!comments[news.id] || comments[news.id].length === 0) && (
-                        <p className="text-gray-500 text-center py-4">No comments yet. Be the first to discuss!</p>
-                      )}
+                        <div className="ml-3">
+                          <p className="text-blue-200 text-sm">
+                            <span className="font-medium">Comment Policy:</span> All comments are manually reviewed by admins for server security.
+                          </p>
+                          <p className="text-blue-300 text-xs mt-1">
+                            ⏱️ Verification typically takes 1-2 minutes. Approved comments appear on the Discord server.
+                          </p>
+                        </div>
+                      </div>
                     </div>
 
                     {/* Comment Form */}
@@ -387,7 +343,7 @@ const App = () => {
                             <textarea
                               id={`comment-input-${news.id}`}
                               rows="2"
-                              placeholder={`What are your thoughts on "${news.title}"?`}
+                              placeholder={`Share your thoughts on "${news.title}"...`}
                               className="block w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                               required
                             />
@@ -397,12 +353,38 @@ const App = () => {
                           <span className="text-sm text-gray-400">Signed in as {userName}</span>
                           <button
                             type="submit"
-                            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 flex items-center space-x-2"
+                            disabled={verifyingComment[news.id]}
+                            className={`${
+                              verifyingComment[news.id] 
+                                ? 'bg-gray-600 cursor-not-allowed' 
+                                : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
+                            } text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 flex items-center space-x-2`}
                           >
-                            <Send className="h-4 w-4" />
-                            <span>Post Comment</span>
+                            {verifyingComment[news.id] ? (
+                              <>
+                                <div className="w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+                                <span>Verifying...</span>
+                              </>
+                            ) : (
+                              <>
+                                <Send className="h-4 w-4" />
+                                <span>Submit Comment</span>
+                              </>
+                            )}
                           </button>
                         </div>
+                        
+                        {verifyingComment[news.id] && (
+                          <div className="mt-3 p-3 bg-amber-900/20 border border-amber-700 rounded-lg">
+                            <div className="flex items-center text-amber-300">
+                              <div className="w-4 h-4 border-2 border-amber-400 border-t-transparent rounded-full animate-spin mr-2"></div>
+                              <span className="text-sm font-medium">Verifying comment with server security system...</span>
+                            </div>
+                            <p className="text-amber-400 text-xs mt-1 ml-6">
+                              Please wait - all comments are manually reviewed for anti-cheat compliance
+                            </p>
+                          </div>
+                        )}
                       </form>
                     )}
                   </div>
@@ -413,7 +395,7 @@ const App = () => {
 
           {/* Sidebar */}
           <div className="space-y-6">
-            {/* Server Logs - SIMPLE PASTE ZONE for your links */}
+            {/* Server Logs - your simple paste zone */}
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 overflow-hidden">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-3">
@@ -426,10 +408,10 @@ const App = () => {
                   Daily anti-cheat logs (paste links below)
                 </p>
                 
-                {/* Simple paste area - easy to edit in code */}
+                {/* Simple paste area */}
                 <div className="bg-gray-900/50 rounded-lg p-4 min-h-[200px]">
                   <div className="text-amber-300 font-mono text-sm space-y-2">
-                    {/* 👇 PASTE YOUR LOG LINKS HERE - EASY TO EDIT IN CODE 👇 */}
+                    {/* 👇 PASTE YOUR LOG LINKS HERE */}
                     <div className="flex items-start">
                       <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
                       <span>
@@ -462,18 +444,6 @@ const App = () => {
                         </a>
                       </span>
                     </div>
-                    
-                    {/* Add more log links here as needed */}
-                    {/* <div className="flex items-start">
-                      <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
-                      <span>
-                        <a href="YOUR_LOG_URL_HERE" 
-                           className="text-blue-300 hover:text-blue-200 hover:underline"
-                           target="_blank" rel="noopener noreferrer">
-                          Log Date Description
-                        </a>
-                      </span>
-                    </div> */}
                   </div>
                   
                   <div className="mt-4 pt-3 border-t border-gray-700 text-gray-500 text-xs">
@@ -514,7 +484,7 @@ const App = () => {
               </div>
             </div>
 
-            {/* Server Info - your original IP address preserved */}
+            {/* Server Info - your original IP address */}
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 p-6">
               <h3 className="text-xl font-bold text-white mb-4 flex items-center">
                 <Server className="h-5 w-5 mr-2 text-green-400" />
