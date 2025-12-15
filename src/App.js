@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Clock, Users, MessageSquare, Shield, Server, Gamepad2, Trophy, Send, Mail, User, Eye, EyeOff, FileText, Link, CheckCircle } from 'lucide-react';
+import { Calendar, Clock, Users, MessageSquare, Shield, Server, Gamepad2, Trophy, Send, Mail, User, Eye, EyeOff, FileText, Link, CheckCircle, Image } from 'lucide-react';
 
 const App = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -417,7 +417,7 @@ const App = () => {
                     <div className="flex items-start">
                       <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
                       <span>
-                        <a href="https://mclo.gs/zQjJY4i  " 
+                        <a href="https://mclo.gs/zQjJY4i    " 
                            className="text-blue-300 hover:text-blue-200 hover:underline"
                            target="_blank" rel="noopener noreferrer">
                           Dec 14, 2025 Server Log
@@ -428,7 +428,7 @@ const App = () => {
                     <div className="flex items-start">
                       <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
                       <span>
-                        <a href="https://example.com/logs/dec13  " 
+                        <a href="https://example.com/logs/dec13    " 
                            className="text-blue-300 hover:text-blue-200 hover:underline"
                            target="_blank" rel="noopener noreferrer">
                           Dec 13, 2025 Server Log
@@ -439,7 +439,7 @@ const App = () => {
                     <div className="flex items-start">
                       <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
                       <span>
-                        <a href="https://example.com/logs/dec12  " 
+                        <a href="https://example.com/logs/dec12    " 
                            className="text-blue-300 hover:text-blue-200 hover:underline"
                            target="_blank" rel="noopener noreferrer">
                           Dec 12, 2025 Server Log
@@ -451,6 +451,59 @@ const App = () => {
                   <div className="mt-4 pt-3 border-t border-gray-700 text-gray-500 text-xs">
                     Logs updated after each server session
                   </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Gallery - Your Minecraft Moments */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 overflow-hidden">
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-xl font-bold text-white flex items-center">
+                    <Image className="h-5 w-5 mr-2 text-pink-400" />
+                    Gallery
+                  </h3>
+                </div>
+                <p className="text-gray-400 text-sm mb-4">
+                  Our Minecraft moments 😄
+                </p>
+                
+                {/* Gallery Grid */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="aspect-square rounded-lg overflow-hidden border border-gray-600">
+                    <img 
+                      src="https://placehold.co/300x300/4ade80/000000?text=Build" 
+                      alt="Minecraft build" 
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="aspect-square rounded-lg overflow-hidden border border-gray-600">
+                    <img 
+                      src="https://placehold.co/300x300/8b5cf6/000000?text=Adventure" 
+                      alt="Minecraft adventure" 
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="aspect-square rounded-lg overflow-hidden border border-gray-600">
+                    <img 
+                      src="https://placehold.co/300x300/0ea5e9/000000?text=Redstone" 
+                      alt="Minecraft redstone" 
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="aspect-square rounded-lg overflow-hidden border border-gray-600">
+                    <img 
+                      src="https://placehold.co/300x300/f59e0b/000000?text=Fun" 
+                      alt="Minecraft fun" 
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                </div>
+                
+                <div className="mt-4 pt-3 border-t border-gray-700 text-center">
+                  <button className="text-blue-400 hover:text-blue-300 text-sm font-medium">
+                    + Add your screenshot
+                  </button>
                 </div>
               </div>
             </div>
