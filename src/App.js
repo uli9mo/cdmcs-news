@@ -13,7 +13,7 @@ const App = () => {
   // redeploy trigger 2025-12-14
   useEffect(() => {
     const initialVisible = {};
-    [1, 2, 3, 4, 5].forEach(id => {
+    [1, 2, 3, 4, 5, 6].forEach(id => {
       initialVisible[id] = false;
     });
     setVisibleComments(initialVisible);
@@ -28,8 +28,18 @@ const App = () => {
 
   // Mock news data - your original content
   const newsItems = [
-    {
+     {
       id: 1,
+      title: "Fundraiser!💰",
+      content: "We worked hard coding and building this website, please consider donating me some robux!",
+      author: "Ibiklackeur",
+      date: "Dec 14, 2025",
+      time: "18:26",
+      category: "charity",
+      readTime: "1 min"
+    },
+    {
+      id: 2,
       title: "New Survival World Launched!",
       content: "After weeks of planning our new survival world for our Classic Duels's Minecraft server, we finally launched it with an official website!",
       author: "Eyewatercanwaters2",
@@ -39,7 +49,7 @@ const App = () => {
       readTime: "1 min"
     },
     {
-      id: 2,
+      id: 3,
       title: "Weekly Build Contest",
       content: "Would anyone wan't to participate in a weekly Build Contest? If so then make sure you send beautiful screenshots of your build in our channel on Discord.",
       author: "Ashborn",
@@ -49,7 +59,7 @@ const App = () => {
       readTime: "1 min"
     },
     {
-      id: 3,
+      id: 4,
       title: "Server Start-up Scheduled.",
       content: "We'll be adding essential mods and features to our server, be sure to wait for the announcements of the release. We plan to officaly start the server on Dec 14, 10:50 AM.",
       author: "Jiemos",
@@ -59,7 +69,7 @@ const App = () => {
       readTime: "1 min"
     },
     {
-      id: 4,
+      id: 5,
       title: "New Plugin Reccomendation: Tough As Nails.",
       content: "Adding this mod would help give a challange to all players, including myself.",
       author: "Ibiklackeur",
@@ -69,7 +79,7 @@ const App = () => {
       readTime: "30 sec"
     },
     {
-      id: 5,
+      id: 6,
       title: "Holiday Event Planning",
       content: "A beautiful, nice, fun event for this Christmas. We plan to have a theme park built by then, DM Jiemos if you would wanna help!",
       author: "Jiemos",
@@ -502,7 +512,7 @@ const App = () => {
                 
                 <div className="mt-4 pt-3 border-t border-gray-700 text-center">
                   <button className="text-blue-400 hover:text-blue-300 text-sm font-medium">
-                    + Add your screenshot
+                    Check Discord for the gallery contest ⭐⭐⭐
                   </button>
                 </div>
               </div>
