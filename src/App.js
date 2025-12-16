@@ -424,6 +424,17 @@ const App = () => {
                     <div className="flex items-start">
                       <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
                       <span>
+                        <a href="https://mclo.gs/wpL50I4" 
+                           className="text-blue-300 hover:text-blue-200 hover:underline"
+                           target="_blank" rel="noopener noreferrer">
+                          Dec 15, 2025 Server Log
+                        </a>
+                      </span>
+                    </div>
+                    
+                    <div className="flex items-start">
+                      <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
+                      <span>
                         <a href="https://mclo.gs/zQjJY4i" 
                            className="text-blue-300 hover:text-blue-200 hover:underline"
                            target="_blank" rel="noopener noreferrer">
@@ -439,17 +450,6 @@ const App = () => {
                            className="text-blue-300 hover:text-blue-200 hover:underline"
                            target="_blank" rel="noopener noreferrer">
                           Dec 13, 2025 Server Log
-                        </a>
-                      </span>
-                    </div>
-                    
-                    <div className="flex items-start">
-                      <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
-                      <span>
-                        <a href="https://example.com/logs/dec12" 
-                           className="text-blue-300 hover:text-blue-200 hover:underline"
-                           target="_blank" rel="noopener noreferrer">
-                          Dec 12, 2025 Server Log
                         </a>
                       </span>
                     </div>
