@@ -8,9 +8,9 @@ const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [visibleComments, setVisibleComments] = useState({});
   const [verifyingComment, setVerifyingComment] = useState({});
+  const [showEasterEgg, setShowEasterEgg] = useState(false);
 
   // Initialize visible state for each news item
-  // redeploy trigger 2025-12-14
   useEffect(() => {
     const initialVisible = {};
     [1, 2, 3, 4, 5, 6].forEach(id => {
@@ -26,9 +26,18 @@ const App = () => {
     return () => clearInterval(timer);
   }, []);
 
+  // Close easter egg on Escape key
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === 'Escape') setShowEasterEgg(false);
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, []);
+
   // Mock news data - your original content
   const newsItems = [
-     {
+    {
       id: 1,
       title: "Fundraiser!💰",
       content: "We worked hard coding and building this website, please consider donating me some robux!",
@@ -91,7 +100,6 @@ const App = () => {
   ];
 
   // Server stats - your original content
-  // Trigger first deploy
   const serverStats = {
     playersOnline: 0,
     totalPlayers: 0,
@@ -119,6 +127,7 @@ const App = () => {
       case 'maintenance': return 'bg-blue-500';
       case 'feature': return 'bg-green-500';
       case 'event': return 'bg-pink-500';
+      case 'charity': return 'bg-amber-500';
       default: return 'bg-gray-500';
     }
   };
@@ -132,15 +141,10 @@ const App = () => {
 
   const handleCommentSubmit = (e, newsId) => {
     e.preventDefault();
-    
-    // Show "verifying" state
     setVerifyingComment(prev => ({ ...prev, [newsId]: true }));
-    
-    // Simulate verification process (2 seconds)
     setTimeout(() => {
       setVerifyingComment(prev => ({ ...prev, [newsId]: false }));
-      // Clear the input
-      const commentInput = document.getElementById(`comment-input-${newsId}`);
+      const commentInput = document.getElementById(`comment-input-${news.id}`);
       if (commentInput) commentInput.value = '';
     }, 2000);
   };
@@ -154,7 +158,7 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
-      {/* Header - your original */}
+      {/* Header */}
       <header className="relative overflow-hidden bg-gradient-to-r from-green-800 to-emerald-700">
         <div className="absolute inset-0 bg-black opacity-20"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -174,7 +178,7 @@ const App = () => {
         </div>
       </header>
 
-      {/* Stats Bar - your original */}
+      {/* Stats Bar */}
       <div className="bg-gray-800/50 backdrop-blur-sm border-b border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4 py-4">
@@ -197,11 +201,7 @@ const App = () => {
             <div className="flex items-center space-x-2">
               <Calendar className="h-5 w-5 text-pink-400" />
               <span className="text-gray-300">
-                {currentTime.toLocaleDateString('en-US', { 
-                  weekday: 'short', 
-                  month: 'short', 
-                  day: 'numeric' 
-                })}
+                {currentTime.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
               </span>
             </div>
           </div>
@@ -210,7 +210,7 @@ const App = () => {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* News Feed - with simplified comment system */}
+          {/* News Feed */}
           <div className="lg:col-span-2 space-y-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-3xl font-bold text-white">Latest News</h2>
@@ -263,7 +263,7 @@ const App = () => {
                   </div>
                 </div>
 
-                {/* Discussion Section - Simplified with verification flow */}
+                {/* Discussion Section */}
                 {visibleComments[news.id] && (
                   <div className="border-t border-gray-700 bg-gray-900/30 p-6">
                     <h4 className="text-lg font-bold text-white mb-4 flex items-center">
@@ -271,7 +271,6 @@ const App = () => {
                       Discussion
                     </h4>
                     
-                    {/* Info about comment process */}
                     <div className="bg-blue-900/30 border border-blue-700 rounded-lg p-4 mb-6">
                       <div className="flex items-start">
                         <div className="flex-shrink-0 mt-0.5">
@@ -407,7 +406,7 @@ const App = () => {
 
           {/* Sidebar */}
           <div className="space-y-6">
-            {/* Server Logs - your simple paste zone */}
+            {/* Server Logs */}
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 overflow-hidden">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-3">
@@ -420,14 +419,12 @@ const App = () => {
                   Daily server logs😄 (In the links below)
                 </p>
                 
-                {/* Simple paste area */}
                 <div className="bg-gray-900/50 rounded-lg p-4 min-h-[200px]">
                   <div className="text-amber-300 font-mono text-sm space-y-2">
-                    {/* 👇 PASTE YOUR LOG LINKS HERE */}
                     <div className="flex items-start">
                       <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
                       <span>
-                        <a href="https://mclo.gs/zQjJY4i    " 
+                        <a href="https://mclo.gs/zQjJY4i" 
                            className="text-blue-300 hover:text-blue-200 hover:underline"
                            target="_blank" rel="noopener noreferrer">
                           Dec 14, 2025 Server Log
@@ -438,7 +435,7 @@ const App = () => {
                     <div className="flex items-start">
                       <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
                       <span>
-                        <a href="https://example.com/logs/dec13    " 
+                        <a href="https://example.com/logs/dec13" 
                            className="text-blue-300 hover:text-blue-200 hover:underline"
                            target="_blank" rel="noopener noreferrer">
                           Dec 13, 2025 Server Log
@@ -449,7 +446,7 @@ const App = () => {
                     <div className="flex items-start">
                       <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
                       <span>
-                        <a href="https://example.com/logs/dec12    " 
+                        <a href="https://example.com/logs/dec12" 
                            className="text-blue-300 hover:text-blue-200 hover:underline"
                            target="_blank" rel="noopener noreferrer">
                           Dec 12, 2025 Server Log
@@ -465,7 +462,7 @@ const App = () => {
               </div>
             </div>
 
-            {/* Gallery - Your Minecraft Moments */}
+            {/* Gallery */}
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 overflow-hidden">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-3">
@@ -478,7 +475,6 @@ const App = () => {
                   Our Minecraft moments 😄
                 </p>
                 
-                {/* Gallery Grid */}
                 <div className="grid grid-cols-2 gap-3">
                   <div className="aspect-square rounded-lg overflow-hidden border border-gray-600">
                     <img 
@@ -518,7 +514,7 @@ const App = () => {
               </div>
             </div>
 
-            {/* Active Players - your original with count changed to 0 */}
+            {/* Active Players */}
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-xl font-bold text-white flex items-center">
@@ -549,7 +545,7 @@ const App = () => {
               </div>
             </div>
 
-            {/* Server Info - your original IP address */}
+            {/* Server Info */}
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 p-6">
               <h3 className="text-xl font-bold text-white mb-4 flex items-center">
                 <Server className="h-5 w-5 mr-2 text-green-400" />
@@ -581,7 +577,7 @@ const App = () => {
               </button>
             </div>
 
-            {/* Recent Achievements - your original */}
+            {/* Recent Achievements */}
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 p-6">
               <h3 className="text-xl font-bold text-white mb-4 flex items-center">
                 <Trophy className="h-5 w-5 mr-2 text-yellow-400" />
@@ -610,7 +606,7 @@ const App = () => {
         </div>
       </main>
 
-      {/* Footer - your original with credit added */}
+      {/* Footer */}
       <footer className="bg-gray-900/80 backdrop-blur-sm border-t border-gray-800 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
@@ -629,6 +625,87 @@ const App = () => {
           </div>
         </div>
       </footer>
+
+      {/* 🔒 SECRET EASTER EGG */}
+      <button
+        onClick={() => setShowEasterEgg(true)}
+        className="fixed bottom-6 right-6 w-14 h-14 bg-gray-800/70 hover:bg-gray-700/80 backdrop-blur-sm rounded-full flex items-center justify-center text-purple-400 hover:text-purple-300 shadow-lg border border-purple-500/30 transition-all duration-300 hover:scale-110 z-50"
+        title="Shhh... secret"
+      >
+        🤫
+      </button>
+
+      {/* Easter Egg Modal */}
+      {showEasterEgg && (
+        <div 
+          className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={() => setShowEasterEgg(false)}
+        >
+          <div 
+            className="bg-gray-900/95 border border-purple-500/40 rounded-2xl max-w-md w-full p-6 text-center relative overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-pink-500"></div>
+            
+            <button 
+              onClick={() => setShowEasterEgg(false)}
+              className="absolute top-3 right-3 text-gray-400 hover:text-white text-xl font-bold"
+            >
+              ×
+            </button>
+            
+            <div className="mb-4">
+              <img 
+                src="https://media.discordapp.net/attachments/1426762383514402949/1449881569446727802/image.png?ex=6941d46f&is=694082ef&hm=bfd136abdc8c47ad55435715b5025811f742aa16583020a347ed0c4bf8ef6ce1&=&format=webp&quality=lossless&width=550&height=277" 
+                alt="Bogged Attack" 
+                className="mx-auto rounded-lg border border-purple-500/30 shadow-lg"
+              />
+            </div>
+            
+            <h3 className="text-xl font-bold text-purple-300 mb-3">🤫 CLASSIFIED SERVER INTEL</h3>
+            
+            <div className="space-y-3 mb-4">
+              <div className="bg-purple-900/20 p-3 rounded-lg border-l-4 border-purple-500">
+                <p className="text-gray-300 italic">
+                  <span className="text-purple-400 font-bold">"boi what"</span><br/>
+                  <span className="text-xs text-gray-500"> - ibikl, line #269</span>
+                </p>
+              </div>
+              
+              <div className="bg-purple-900/20 p-3 rounded-lg border-l-4 border-amber-500">
+                <p className="text-gray-300 italic">
+                  <span className="text-amber-400 font-bold">"holy send it"</span><br/>
+                  <span className="text-xs text-gray-500"> - asparagus21345, line #271</span>
+                </p>
+              </div>
+              
+              <div className="bg-purple-900/20 p-3 rounded-lg border-l-4 border-red-500">
+                <p className="text-gray-300 italic">
+                  <span className="text-red-400 font-bold">"NIGGER LATER"</span><br/>
+                  <span className="text-xs text-gray-500"> - ibikl, line #273 (pre-Bogged)</span>
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-black/30 rounded-lg p-3 text-sm">
+              <p className="text-gray-400">
+                📊 <span className="text-red-400 font-bold">Ibiks Bogged Incident:</span>
+              </p>
+              <ul className="text-gray-500 text-xs space-y-1 mt-1">
+                <li>• Shot by Bogged: <span className="text-red-400">lines #384, #400, #401, #402</span></li>
+                <li>• Final Bogged hit → "<span className="text-red-400">WTF</span>" (line #403)</li>
+                <li>• And shhh! This stays between us only, only for the people with sharp eyes to find...</li>
+              </ul>
+            </div>
+            
+            <div className="mt-4 pt-3 border-t border-gray-800">
+              <p className="text-xs text-gray-500">
+                🔒 This intel will be hidden between me and you! - me
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
