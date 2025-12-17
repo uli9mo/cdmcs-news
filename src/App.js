@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Clock, Users, MessageSquare, Shield, Server, Gamepad2, Trophy, Send, Mail, User, Eye, EyeOff, FileText, Link, CheckCircle, Image } from 'lucide-react';
+import { Calendar, Clock, Users, MessageSquare, Shield, Server, Gamepad2, Trophy, Send, Mail, User, Eye, EyeOff, FileText, Link, CheckCircle, Image, HelpCircle } from 'lucide-react';
 
 const App = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -457,6 +457,56 @@ const App = () => {
                   
                   <div className="mt-4 pt-3 border-t border-gray-700 text-gray-500 text-xs">
                     Logs updated after each server session
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* FAQ Section */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 overflow-hidden">
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-xl font-bold text-white flex items-center">
+                    <HelpCircle className="h-5 w-5 mr-2 text-blue-400" />
+                    FAQ
+                  </h3>
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="bg-gray-700/30 p-4 rounded-lg">
+                    <h4 className="font-bold text-blue-300 mb-2">❓ Do Jiemos and Ibiklackeur cheat?</h4>
+                    <p className="text-gray-300 text-sm">
+                      <span className="text-green-400 font-medium">No, we don't.</span> We post server logs daily for full transparency, and all admin actions are logged and visible to the community.
+                      <br/><br/>
+                      <span className="text-xs text-gray-500">- Jiemos & Ibiklackeur</span>
+                    </p>
+                  </div>
+                  
+                  <div className="bg-gray-700/30 p-4 rounded-lg">
+                    <h4 className="font-bold text-blue-300 mb-2">❓ Do you log IP addresses of website visitors?</h4>
+                    <p className="text-gray-300 text-sm">
+                      <span className="text-green-400 font-medium">No, we don't.</span> This website has no backend server to track or store  data such as IP addresses, cookies, or personal information. We respect your privacy.
+                      <br/><br/>
+                      <span className="text-xs text-gray-500">- Eyewatercanwaters2 </span>
+                    </p>
+                  </div>
+                  
+                  <div className="bg-gray-700/30 p-4 rounded-lg">
+                    <h4 className="font-bold text-blue-300 mb-2">❓ Does it cost to join the server?</h4>
+                    <p className="text-gray-300 text-sm">
+                      <span className="text-green-400 font-medium">No, it's completely free.</span> The server is funded by Ibiklackeur, and we welcome all friends (and friends of friends) to join our community!
+                      <br/><br/>
+                      <span className="text-xs text-gray-500">- Ibiklackeur</span>
+                    </p>
+                  </div>
+                  
+                  <div className="bg-gray-700/30 p-4 rounded-lg">
+                    <h4 className="font-bold text-blue-300 mb-2">❓ How can I get admin/moderator access?</h4>
+                    <p className="text-gray-300 text-sm">
+                      <span className="text-green-400 font-medium">I don't give out admin roles.</span> If you're helpful, respectful, and contribute positively to the community for a long time, I may consider you for a special role  but never for power or influence.
+                       <br/><br/> 
+                      <span className="text-xs text-gray-500">- Eyewatercanwaters2 & Ibiklackeur</span>
+                    </p>
                   </div>
                 </div>
               </div>
