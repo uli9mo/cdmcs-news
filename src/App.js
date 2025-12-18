@@ -111,9 +111,9 @@ const App = () => {
   // Active players - your original empty array
   const activePlayers = [
     { name: "Kira", status: "Online", time: "Unknown" },
-    { name: "Asparagus21345", status: "Online", time: "3 min" },
+    { name: "Asparagus21345", status: "Online", time: "38 min" },
     { name: "Ibikl", status: "Offline", time: "" },
-    { name: "", status: "", time: "" },
+    { name: "Senkaium", status: "Online", time: "2 hours" },
     { name: "", status: "", time: "" },
     { name: "", status: "", time: "" },
     { name: "", status: "", time: "" },
