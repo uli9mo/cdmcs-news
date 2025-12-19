@@ -101,11 +101,11 @@ const App = () => {
 
   // Server stats - your original content
   const serverStats = {
-    playersOnline: 3,
+    playersOnline: 0,
     totalPlayers: 12,
     uptime: "0",
     version: "1.21.10 FABRIC",
-    worldSize: "Unknown"
+    worldSize: "4.82 GB"
   };
 
   // Active players - updated with profile pictures
@@ -194,7 +194,7 @@ const App = () => {
               CDMCS NEWS!
             </h1>
             <p className="text-xl text-emerald-100 max-w-3xl mx-auto">
-              Your daily update on what's happening in our friend group Minecraft server
+              Your daily important update on what's happening in our Minecraft Server...😄
             </p>
           </div>
         </div>
@@ -550,6 +550,15 @@ const App = () => {
                       <span className="text-green-400 font-medium">I don't give out admin roles.</span> If you're helpful, respectful, and contribute positively to the community for a long time, I may consider you for a special role — but never for power or influence.
                       <br/><br/>
                       <span className="text-xs text-gray-500">- Eyewatercanwaters2 & Ibiklackeur</span>
+
+                  <div className="bg-gray-700/30 p-4 rounded-lg">
+                    <h4 className="font-bold text-blue-300 mb-2">❓ Who are the server owners?</h4>
+                    <p className="text-gray-300 text-sm">
+                      <span className="text-green-400 font-medium">For Discord Ibiklackeur owns the server, for the server it's Jiemos, Ibiklackeur & Ashborn.
+                      <br/><br/>
+                      <span className="text-xs text-gray-500">- Ibiklackeur, Eyewatercanwaters2</span>
+                    </p>
+                  </div>
                     </p>
                   </div>
                 </div>
@@ -698,9 +707,9 @@ const App = () => {
                   <p className="text-gray-400 text-xs mt-1">Congrats!</p>
                 </div>
                 <div className="p-3 bg-green-900/30 rounded-lg">
-                  <p className="text-green-200 font-medium"></p>
-                  <p className="text-green-300 text-sm"></p>
-                  <p className="text-gray-400 text-xs mt-1"></p>
+                  <p className="text-green-200 font-medium">First to make a farm!😄</p>
+                  <p className="text-green-300 text-sm">Asparagus21345</p>
+                  <p className="text-gray-400 text-xs mt-1">Congratulations!</p>
                 </div>
                 <div className="p-3 bg-purple-900/30 rounded-lg">
                   <p className="text-purple-200 font-medium"></p>
