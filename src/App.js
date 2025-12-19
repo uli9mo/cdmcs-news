@@ -427,7 +427,7 @@ const App = () => {
                         <a href="https://mclo.gs/7OJvEiK" 
                            className="text-blue-300 hover:text-blue-200 hover:underline"
                            target="_blank" rel="noopener noreferrer">
-                          Dec 15, 2025 Server Log
+                          Dec 18, 2025 Server Log
                         </a>
                       </span>
                     </div>
