@@ -551,22 +551,22 @@ const App = () => {
                       <br/><br/>
                       <span className="text-xs text-gray-500">- Eyewatercanwaters2 & Ibiklackeur</span>
 
-     <div className="bg-gray-700/30 p-4 rounded-lg">
-  <h4 className="font-bold text-blue-300 mb-2">❓ How can I get admin/moderator access?</h4>
-  <p className="text-gray-300 text-sm">
-    <span className="text-green-400 font-medium">I don't give out admin roles.</span> If you're helpful, respectful, and contribute positively to the community for a long time, I may consider you for a special role — but never for power or influence.
-    <br/><br/>
-    <span className="text-xs text-gray-500">- Eyewatercanwaters2 & Ibiklackeur</span>
-  </p>
-</div>
-<div className="bg-gray-700/30 p-4 rounded-lg">
-  <h4 className="font-bold text-blue-300 mb-2">❓ Who are the server owners?</h4>
-  <p className="text-gray-300 text-sm">
-    <span className="text-green-400 font-medium">For Discord Ibiklackeur owns the server, for the server it's Jiemos, Ibiklackeur & Ashborn.</span>
-    <br/><br/>
-    <span className="text-xs text-gray-500">- Ibiklackeur, Eyewatercanwaters2</span>
-  </p>
-</div>
+                   <div className="bg-gray-700/30 p-4 rounded-lg">
+                    <h4 className="font-bold text-blue-300 mb-2">❓ How can I get admin/moderator access?</h4>
+                    <p className="text-gray-300 text-sm">
+                   <span className="text-green-400 font-medium">I don't give out admin roles.</span> If you're helpful, respectful, and contribute positively to the community for a long time, I may consider you for a special role — but never for power or influence.
+                      <br/><br/>
+                      <span className="text-xs text-gray-500">- Eyewatercanwaters2 & Ibiklackeur</span>
+                    </p>
+                  </div>
+                  <div className="bg-gray-700/30 p-4 rounded-lg">
+                    <h4 className="font-bold text-blue-300 mb-2">❓ Who are the server owners?</h4>
+                    <p className="text-gray-300 text-sm">
+                      <span className="text-green-400 font-medium">For Discord Ibiklackeur owns the server, for the server it's Jiemos, Ibiklackeur & Ashborn.</span>
+                      <br/><br/>
+                      <span className="text-xs text-gray-500">- Ibiklackeur, Eyewatercanwaters2</span>
+                    </p>
+                  </div>
                 <p className="text-gray-400 text-sm mb-4">
                   Our Minecraft moments 😄
                 </p>
@@ -591,34 +591,22 @@ const App = () => {
                       src="https://placehold.co/300x300/0ea5e9/000000?text=Redstone" 
                       alt="Minecraft redstone" 
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div className="aspect-square rounded-lg overflow-hidden border border-gray-600">
-                    <img 
-                      src="https://placehold.co/300x300/f59e0b/000000?text=Fun" 
-                      alt="Minecraft fun" 
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                </div>
-                
-                <div className="mt-4 pt-3 border-t border-gray-700 text-center">
-                  <button className="text-blue-400 hover:text-blue-300 text-sm font-medium">
-                    Check Discord for the gallery contest ⭐⭐⭐
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Active Players with avatars */}
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-bold text-white flex items-center">
-                  <Users className="h-5 w-5 mr-2 text-blue-400" />
-                  Active Players
-                </h3>
-                <span className="text-blue-400 font-bold">3</span>
-              </div>
+<div className="bg-gray-700/30 p-4 rounded-lg">
+  <h4 className="font-bold text-blue-300 mb-2">❓ How can I get admin/moderator access?</h4>
+  <p className="text-gray-300 text-sm">
+    <span className="text-green-400 font-medium">I don't give out admin roles.</span> If you're helpful, respectful, and contribute positively to the community for a long time, I may consider you for a special role — but never for power or influence.
+    <br/><br/>
+    <span className="text-xs text-gray-500">- Eyewatercanwaters2 & Ibiklackeur</span>
+  </p>
+</div>
+<div className="bg-gray-700/30 p-4 rounded-lg">
+  <h4 className="font-bold text-blue-300 mb-2">❓ Who are the server owners?</h4>
+  <p className="text-gray-300 text-sm">
+    <span className="text-green-400 font-medium">For Discord, Ibiklackeur owns the server. For the Minecraft server, it’s Jiemos, Ibiklackeur & Ashborn.</span>
+    <br/><br/>
+    <span className="text-xs text-gray-500">- Ibiklackeur, Eyewatercanwaters2</span>
+  </p>
+</div>
               
               <div className="space-y-3">
                 {activePlayers.map((player, index) => (
