@@ -10,7 +10,7 @@ const App = () => {
   const [verifyingComment, setVerifyingComment] = useState({});
   const [showEasterEgg, setShowEasterEgg] = useState(false);
 
-  // Initialize visible state for each news item
+  // Initialize visible state fora each news item
   useEffect(() => {
     const initialVisible = {};
     [1, 2, 3, 4, 5, 6].forEach(id => {
