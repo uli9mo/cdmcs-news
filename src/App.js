@@ -96,7 +96,37 @@ const App = () => {
       time: "19:20",
       category: "event",
       readTime: "2 min"
-    }
+    },
+    {
+      id: 7,
+      title: "🚨 Bogged Incident Report",
+      content: "Following multiple Bogged ambushes (see Dec 14 log, lines #384, #400–403), we've reinforced the Ancient City with torches and iron golems. Ibikl has been granted temporary immunity — for now.",
+     author: "Jiemos",
+      date: "Dec 15, 2025",
+  time: "09:14",
+  category: "maintenance",
+  readTime: "1 min"
+},
+{
+  id: 8,
+  title: "🏆 Trial Chamber Discovery!",
+  content: "Kira and ibikl finally located the third Trial Chamber! It contained a full set of diamond gear, a trial key, and suspiciously no Bogged. DM Jiemos for coordinates (trust level required).",
+  author: "Kira",
+  date: "Dec 16, 2025",
+  time: "14:22",
+  category: "major-update",
+  readTime: "1 min"
+},
+{
+  id: 9,
+  title: "🤫 'Harley Leakz' Verified: Real or Prank?",
+  content: "Multiple players report receiving Discord DMs from 'Harley' with server IPs. Official statement: There is no 'Harley'. If you're contacted, screenshot & report to @Ibiklackeur. (Yes, we’re monitoring.)",
+  author: "Ibiklackeur",
+  date: "Dec 17, 2025",
+  time: "22:07",
+  category: "event",
+  readTime: "2 min"
+}
   ];
 
   // Server stats - your original content
@@ -551,22 +581,22 @@ const App = () => {
                       <br/><br/>
                       <span className="text-xs text-gray-500">- Eyewatercanwaters2 & Ibiklackeur</span>
 
-                   <div className="bg-gray-700/30 p-4 rounded-lg">
-                    <h4 className="font-bold text-blue-300 mb-2">❓ How can I get admin/moderator access?</h4>
-                    <p className="text-gray-300 text-sm">
-                   <span className="text-green-400 font-medium">I don't give out admin roles.</span> If you're helpful, respectful, and contribute positively to the community for a long time, I may consider you for a special role — but never for power or influence.
-                      <br/><br/>
-                      <span className="text-xs text-gray-500">- Eyewatercanwaters2 & Ibiklackeur</span>
-                    </p>
-                  </div>
-                  <div className="bg-gray-700/30 p-4 rounded-lg">
-                    <h4 className="font-bold text-blue-300 mb-2">❓ Who are the server owners?</h4>
-                    <p className="text-gray-300 text-sm">
-                      <span className="text-green-400 font-medium">For Discord Ibiklackeur owns the server, for the server it's Jiemos, Ibiklackeur & Ashborn.</span>
-                      <br/><br/>
-                      <span className="text-xs text-gray-500">- Ibiklackeur, Eyewatercanwaters2</span>
-                    </p>
-                  </div>
+<div className="bg-gray-700/30 p-4 rounded-lg">
+  <h4 className="font-bold text-blue-300 mb-2">❓ How can I get admin/moderator access?</h4>
+  <p className="text-gray-300 text-sm">
+    <span className="text-green-400 font-medium">I don't give out admin roles.</span> If you're helpful, respectful, and contribute positively to the community for a long time, I may consider you for a special role — but never for power or influence.
+    <br/><br/>
+    <span className="text-xs text-gray-500">- Eyewatercanwaters2 & Ibiklackeur</span>
+  </p>
+</div>
+<div className="bg-gray-700/30 p-4 rounded-lg">
+  <h4 className="font-bold text-blue-300 mb-2">❓ Who are the server owners?</h4>
+  <p className="text-gray-300 text-sm">
+    <span className="text-green-400 font-medium">For Discord, Ibiklackeur owns the server. For the Minecraft server, it’s Jiemos, Ibiklackeur & Ashborn.</span>
+    <br/><br/>
+    <span className="text-xs text-gray-500">- Ibiklackeur, Eyewatercanwaters2</span>
+  </p>
+</div>
                 <p className="text-gray-400 text-sm mb-4">
                   Our Minecraft moments 😄
                 </p>
@@ -594,11 +624,11 @@ const App = () => {
 <div className="bg-gray-700/30 p-4 rounded-lg">
   <h4 className="font-bold text-blue-300 mb-2">❓ How can I get admin/moderator access?</h4>
   <p className="text-gray-300 text-sm">
-    <span className="text-green-400 font-medium">I don't give out admin roles.</span> If you're helpful, respectful, and contribute positively to the community for a long time, I may consider you for a special role — but never for power or influence.
-    <br/><br/>
-    <span className="text-xs text-gray-500">- Eyewatercanwaters2 & Ibiklackeur</span>
-  </p>
-</div>
+  <span className="text-green-400 font-medium">I don't give out admin roles.</span> If you're helpful, respectful, and contribute positively to the community for a long time, I may consider you for a special role — but never for power or influence.
+  <br/><br/>
+  <span className="text-xs text-gray-500">- Eyewatercanwaters2 & Ibiklackeur</span>
+  </p>  {/* ✅ This closes the <p> */}
+  </div>  {/* ✅ This closes the first FAQ div */}
 <div className="bg-gray-700/30 p-4 rounded-lg">
   <h4 className="font-bold text-blue-300 mb-2">❓ Who are the server owners?</h4>
   <p className="text-gray-300 text-sm">
