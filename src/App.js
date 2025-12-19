@@ -110,11 +110,11 @@ const App = () => {
 
   // Active players - your original empty array
   const activePlayers = [
-    { name: "Kira", status: "Online", time: "Unknown" },
-    { name: "Asparagus21345", status: "Online", time: "38 min" },
-    { name: "Ibikl", status: "Offline", time: "" },
-    { name: "Senkaium", status: "Online", time: "2 hours" },
-    { name: "", status: "", time: "" },
+    { name: "Kira", status: "Offline", time: "2 hour" },
+    { name: "Asparagus21345", status: "Offline", time: "8 hour" },
+    { name: "Ibikl", status: "Offline", time: "4 hour" },
+    { name: "Senkaium", status: "Offline", time: "2 hours" },
+    { name: "Dristach391", status: "Offline", time: "1 hour" },
     { name: "", status: "", time: "" },
     { name: "", status: "", time: "" },
     { name: "", status: "", time: "" }
@@ -422,6 +422,17 @@ const App = () => {
                 <div className="bg-gray-900/50 rounded-lg p-4 min-h-[200px]">
                   <div className="text-amber-300 font-mono text-sm space-y-2">
                     <div className="flex items-start">
+                      <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
+                      <span>
+                        <a href="https://mclo.gs/7OJvEiK" 
+                           className="text-blue-300 hover:text-blue-200 hover:underline"
+                           target="_blank" rel="noopener noreferrer">
+                          Dec 15, 2025 Server Log
+                        </a>
+                      </span>
+                    </div>
+                             // fucking NIGGA 
+                      <div className="flex items-start"> 
                       <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
                       <span>
                         <a href="https://mclo.gs/wpL50I4" 
