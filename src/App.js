@@ -551,29 +551,22 @@ const App = () => {
                       <br/><br/>
                       <span className="text-xs text-gray-500">- Eyewatercanwaters2 & Ibiklackeur</span>
 
-                  <div className="bg-gray-700/30 p-4 rounded-lg">
-                    <h4 className="font-bold text-blue-300 mb-2">❓ Who are the server owners?</h4>
-                    <p className="text-gray-300 text-sm">
-                      <span className="text-green-400 font-medium">For Discord Ibiklackeur owns the server, for the server it's Jiemos, Ibiklackeur & Ashborn.
-                      <br/><br/>
-                      <span className="text-xs text-gray-500">- Ibiklackeur, Eyewatercanwaters2</span>
-                    </p>
-                  </div>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Gallery */}
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 overflow-hidden">
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-xl font-bold text-white flex items-center">
-                    <Image className="h-5 w-5 mr-2 text-pink-400" />
-                    Gallery
-                  </h3>
-                </div>
+     <div className="bg-gray-700/30 p-4 rounded-lg">
+  <h4 className="font-bold text-blue-300 mb-2">❓ How can I get admin/moderator access?</h4>
+  <p className="text-gray-300 text-sm">
+    <span className="text-green-400 font-medium">I don't give out admin roles.</span> If you're helpful, respectful, and contribute positively to the community for a long time, I may consider you for a special role — but never for power or influence.
+    <br/><br/>
+    <span className="text-xs text-gray-500">- Eyewatercanwaters2 & Ibiklackeur</span>
+  </p>
+</div>
+<div className="bg-gray-700/30 p-4 rounded-lg">
+  <h4 className="font-bold text-blue-300 mb-2">❓ Who are the server owners?</h4>
+  <p className="text-gray-300 text-sm">
+    <span className="text-green-400 font-medium">For Discord Ibiklackeur owns the server, for the server it's Jiemos, Ibiklackeur & Ashborn.</span>
+    <br/><br/>
+    <span className="text-xs text-gray-500">- Ibiklackeur, Eyewatercanwaters2</span>
+  </p>
+</div>
                 <p className="text-gray-400 text-sm mb-4">
                   Our Minecraft moments 😄
                 </p>
