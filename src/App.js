@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, Clock, Users, MessageSquare, Shield, Server, Gamepad2, Trophy, Send, Mail, User, Eye, EyeOff, FileText, Link, CheckCircle, Image, HelpCircle } from 'lucide-react';
+import { Analytics } from '@vercel/analytics/react';
 
 const App = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -180,6 +181,7 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+      <Analytics />
       {/* Header */}
       <header className="relative overflow-hidden bg-gradient-to-r from-green-800 to-emerald-700">
         <div className="absolute inset-0 bg-black opacity-20"></div>
@@ -550,6 +552,8 @@ const App = () => {
                       <span className="text-green-400 font-medium">I don't give out admin roles.</span> If you're helpful, respectful, and contribute positively to the community for a long time, I may consider you for a special role — but never for power or influence.
                       <br/><br/>
                       <span className="text-xs text-gray-500">- Eyewatercanwaters2 & Ibiklackeur</span>
+                    </p>
+                  </div>
 
                   <div className="bg-gray-700/30 p-4 rounded-lg">
                     <h4 className="font-bold text-blue-300 mb-2">❓ Who are the server owners?</h4>
@@ -557,8 +561,7 @@ const App = () => {
                       <span className="text-green-400 font-medium">For Discord Ibiklackeur owns the server, for the server it's Jiemos, Ibiklackeur & Ashborn.
                       <br/><br/>
                       <span className="text-xs text-gray-500">- Ibiklackeur, Eyewatercanwaters2</span>
-                    </p>
-                  </div>
+                      </span>
                     </p>
                   </div>
                 </div>
