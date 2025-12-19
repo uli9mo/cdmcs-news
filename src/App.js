@@ -100,18 +100,18 @@ const App = () => {
     {
       id: 7,
       title: "🚨 Bogged Incident Report",
-      content: "Following multiple Bogged ambushes (see Dec 14 log, lines #384, #400–403), we've reinforced the Ancient City with torches and iron golems. Ibikl has been granted temporary immunity — for now.",
+      content: "Following multiple Bogged ambushes (see Dec 14 log, lines #384, #400–403), we've reinforced the Ancient City with torches and iron golems..",
       author: "Jiemos",
       date: "Dec 15, 2025",
       time: "09:14",
-      category: "maintenance",
+      category: "updates",
       readTime: "1 min"
     },
     {
       id: 8,
       title: "🏆 Trial Chamber Discovery!",
-      content: "Kira and ibikl finally located the third Trial Chamber! It contained a full set of diamond gear, a trial key, and suspiciously no Bogged. DM Jiemos for coordinates (trust level required).",
-      author: "Kira",
+      content: "Kira and ibikl finally located the third Trial Chamber! they got a full set of diamond gear, a trial key, and suspiciously no Bogged. DM Jiemos for coordinates (trust).",
+      author: "Ibiklackeur",
       date: "Dec 16, 2025",
       time: "14:22",
       category: "major-update",
@@ -119,12 +119,12 @@ const App = () => {
     },
     {
       id: 9,
-      title: "🤫 'Harley Leakz' Verified: Real or Prank?",
-      content: "Multiple players report receiving Discord DMs from 'Harley' with server IPs. Official statement: There is no 'Harley'. If you're contacted, screenshot & report to @Ibiklackeur. (Yes, we’re monitoring.)",
+      title: "🤫 'Who is harley leakz!",
+      content: "Multiple players reported to us saying Harley Leakz has sent them random server ips, when they joined they saw a giant statue that they couldn't make out in the distance. Who is Harley Leakz??? ",
       author: "Ibiklackeur",
       date: "Dec 17, 2025",
       time: "22:07",
-      category: "event",
+      category: "mystery",
       readTime: "2 min"
     }
   ];
