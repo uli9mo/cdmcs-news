@@ -108,17 +108,39 @@ const App = () => {
     worldSize: "Unknown"
   };
 
-  // Active players - your original empty array
+  // Active players - updated with profile pictures
   const activePlayers = [
-    { name: "Kira", status: "Offline", time: "2 hour" },
-    { name: "Asparagus21345", status: "Offline", time: "8 hour" },
-    { name: "Ibikl", status: "Offline", time: "4 hour" },
-    { name: "Senkaium", status: "Offline", time: "2 hours" },
-    { name: "Dristach391", status: "Offline", time: "1 hour" },
-    { name: "", status: "", time: "" },
-    { name: "", status: "", time: "" },
-    { name: "", status: "", time: "" }
+    { name: "Kira", status: "Offline", time: "2 hour", avatar: "https://cdn.discordapp.com/avatars/1271440596195737693/2dc56e1377af394802df23561eff2e13.png" },
+    { name: "Asparagus21345", status: "Offline", time: "8 hour", avatar: "https://placehold.co/32x32/6366f1/ffffff?text=A" },
+    { name: "Ibikl", status: "Offline", time: "4 hour", avatar: "https://pticaarchive.wordpress.com/wp-content/uploads/2012/10/naked-banana.jpg?w=620" },
+    { name: "Senkaium", status: "Offline", time: "2 hours", avatar: "https://placehold.co/32x32/8b5cf6/ffffff?text=S" },
+    { name: "Dristach391", status: "Offline", time: "1 hour", avatar: "https://cdn.discordapp.com/avatars/1238944179837734947/92283dd7964213b9ea0ae19679a83c60.png" },
+    { name: "", status: "", time: "", avatar: "" },
+    { name: "", status: "", time: "", avatar: "" },
+    { name: "", status: "", time: "", avatar: "" }
   ];
+
+  // avatar mapping for new niggas and  alraedy mad eniggas js copy image address and paste here 
+  const getAuthorAvatar = (authorName) => {
+    const name = authorName.toLowerCase();
+    switch (name) {
+      case 'ibiklackeur': 
+      case 'ibikl': 
+        return 'https://pticaarchive.wordpress.com/wp-content/uploads/2012/10/naked-banana.jpg?w=620';
+      case 'eyewatercanwaters2': 
+        return 'https://cdn.discordapp.com/avatars/1345578724732567564/e6192c86ac8410150345cb811d0ca429.png';
+      case 'kira': 
+        return 'https://cdn.discordapp.com/avatars/1271440596195737693/2dc56e1377af394802df23561eff2e13.png';
+      case 'ashborn': 
+        return 'https://cdn.discordapp.com/avatars/822808474072121345/51bacd23a923b3480a785113146dda26.png?size=512';
+      case 'jiemos': 
+        return 'https://i.natgeofe.com/k/6f2282df-1c6a-474a-9216-ed97b3dce858/Panda-Bamboo_Panda-Quiz_KIDS_1021.jpg?wp=1&w=1084.125&h=721.875';
+      case 'dristach391': 
+        return 'https://cdn.discordapp.com/avatars/1238944179837734947/92283dd7964213b9ea0ae19679a83c60.png';
+      default: 
+        return `https://placehold.co/32x32/4f46e5/ffffff?text=${authorName.charAt(0)}`;
+    }
+  };
 
   const getCategoryColor = (category) => {
     switch (category) {
@@ -144,7 +166,7 @@ const App = () => {
     setVerifyingComment(prev => ({ ...prev, [newsId]: true }));
     setTimeout(() => {
       setVerifyingComment(prev => ({ ...prev, [newsId]: false }));
-      const commentInput = document.getElementById(`comment-input-${news.id}`);
+      const commentInput = document.getElementById(`comment-input-${newsId}`);
       if (commentInput) commentInput.value = '';
     }, 2000);
   };
@@ -245,9 +267,16 @@ const App = () => {
                   </p>
                   
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                        <span className="text-white font-bold text-sm">{news.author[0]}</span>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+                        <img 
+                          src={getAuthorAvatar(news.author)} 
+                          alt={news.author} 
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.target.src = `https://placehold.co/32x32/4f46e5/ffffff?text=${news.author.charAt(0)}`;
+                          }}
+                        />
                       </div>
                       <span className="text-blue-300 font-medium">{news.author}</span>
                     </div>
@@ -346,8 +375,15 @@ const App = () => {
                       >
                         <div className="flex items-start space-x-3">
                           <div className="flex-shrink-0 mt-1">
-                            <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center">
-                              <span className="text-white font-bold text-sm">{userName[0]}</span>
+                            <div className="w-8 h-8 rounded-full overflow-hidden">
+                              <img 
+                                src={getAuthorAvatar(userName)} 
+                                alt={userName} 
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  e.target.src = `https://placehold.co/32x32/10b981/ffffff?text=${userName.charAt(0)}`;
+                                }}
+                              />
                             </div>
                           </div>
                           <div className="flex-grow">
@@ -431,8 +467,7 @@ const App = () => {
                         </a>
                       </span>
                     </div>
-                             // fucking NIGGA 
-                      <div className="flex items-start"> 
+                    <div className="flex items-start">
                       <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
                       <span>
                         <a href="https://mclo.gs/wpL50I4" 
@@ -442,7 +477,6 @@ const App = () => {
                         </a>
                       </span>
                     </div>
-                    
                     <div className="flex items-start">
                       <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
                       <span>
@@ -453,7 +487,6 @@ const App = () => {
                         </a>
                       </span>
                     </div>
-                    
                     <div className="flex items-start">
                       <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
                       <span>
@@ -496,9 +529,9 @@ const App = () => {
                   <div className="bg-gray-700/30 p-4 rounded-lg">
                     <h4 className="font-bold text-blue-300 mb-2">❓ Do you log IP addresses of website visitors?</h4>
                     <p className="text-gray-300 text-sm">
-                      <span className="text-green-400 font-medium">No, we don't.</span> This website has no backend server to track or store  data such as IP addresses, cookies, or personal information. We respect your privacy.
+                      <span className="text-green-400 font-medium">No, we don't.</span> This website has no backend server to track or store visitor data such as IP addresses, cookies, or personal information. We respect your privacy.
                       <br/><br/>
-                      <span className="text-xs text-gray-500">- Eyewatercanwaters2 </span>
+                      <span className="text-xs text-gray-500">- Eyewatercanwaters2</span>
                     </p>
                   </div>
                   
@@ -514,8 +547,8 @@ const App = () => {
                   <div className="bg-gray-700/30 p-4 rounded-lg">
                     <h4 className="font-bold text-blue-300 mb-2">❓ How can I get admin/moderator access?</h4>
                     <p className="text-gray-300 text-sm">
-                      <span className="text-green-400 font-medium">I don't give out admin roles.</span> If you're helpful, respectful, and contribute positively to the community for a long time, I may consider you for a special role  but never for power or influence.
-                       <br/><br/> 
+                      <span className="text-green-400 font-medium">I don't give out admin roles.</span> If you're helpful, respectful, and contribute positively to the community for a long time, I may consider you for a special role — but never for power or influence.
+                      <br/><br/>
                       <span className="text-xs text-gray-500">- Eyewatercanwaters2 & Ibiklackeur</span>
                     </p>
                   </div>
@@ -575,14 +608,14 @@ const App = () => {
               </div>
             </div>
 
-            {/* Active Players */}
+            {/* Active Players with avatars */}
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-xl font-bold text-white flex items-center">
                   <Users className="h-5 w-5 mr-2 text-blue-400" />
                   Active Players
                 </h3>
-                <span className="text-blue-400 font-bold">0</span>
+                <span className="text-blue-400 font-bold">3</span>
               </div>
               
               <div className="space-y-3">
@@ -592,8 +625,21 @@ const App = () => {
                     className="flex items-center justify-between p-3 bg-gray-700/30 rounded-lg hover:bg-gray-700/50 transition-colors"
                   >
                     <div className="flex items-center space-x-3">
-                      <div className="w-6 h-6 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center">
-                        <span className="text-xs font-bold text-white">{player.name[0]}</span>
+                      <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+                        {player.avatar ? (
+                          <img 
+                            src={player.avatar} 
+                            alt={player.name} 
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.target.src = `https://placehold.co/32x32/4f46e5/ffffff?text=${player.name.charAt(0)}`;
+                            }}
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-r from-green-400 to-emerald-500 flex items-center justify-center">
+                            <span className="text-xs font-bold text-white">{player.name.charAt(0)}</span>
+                          </div>
+                        )}
                       </div>
                       <div>
                         <p className="text-white font-medium text-sm">{player.name}</p>
@@ -729,39 +775,39 @@ const App = () => {
               <div className="bg-purple-900/20 p-3 rounded-lg border-l-4 border-purple-500">
                 <p className="text-gray-300 italic">
                   <span className="text-purple-400 font-bold">"boi what"</span><br/>
-                  <span className="text-xs text-gray-500"> - ibikl, line #269</span>
+                  <span className="text-xs text-gray-500">- ibikl, line #269</span>
                 </p>
               </div>
               
               <div className="bg-purple-900/20 p-3 rounded-lg border-l-4 border-amber-500">
                 <p className="text-gray-300 italic">
                   <span className="text-amber-400 font-bold">"holy send it"</span><br/>
-                  <span className="text-xs text-gray-500"> - asparagus21345, line #271</span>
+                  <span className="text-xs text-gray-500">- asparagus21345, line #271</span>
                 </p>
               </div>
               
               <div className="bg-purple-900/20 p-3 rounded-lg border-l-4 border-red-500">
                 <p className="text-gray-300 italic">
                   <span className="text-red-400 font-bold">"NIGGER LATER"</span><br/>
-                  <span className="text-xs text-gray-500"> - ibikl, line #273 (pre-Bogged)</span>
+                  <span className="text-xs text-gray-500">- ibikl, line #273 (pre-Bogged)</span>
                 </p>
               </div>
             </div>
 
             <div className="bg-black/30 rounded-lg p-3 text-sm">
               <p className="text-gray-400">
-                📊 <span className="text-red-400 font-bold">Ibiks Bogged Incident:</span>
+                📊 <span className="text-red-400 font-bold">Ibik's Bogged Incident:</span>
               </p>
               <ul className="text-gray-500 text-xs space-y-1 mt-1">
                 <li>• Shot by Bogged: <span className="text-red-400">lines #384, #400, #401, #402</span></li>
                 <li>• Final Bogged hit → "<span className="text-red-400">WTF</span>" (line #403)</li>
-                <li>• And shhh! This stays between us only, only for the people with sharp eyes to find...</li>
+                <li>• Also drowned (line #463)</li>
               </ul>
             </div>
             
             <div className="mt-4 pt-3 border-t border-gray-800">
               <p className="text-xs text-gray-500">
-                🔒 This intel will be hidden between me and you! - me
+                🔒 This intel self-destructs in 5...4...3...
               </p>
             </div>
           </div>
