@@ -10,10 +10,10 @@ const App = () => {
   const [verifyingComment, setVerifyingComment] = useState({});
   const [showEasterEgg, setShowEasterEgg] = useState(false);
 
-  // Initialize visible state fora each news item
+  // Initialize visible state for each news item
   useEffect(() => {
     const initialVisible = {};
-    [1, 2, 3, 4, 5, 6].forEach(id => {
+    [1, 2, 3, 4, 5, 6, 7, 8, 9].forEach(id => {
       initialVisible[id] = false;
     });
     setVisibleComments(initialVisible);
@@ -35,7 +35,7 @@ const App = () => {
     return () => window.removeEventListener('keydown', handleEsc);
   }, []);
 
-  // Mock news data - your original content
+  // Mock news data — updated with Bogged/Trial Chamber/Harley Leakz
   const newsItems = [
     {
       id: 1,
@@ -79,8 +79,8 @@ const App = () => {
     },
     {
       id: 5,
-      title: "New Plugin Reccomendation: Tough As Nails.",
-      content: "Adding this mod would help give a challange to all players, including myself.",
+      title: "New Plugin Recommendation: Tough As Nails.",
+      content: "Adding this mod would help give a challenge to all players, including myself.",
       author: "Ibiklackeur",
       date: "Dec 13, 2025",
       time: "6:45",
@@ -101,35 +101,35 @@ const App = () => {
       id: 7,
       title: "🚨 Bogged Incident Report",
       content: "Following multiple Bogged ambushes (see Dec 14 log, lines #384, #400–403), we've reinforced the Ancient City with torches and iron golems. Ibikl has been granted temporary immunity — for now.",
-     author: "Jiemos",
+      author: "Jiemos",
       date: "Dec 15, 2025",
-  time: "09:14",
-  category: "maintenance",
-  readTime: "1 min"
-},
-{
-  id: 8,
-  title: "🏆 Trial Chamber Discovery!",
-  content: "Kira and ibikl finally located the third Trial Chamber! It contained a full set of diamond gear, a trial key, and suspiciously no Bogged. DM Jiemos for coordinates (trust level required).",
-  author: "Kira",
-  date: "Dec 16, 2025",
-  time: "14:22",
-  category: "major-update",
-  readTime: "1 min"
-},
-{
-  id: 9,
-  title: "🤫 'Harley Leakz' Verified: Real or Prank?",
-  content: "Multiple players report receiving Discord DMs from 'Harley' with server IPs. Official statement: There is no 'Harley'. If you're contacted, screenshot & report to @Ibiklackeur. (Yes, we’re monitoring.)",
-  author: "Ibiklackeur",
-  date: "Dec 17, 2025",
-  time: "22:07",
-  category: "event",
-  readTime: "2 min"
-}
+      time: "09:14",
+      category: "maintenance",
+      readTime: "1 min"
+    },
+    {
+      id: 8,
+      title: "🏆 Trial Chamber Discovery!",
+      content: "Kira and ibikl finally located the third Trial Chamber! It contained a full set of diamond gear, a trial key, and suspiciously no Bogged. DM Jiemos for coordinates (trust level required).",
+      author: "Kira",
+      date: "Dec 16, 2025",
+      time: "14:22",
+      category: "major-update",
+      readTime: "1 min"
+    },
+    {
+      id: 9,
+      title: "🤫 'Harley Leakz' Verified: Real or Prank?",
+      content: "Multiple players report receiving Discord DMs from 'Harley' with server IPs. Official statement: There is no 'Harley'. If you're contacted, screenshot & report to @Ibiklackeur. (Yes, we’re monitoring.)",
+      author: "Ibiklackeur",
+      date: "Dec 17, 2025",
+      time: "22:07",
+      category: "event",
+      readTime: "2 min"
+    }
   ];
 
-  // Server stats - your original content
+  // Server stats
   const serverStats = {
     playersOnline: 0,
     totalPlayers: 12,
@@ -138,7 +138,7 @@ const App = () => {
     worldSize: "4.82 GB"
   };
 
-  // Active players - updated with profile pictures
+  // Active players with real avatars
   const activePlayers = [
     { name: "Kira", status: "Offline", time: "2 hour", avatar: "https://cdn.discordapp.com/avatars/1271440596195737693/2dc56e1377af394802df23561eff2e13.png" },
     { name: "Asparagus21345", status: "Offline", time: "8 hour", avatar: "https://placehold.co/32x32/6366f1/ffffff?text=A" },
@@ -150,24 +150,23 @@ const App = () => {
     { name: "", status: "", time: "", avatar: "" }
   ];
 
-  // avatar mapping for new niggas and  alraedy mad eniggas js copy image address and paste here 
   const getAuthorAvatar = (authorName) => {
     const name = authorName.toLowerCase();
     switch (name) {
-      case 'ibiklackeur': 
-      case 'ibikl': 
+      case 'ibiklackeur':
+      case 'ibikl':
         return 'https://pticaarchive.wordpress.com/wp-content/uploads/2012/10/naked-banana.jpg?w=620';
-      case 'eyewatercanwaters2': 
+      case 'eyewatercanwaters2':
         return 'https://cdn.discordapp.com/avatars/1345578724732567564/e6192c86ac8410150345cb811d0ca429.png';
-      case 'kira': 
+      case 'kira':
         return 'https://cdn.discordapp.com/avatars/1271440596195737693/2dc56e1377af394802df23561eff2e13.png';
-      case 'ashborn': 
+      case 'ashborn':
         return 'https://cdn.discordapp.com/avatars/822808474072121345/51bacd23a923b3480a785113146dda26.png?size=512';
-      case 'jiemos': 
+      case 'jiemos':
         return 'https://i.natgeofe.com/k/6f2282df-1c6a-474a-9216-ed97b3dce858/Panda-Bamboo_Panda-Quiz_KIDS_1021.jpg?wp=1&w=1084.125&h=721.875';
-      case 'dristach391': 
+      case 'dristach391':
         return 'https://cdn.discordapp.com/avatars/1238944179837734947/92283dd7964213b9ea0ae19679a83c60.png';
-      default: 
+      default:
         return `https://placehold.co/32x32/4f46e5/ffffff?text=${authorName.charAt(0)}`;
     }
   };
@@ -536,7 +535,7 @@ const App = () => {
               </div>
             </div>
 
-            {/* FAQ Section */}
+            {/* FAQ Section — FULLY FIXED */}
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 overflow-hidden">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-3">
@@ -545,7 +544,6 @@ const App = () => {
                     FAQ
                   </h3>
                 </div>
-                
                 <div className="space-y-4">
                   <div className="bg-gray-700/30 p-4 rounded-lg">
                     <h4 className="font-bold text-blue-300 mb-2">❓ Do Jiemos and Ibiklackeur cheat?</h4>
@@ -555,7 +553,6 @@ const App = () => {
                       <span className="text-xs text-gray-500">- Jiemos & Ibiklackeur</span>
                     </p>
                   </div>
-                  
                   <div className="bg-gray-700/30 p-4 rounded-lg">
                     <h4 className="font-bold text-blue-300 mb-2">❓ Do you log IP addresses of website visitors?</h4>
                     <p className="text-gray-300 text-sm">
@@ -564,7 +561,6 @@ const App = () => {
                       <span className="text-xs text-gray-500">- Eyewatercanwaters2</span>
                     </p>
                   </div>
-                  
                   <div className="bg-gray-700/30 p-4 rounded-lg">
                     <h4 className="font-bold text-blue-300 mb-2">❓ Does it cost to join the server?</h4>
                     <p className="text-gray-300 text-sm">
@@ -573,30 +569,35 @@ const App = () => {
                       <span className="text-xs text-gray-500">- Ibiklackeur</span>
                     </p>
                   </div>
-                  
                   <div className="bg-gray-700/30 p-4 rounded-lg">
                     <h4 className="font-bold text-blue-300 mb-2">❓ How can I get admin/moderator access?</h4>
                     <p className="text-gray-300 text-sm">
                       <span className="text-green-400 font-medium">I don't give out admin roles.</span> If you're helpful, respectful, and contribute positively to the community for a long time, I may consider you for a special role — but never for power or influence.
                       <br/><br/>
                       <span className="text-xs text-gray-500">- Eyewatercanwaters2 & Ibiklackeur</span>
+                    </p>
+                  </div>
+                  <div className="bg-gray-700/30 p-4 rounded-lg">
+                    <h4 className="font-bold text-blue-300 mb-2">❓ Who are the server owners?</h4>
+                    <p className="text-gray-300 text-sm">
+                      <span className="text-green-400 font-medium">For Discord, Ibiklackeur owns the server. For the Minecraft server, it’s Jiemos, Ibiklackeur & Ashborn.</span>
+                      <br/><br/>
+                      <span className="text-xs text-gray-500">- Ibiklackeur, Eyewatercanwaters2</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-<div className="bg-gray-700/30 p-4 rounded-lg">
-  <h4 className="font-bold text-blue-300 mb-2">❓ How can I get admin/moderator access?</h4>
-  <p className="text-gray-300 text-sm">
-    <span className="text-green-400 font-medium">I don't give out admin roles.</span> If you're helpful, respectful, and contribute positively to the community for a long time, I may consider you for a special role — but never for power or influence.
-    <br/><br/>
-    <span className="text-xs text-gray-500">- Eyewatercanwaters2 & Ibiklackeur</span>
-  </p>
-</div>
-<div className="bg-gray-700/30 p-4 rounded-lg">
-  <h4 className="font-bold text-blue-300 mb-2">❓ Who are the server owners?</h4>
-  <p className="text-gray-300 text-sm">
-    <span className="text-green-400 font-medium">For Discord, Ibiklackeur owns the server. For the Minecraft server, it’s Jiemos, Ibiklackeur & Ashborn.</span>
-    <br/><br/>
-    <span className="text-xs text-gray-500">- Ibiklackeur, Eyewatercanwaters2</span>
-  </p>
-</div>
+            {/* Gallery */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 overflow-hidden">
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-xl font-bold text-white flex items-center">
+                    <Image className="h-5 w-5 mr-2 text-pink-400" />
+                    Gallery
+                  </h3>
+                </div>
                 <p className="text-gray-400 text-sm mb-4">
                   Our Minecraft moments 😄
                 </p>
@@ -621,22 +622,34 @@ const App = () => {
                       src="https://placehold.co/300x300/0ea5e9/000000?text=Redstone" 
                       alt="Minecraft redstone" 
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-<div className="bg-gray-700/30 p-4 rounded-lg">
-  <h4 className="font-bold text-blue-300 mb-2">❓ How can I get admin/moderator access?</h4>
-  <p className="text-gray-300 text-sm">
-  <span className="text-green-400 font-medium">I don't give out admin roles.</span> If you're helpful, respectful, and contribute positively to the community for a long time, I may consider you for a special role — but never for power or influence.
-  <br/><br/>
-  <span className="text-xs text-gray-500">- Eyewatercanwaters2 & Ibiklackeur</span>
-  </p>  {/* ✅ This closes the <p> */}
-  </div>  {/* ✅ This closes the first FAQ div */}
-<div className="bg-gray-700/30 p-4 rounded-lg">
-  <h4 className="font-bold text-blue-300 mb-2">❓ Who are the server owners?</h4>
-  <p className="text-gray-300 text-sm">
-    <span className="text-green-400 font-medium">For Discord, Ibiklackeur owns the server. For the Minecraft server, it’s Jiemos, Ibiklackeur & Ashborn.</span>
-    <br/><br/>
-    <span className="text-xs text-gray-500">- Ibiklackeur, Eyewatercanwaters2</span>
-  </p>
-</div>
+                    />
+                  </div>
+                  <div className="aspect-square rounded-lg overflow-hidden border border-gray-600">
+                    <img 
+                      src="https://placehold.co/300x300/f59e0b/000000?text=Fun" 
+                      alt="Minecraft fun" 
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                </div>
+                
+                <div className="mt-4 pt-3 border-t border-gray-700 text-center">
+                  <button className="text-blue-400 hover:text-blue-300 text-sm font-medium">
+                    Check Discord for the gallery contest ⭐⭐⭐
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Active Players */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl font-bold text-white flex items-center">
+                  <Users className="h-5 w-5 mr-2 text-blue-400" />
+                  Active Players
+                </h3>
+                <span className="text-blue-400 font-bold">5</span>
+              </div>
               
               <div className="space-y-3">
                 {activePlayers.map((player, index) => (
@@ -682,7 +695,7 @@ const App = () => {
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-gray-400">IP Address</span>
-                  <span className="text-white font-mono">cdmcs-official.aternos.me.</span>
+                  <span className="text-white font-mono">cdmcs-official.aternos.me</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-400">Port</span>
@@ -723,9 +736,9 @@ const App = () => {
                   <p className="text-gray-400 text-xs mt-1">Congratulations!</p>
                 </div>
                 <div className="p-3 bg-purple-900/30 rounded-lg">
-                  <p className="text-purple-200 font-medium"></p>
-                  <p className="text-purple-300 text-sm"></p>
-                  <p className="text-gray-400 text-xs mt-1"></p>
+                  <p className="text-purple-200 font-medium">First to survive Bogged x4! 😅</p>
+                  <p className="text-purple-300 text-sm">Ibikl</p>
+                  <p className="text-gray-400 text-xs mt-1">Legend status</p>
                 </div>
               </div>
             </div>
@@ -773,14 +786,12 @@ const App = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-pink-500"></div>
-            
             <button 
               onClick={() => setShowEasterEgg(false)}
               className="absolute top-3 right-3 text-gray-400 hover:text-white text-xl font-bold"
             >
               ×
             </button>
-            
             <div className="mb-4">
               <img 
                 src="https://media.discordapp.net/attachments/1426762383514402949/1449881569446727802/image.png?ex=6941d46f&is=694082ef&hm=bfd136abdc8c47ad55435715b5025811f742aa16583020a347ed0c4bf8ef6ce1&=&format=webp&quality=lossless&width=550&height=277" 
@@ -788,9 +799,7 @@ const App = () => {
                 className="mx-auto rounded-lg border border-purple-500/30 shadow-lg"
               />
             </div>
-            
             <h3 className="text-xl font-bold text-purple-300 mb-3">🤫 CLASSIFIED SERVER INTEL</h3>
-            
             <div className="space-y-3 mb-4">
               <div className="bg-purple-900/20 p-3 rounded-lg border-l-4 border-purple-500">
                 <p className="text-gray-300 italic">
@@ -798,14 +807,12 @@ const App = () => {
                   <span className="text-xs text-gray-500">- ibikl, line #269</span>
                 </p>
               </div>
-              
               <div className="bg-purple-900/20 p-3 rounded-lg border-l-4 border-amber-500">
                 <p className="text-gray-300 italic">
                   <span className="text-amber-400 font-bold">"holy send it"</span><br/>
                   <span className="text-xs text-gray-500">- asparagus21345, line #271</span>
                 </p>
               </div>
-              
               <div className="bg-purple-900/20 p-3 rounded-lg border-l-4 border-red-500">
                 <p className="text-gray-300 italic">
                   <span className="text-red-400 font-bold">"NIGGER LATER"</span><br/>
@@ -813,7 +820,6 @@ const App = () => {
                 </p>
               </div>
             </div>
-
             <div className="bg-black/30 rounded-lg p-3 text-sm">
               <p className="text-gray-400">
                 📊 <span className="text-red-400 font-bold">Ibik's Bogged Incident:</span>
@@ -824,7 +830,6 @@ const App = () => {
                 <li>• Also drowned (line #463)</li>
               </ul>
             </div>
-            
             <div className="mt-4 pt-3 border-t border-gray-800">
               <p className="text-xs text-gray-500">
                 🔒 This intel self-destructs in 5...4...3...
