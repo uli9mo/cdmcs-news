@@ -483,6 +483,19 @@ const App = () => {
                 <p className="text-gray-400 text-sm mb-4">
                   Daily server logs😄 (In the links below)
                 </p>
+
+                          <div className="bg-gray-900/50 rounded-lg p-4 min-h-[200px]">
+                  <div className="text-amber-300 font-mono text-sm space-y-2">
+                    <div className="flex items-start">
+                      <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
+                      <span>
+                        <a href="https://mclo.gs/P3bdC7j" 
+                           className="text-blue-300 hover:text-blue-200 hover:underline"
+                           target="_blank" rel="noopener noreferrer">
+                          Dec 19, 2025 Server Log
+                        </a>
+                      </span>
+                    </div>
                 
                 <div className="bg-gray-900/50 rounded-lg p-4 min-h-[200px]">
                   <div className="text-amber-300 font-mono text-sm space-y-2">
