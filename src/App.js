@@ -977,7 +977,7 @@ const App = () => {
                             <p className={`text-amber-600 text-xs mt-1 ml-6 ${
                               darkMode ? 'text-amber-400' : ''
                             }`}>
-                              Please wait — all comments are manually reviewed for anti-cheat compliance
+                              Please wait, all comments are manually reviewed for safety.
                             </p>
                           </div>
                         )}
@@ -1067,7 +1067,8 @@ const App = () => {
                     { q: "Do Jiemos and Ibiklackeur cheat?", a: "No, we don't. We post server logs daily for full transparency, and all admin actions are logged and visible to the community.", by: "- Jiemos & Ibiklackeur" },
                     { q: "Do you log IP addresses of website visitors?", a: "No, we don't. This website has no backend server to track or store visitor data such as IP addresses, cookies, or personal information. We respect your privacy.", by: "- Eyewatercanwaters2" },
                     { q: "Does it cost to join the server?", a: "No, it's completely free. The server is funded by Ibiklackeur, and we welcome all friends (and friends of friends) to join our community!", by: "- Ibiklackeur" },
-                    { q: "How can I get admin/moderator access?", a: "I don't give out admin roles. If you're helpful, respectful, and contribute positively to the community for a long time, I may consider you for a special role — but never for power or influence.", by: "- Eyewatercanwaters2 & Ibiklackeur" },
+                     { q: "Will jelly be punished for hacking? To a few players they think it's unreasonable due to Jelly being provoked from griefing and random kills. Regardless it's Ibiks call and he punished jelly with a 3 day ban, so yes he will be.", by: "- Ashborn, Jelly and Ibiklackeur" },
+                    { q: "How can I get admin/moderator access?", a: "I don't give out admin roles. If you're helpful, respectful, and contribute positively to the community for a long time, I may consider you for a special role  but never for power or influence.", by: "- Eyewatercanwaters2 & Ibiklackeur" },
                     { q: "Who are the server owners?", a: "For Discord, Ibiklackeur owns the server. For the Minecraft server, it's Jiemos, Ibiklackeur & Ashborn.", by: "- Ibiklackeur, Eyewatercanwaters2" }
                   ].map((faq, i) => (
                     <div 
