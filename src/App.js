@@ -86,7 +86,7 @@ const FAKE_COMMENTS = {
     {
       id: 301,
       author: "Ashborn",
-      avatar: "https://cdn.discordapp.com/avatars/1271440596195737693/2dc56e1377af394802df23561eff2e13.png",
+      avatar: "https://cdn.discordapp.com/avatars/822808474072121345/51bacd23a923b3480a785113146dda26.png?size=512",
       text: "liked it when it was peaceful",
       time: "5 hours ago",
       likes: 2
@@ -387,7 +387,7 @@ const App = () => {
     { name: "Ibikl", status: "Offline", time: "4 hour", avatar: "https://pticaarchive.wordpress.com/wp-content/uploads/2012/10/naked-banana.jpg?w=620" },
     { name: "Senkaium", status: "Offline", time: "4 hours", avatar: "https://placehold.co/32x32/8b5cf6/ffffff?text=S" },
     { name: "Dristach391", status: "Offline", time: "2 hour", avatar: "https://cdn.discordapp.com/avatars/1238944179837734947/92283dd7964213b9ea0ae19679a83c60.png" },
-    { name: "Ashiet", status: "Offline", time: "1 hour", avatar: "https://cdn.discordapp.com/avatars/1271440596195737693/2dc56e1377af394802df23561eff2e13.png" },
+    { name: "Ashiet", status: "Offline", time: "1 hour", avatar: "https://cdn.discordapp.com/avatars/822808474072121345/51bacd23a923b3480a785113146dda26.png?size=512" },
     { name: "Evtlovesfood", status: "Offline", time: "2 hour", avatar: "" },
     { name: "", status: "", time: "", avatar: "" }
   ];
