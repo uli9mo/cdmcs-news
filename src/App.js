@@ -780,7 +780,7 @@ const App = () => {
               Made with ❤️ by your friend group for the Classic Duels Minecraft Server
             </p>
             <p className="text-gray-500 text-sm mt-2">
-              Thanks to Jelly, Ashborn, and ibiklackeur for building this website.
+              Thanks to Jelly, and Ashborn for building this website.
             </p>
             <p className="text-gray-500 text-sm mt-2">
               "Where friendships are built block by block"
