@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   Calendar, Clock, Users, MessageSquare, Shield, Server, Gamepad2, Trophy, Send, 
   Mail, User, Eye, EyeOff, FileText, Link, CheckCircle, Image, HelpCircle, 
-  Sun, Moon, Palette, ChevronDown, ArrowUpDown
+  Sun, Moon, Palette, ChevronDown, ArrowUpDown, Sparkles, Heart, ThumbsUp
 } from 'lucide-react';
 
 // 🔊 Tiny sound effects (0.2s each, base64, no network requests)
@@ -36,6 +36,74 @@ const useSound = () => {
   return play;
 };
 
+// Pre-made fake comments for each news item
+const FAKE_COMMENTS = {
+  1: [ // Corruption news
+    {
+      id: 101,
+      author: "Jiemos",
+      avatar: "https://i.natgeofe.com/k/6f2282df-1c6a-474a-9216-ed97b3dce858/Panda-Bamboo_Panda-Quiz_KIDS_1021.jpg?wp=1&w=1084.125&h=721.875",
+      text: "Is this real, never knew ibiklackeur would do this...",
+      time: "1 hour ago",
+      likes: 3
+    },
+    {
+      id: 102,
+      author: "Eyewatercanwaters2",
+      avatar: "https://cdn.discordapp.com/avatars/1345578724732567564/e6192c86ac8410150345cb811d0ca429.png",
+      text: "Yes I'll tell you what happened if you want.",
+      time: "45 minutes ago",
+      likes: 5
+    },
+    {
+      id: 103,
+      author: "Ibiklackeur",
+      avatar: "https://pticaarchive.wordpress.com/wp-content/uploads/2012/10/naked-banana.jpg?w=620",
+      text: "Guys guys, this already ended we made amends lets just forget about it..",
+      time: "1 day later",
+      likes: 2
+    }
+  ],
+  4: [ // Build Contest
+    {
+      id: 401,
+      author: "Eyewatercanwaters2",
+      avatar: "https://cdn.discordapp.com/avatars/1345578724732567564/e6192c86ac8410150345cb811d0ca429.png",
+      text: "Hope I win the build battle everyone give me 10 stars! in the server",
+      time: "2 hours ago",
+      likes: 8
+    },
+    {
+      id: 402,
+      author: "Kira",
+      avatar: "https://cdn.discordapp.com/avatars/1271440596195737693/2dc56e1377af394802df23561eff2e13.png",
+      text: "My castle is gonna win for sure! 🏰",
+      time: "1 hour ago",
+      likes: 6
+    }
+  ],
+  3: [ // New Survival World
+    {
+      id: 301,
+      author: "Dristach391",
+      avatar: "https://cdn.discordapp.com/avatars/1238944179837734947/92283dd7964213b9ea0ae19679a83c60.png",
+      text: "The new world is amazing! Found diamonds already! 💎",
+      time: "5 hours ago",
+      likes: 12
+    }
+  ],
+  9: [ // Trial Chamber
+    {
+      id: 901,
+      author: "Kira",
+      avatar: "https://cdn.discordapp.com/avatars/1271440596195737693/2dc56e1377af394802df23561eff2e13.png",
+      text: "That trial chamber was insane! So much loot!",
+      time: "Yesterday",
+      likes: 15
+    }
+  ]
+};
+
 const App = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [userEmail, setUserEmail] = useState('');
@@ -46,6 +114,11 @@ const App = () => {
   const [showEasterEgg, setShowEasterEgg] = useState(false);
   const [copied, setCopied] = useState(false);
   const [sortOrder, setSortOrder] = useState('latest'); // 'latest' or 'oldest'
+  const [likeCounts, setLikeCounts] = useState({});
+  const [showMiniGame, setShowMiniGame] = useState(false);
+  const [miniGameScore, setMiniGameScore] = useState(0);
+  const [miniGamePosition, setMiniGamePosition] = useState(50);
+  const [miniGameActive, setMiniGameActive] = useState(false);
 
   // ✨ Theme state
   const [darkMode, setDarkMode] = useState(() => {
@@ -76,17 +149,43 @@ const App = () => {
     setVisibleComments(initial);
   }, []);
 
+  // Initialize like counts
+  useEffect(() => {
+    const initialLikes = {};
+    Object.keys(FAKE_COMMENTS).forEach(newsId => {
+      FAKE_COMMENTS[newsId].forEach(comment => {
+        initialLikes[comment.id] = comment.likes;
+      });
+    });
+    setLikeCounts(initialLikes);
+  }, []);
+
   // Update time
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
+  // Mini-game movement
+  useEffect(() => {
+    if (!miniGameActive || !showMiniGame) return;
+
+    const interval = setInterval(() => {
+      setMiniGamePosition(prev => {
+        const newPos = prev + (Math.random() - 0.5) * 20;
+        return Math.max(0, Math.min(100, newPos));
+      });
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, [miniGameActive, showMiniGame]);
+
   // Close easter egg on Esc
   useEffect(() => {
     const handler = e => { 
       if (e.key === 'Escape') { 
         setShowEasterEgg(false); 
+        setShowMiniGame(false);
         playSound('click'); 
       } 
     };
@@ -94,129 +193,128 @@ const App = () => {
     return () => window.removeEventListener('keydown', handler);
   }, [playSound]);
 
-  // ✅ Your full news data — 15 items (added 5 new ones)
+  // ✅ Your full news data — 15 items
   const newsItems = [
     {
       id: 1,
       title: "Corruption...",
-      content: "We found out Ibiklackeur gave himself maces diamond blocks, extended bans due to spite, wrongfully accused members of cheats, tried to ip log us with fake links. Due to Ibiklackeur's actions the server will be closed untill he apologizes or fix what he done wrong.",
+      content: "We found out Ibiklackeur gave himself maces diamond blocks, extended bans due to spite, wrongfully accused members of cheats, tried to ip log us with fake links. Due to Ibiklackeur's actions the server will be closed until he apologizes or fix what he done wrong.",
       author: "Ashborn",
-      date: "Dec 21, 2025",
+      date: "Dec 22, 2025",
       time: "18:26",
       category: "exposed",
       readTime: "1 min",
-      timestamp: new Date(2025, 11, 21, 18, 26).getTime() // Dec 21, 2025
+      timestamp: new Date(2025, 11, 22, 18, 26).getTime()
     },
     {
       id: 2,
       title: "Fundraiser!💰",
       content: "We worked hard coding and building this website, please consider donating me some robux!",
       author: "Ibiklackeur",
-      date: "Dec 20, 2025",
+      date: "Dec 22, 2025",
       time: "14:30",
       category: "charity",
       readTime: "1 min",
-      timestamp: new Date(2025, 11, 20, 14, 30).getTime()
+      timestamp: new Date(2025, 11, 22, 14, 30).getTime()
     },
     {
       id: 3,
       title: "New Survival World Launched!",
       content: "After weeks of planning our new survival world for our Classic Duels's Minecraft server, we finally launched it with an official website!",
       author: "Eyewatercanwaters2",
-      date: "Dec 19, 2025",
+      date: "Dec 22, 2025",
       time: "13:30",
       category: "major-update",
       readTime: "1 min",
-      timestamp: new Date(2025, 11, 19, 13, 30).getTime()
+      timestamp: new Date(2025, 11, 22, 13, 30).getTime()
     },
     {
       id: 4,
       title: "Weekly Build Contest",
       content: "Would anyone wan't to participate in a weekly Build Contest? If so then make sure you send beautiful screenshots of your build in our channel on Discord.",
       author: "Ashborn",
-      date: "Dec 18, 2025",
+      date: "Dec 22, 2025",
       time: "13:15",
       category: "contest",
       readTime: "1 min",
-      timestamp: new Date(2025, 11, 18, 13, 15).getTime()
+      timestamp: new Date(2025, 11, 22, 13, 15).getTime()
     },
     {
       id: 5,
       title: "Server Start-up Scheduled.",
-      content: "We'll be adding essential mods and features to our server, be sure to wait for the announcements of the release. We plan to officaly start the server on Dec 14, 10:50 AM.",
+      content: "We'll be adding essential mods and features to our server, be sure to wait for the announcements of the release. We plan to officially start the server on Dec 14, 10:50 AM.",
       author: "Jiemos",
-      date: "Dec 17, 2025",
+      date: "Dec 22, 2025",
       time: "13:09",
       category: "maintenance",
       readTime: "1 min",
-      timestamp: new Date(2025, 11, 17, 13, 9).getTime()
+      timestamp: new Date(2025, 11, 22, 13, 9).getTime()
     },
     {
       id: 6,
       title: "New Plugin Recommendation: Tough As Nails.",
       content: "Adding this mod would help give a challenge to all players, including myself.",
       author: "Ibiklackeur",
-      date: "Dec 16, 2025",
-      time: "6:45",
+      date: "Dec 22, 2025",
+      time: "12:45",
       category: "feature",
       readTime: "30 sec",
-      timestamp: new Date(2025, 11, 16, 6, 45).getTime()
+      timestamp: new Date(2025, 11, 22, 12, 45).getTime()
     },
     {
       id: 7,
       title: "Holiday Event Planning",
       content: "A beautiful, nice, fun event for this Christmas. We plan to have a theme park built by then, DM Jiemos if you would wanna help!",
       author: "Jiemos",
-      date: "Dec 15, 2025",
-      time: "19:20",
+      date: "Dec 22, 2025",
+      time: "11:20",
       category: "event",
       readTime: "2 min",
-      timestamp: new Date(2025, 11, 15, 19, 20).getTime()
+      timestamp: new Date(2025, 11, 22, 11, 20).getTime()
     },
     {
       id: 8,
       title: "🚨 Bogged Incident Report",
       content: "Following multiple Bogged ambushes (see Dec 14 log, lines #384, #400–403), we've reinforced the Ancient City with torches and iron golems..",
       author: "Jiemos",
-      date: "Dec 14, 2025",
-      time: "09:14",
+      date: "Dec 22, 2025",
+      time: "10:14",
       category: "updates",
       readTime: "1 min",
-      timestamp: new Date(2025, 11, 14, 9, 14).getTime()
+      timestamp: new Date(2025, 11, 22, 10, 14).getTime()
     },
     {
       id: 9,
       title: "🏆 Trial Chamber Discovery!",
       content: "Kira and ibikl finally located the third Trial Chamber! they got a full set of diamond gear, a trial key, and suspiciously no Bogged. DM Jiemos for coordinates (trust).",
       author: "Ibiklackeur",
-      date: "Dec 13, 2025",
-      time: "14:22",
+      date: "Dec 22, 2025",
+      time: "09:22",
       category: "major-update",
       readTime: "1 min",
-      timestamp: new Date(2025, 11, 13, 14, 22).getTime()
+      timestamp: new Date(2025, 11, 22, 9, 22).getTime()
     },
     {
       id: 10,
       title: "🤫 'Who is harley leakz!",
       content: "Multiple players reported to us saying Harley Leakz has sent them random server ips, when they joined they saw a giant statue that they couldn't make out in the distance. Who is Harley Leakz??? ",
       author: "Ibiklackeur",
-      date: "Dec 12, 2025",
-      time: "22:07",
+      date: "Dec 22, 2025",
+      time: "08:07",
       category: "mystery",
       readTime: "2 min",
-      timestamp: new Date(2025, 11, 12, 22, 7).getTime()
+      timestamp: new Date(2025, 11, 22, 8, 7).getTime()
     },
-    // NEW NEWS ITEMS ADDED BELOW
     {
       id: 11,
       title: "🎄 Christmas Event Finished!",
       content: "The Christmas theme park is complete! Featuring snowball fights, present hunts, and a giant Santa statue. Event starts Dec 24 at 6 PM server time.",
       author: "Jiemos",
       date: "Dec 22, 2025",
-      time: "16:45",
+      time: "07:45",
       category: "event",
       readTime: "1 min",
-      timestamp: new Date(2025, 11, 11, 16, 45).getTime()
+      timestamp: new Date(2025, 11, 22, 7, 45).getTime()
     },
     {
       id: 12,
@@ -224,10 +322,10 @@ const App = () => {
       content: "We've optimized our server performance! Reduced lag by 40% with new chunk loading. The difference is noticeable in the Nether",
       author: "Eyewatercanwaters2",
       date: "Dec 22, 2025",
-      time: "11:20",
+      time: "06:20",
       category: "major-update",
       readTime: "1 min",
-      timestamp: new Date(2025, 11, 10, 11, 20).getTime()
+      timestamp: new Date(2025, 11, 22, 6, 20).getTime()
     },
     {
       id: 13,
@@ -235,10 +333,10 @@ const App = () => {
       content: "Implemented a new, stronger anti-cheat system. False positives reduced by 85%. Report any issues to Ashborn directly.",
       author: "Ashborn",
       date: "Dec 22, 2025",
-      time: "09:30",
+      time: "05:30",
       category: "feature",
       readTime: "1 min",
-      timestamp: new Date(2025, 11, 9, 9, 30).getTime()
+      timestamp: new Date(2025, 11, 22, 5, 30).getTime()
     },
     {
       id: 14,
@@ -246,21 +344,21 @@ const App = () => {
       content: "Starting a mega build: A floating island city! Everyone is welcome to contribute. First planning meeting this Saturday in Discord VC.",
       author: "Kira",
       date: "Dec 22, 2025",
-      time: "20:15",
+      time: "04:15",
       category: "community",
       readTime: "1 min",
-      timestamp: new Date(2025, 11, 8, 20, 15).getTime()
+      timestamp: new Date(2025, 11, 22, 4, 15).getTime()
     },
     {
       id: 15,
       title: "📊 Server Statistics Released",
-      content: " stats: 12 active players, 482 hours total playtime, 127,000 blocks placed. Most mined block: stone. Most deaths: falling (32%).",
+      content: "Stats: 12 active players, 482 hours total playtime, 127,000 blocks placed. Most mined block: stone. Most deaths: falling (32%).",
       author: "Ibiklackeur",
       date: "Dec 22, 2025",
-      time: "14:00",
+      time: "03:00",
       category: "updates",
       readTime: "2 min",
-      timestamp: new Date(2025, 11, 7, 14, 0).getTime()
+      timestamp: new Date(2025, 11, 22, 3, 0).getTime()
     }
   ];
 
@@ -331,41 +429,71 @@ const App = () => {
     }
   };
 
-  // ✨ Theme helpers
+  // ✨ Enhanced Theme helpers with multi-gradient support
   const themeClasses = {
     bg: darkMode 
-      ? colorTheme === 'bogged' ? 'bg-red-950 text-amber-100' 
-        : colorTheme === 'trial' ? 'bg-purple-950 text-cyan-100' 
-        : 'bg-gray-900 text-gray-100'
-      : colorTheme === 'bogged' ? 'bg-amber-50 text-red-900' 
-        : colorTheme === 'trial' ? 'bg-cyan-50 text-purple-900' 
-        : 'bg-gray-50 text-gray-900',
+      ? colorTheme === 'bogged' ? 'bg-gradient-to-br from-red-950 via-amber-950 to-red-900 text-amber-100' 
+        : colorTheme === 'trial' ? 'bg-gradient-to-br from-purple-950 via-cyan-950 to-purple-900 text-cyan-100' 
+        : colorTheme === 'purple' ? 'bg-gradient-to-br from-purple-900 via-violet-900 to-purple-800 text-purple-100'
+        : colorTheme === 'green' ? 'bg-gradient-to-br from-emerald-900 via-teal-900 to-emerald-800 text-emerald-100'
+        : colorTheme === 'pink' ? 'bg-gradient-to-br from-pink-900 via-rose-900 to-pink-800 text-pink-100'
+        : 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-100'
+      : colorTheme === 'bogged' ? 'bg-gradient-to-br from-amber-50 via-red-50 to-amber-100 text-red-900' 
+        : colorTheme === 'trial' ? 'bg-gradient-to-br from-cyan-50 via-purple-50 to-cyan-100 text-purple-900' 
+        : colorTheme === 'purple' ? 'bg-gradient-to-br from-purple-50 via-violet-50 to-purple-100 text-purple-900'
+        : colorTheme === 'green' ? 'bg-gradient-to-br from-emerald-50 via-teal-50 to-emerald-100 text-emerald-900'
+        : colorTheme === 'pink' ? 'bg-gradient-to-br from-pink-50 via-rose-50 to-pink-100 text-pink-900'
+        : 'bg-gradient-to-br from-gray-50 via-gray-100 to-gray-50 text-gray-900',
     
     primary: colorTheme === 'bogged' 
       ? (darkMode ? 'text-amber-400' : 'text-red-600')
       : colorTheme === 'trial' 
         ? (darkMode ? 'text-cyan-400' : 'text-purple-600')
+        : colorTheme === 'purple'
+          ? (darkMode ? 'text-purple-400' : 'text-purple-600')
+        : colorTheme === 'green'
+          ? (darkMode ? 'text-emerald-400' : 'text-emerald-600')
+        : colorTheme === 'pink'
+          ? (darkMode ? 'text-pink-400' : 'text-pink-600')
         : (darkMode ? 'text-blue-400' : 'text-blue-600'),
 
     buttonGrad: colorTheme === 'bogged'
       ? (darkMode 
-          ? 'from-amber-600 to-red-700 hover:from-amber-700 hover:to-red-800'
-          : 'from-amber-500 to-red-500 hover:from-amber-600 hover:to-red-600')
+          ? 'from-amber-500 via-orange-500 to-red-600 hover:from-amber-600 hover:via-orange-600 hover:to-red-700'
+          : 'from-amber-400 via-orange-400 to-red-500 hover:from-amber-500 hover:via-orange-500 hover:to-red-600')
       : colorTheme === 'trial'
         ? (darkMode 
-            ? 'from-cyan-600 to-purple-700 hover:from-cyan-700 hover:to-purple-800'
-            : 'from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600')
+            ? 'from-cyan-500 via-blue-500 to-purple-600 hover:from-cyan-600 hover:via-blue-600 hover:to-purple-700'
+            : 'from-cyan-400 via-blue-400 to-purple-500 hover:from-cyan-500 hover:via-blue-500 hover:to-purple-600')
+        : colorTheme === 'purple'
+          ? (darkMode 
+              ? 'from-purple-500 via-violet-500 to-purple-600 hover:from-purple-600 hover:via-violet-600 hover:to-purple-700'
+              : 'from-purple-400 via-violet-400 to-purple-500 hover:from-purple-500 hover:via-violet-500 hover:to-purple-600')
+        : colorTheme === 'green'
+          ? (darkMode 
+              ? 'from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:via-teal-600 hover:to-emerald-700'
+              : 'from-emerald-400 via-teal-400 to-emerald-500 hover:from-emerald-500 hover:via-teal-500 hover:to-emerald-600')
+        : colorTheme === 'pink'
+          ? (darkMode 
+              ? 'from-pink-500 via-rose-500 to-pink-600 hover:from-pink-600 hover:via-rose-600 hover:to-pink-700'
+              : 'from-pink-400 via-rose-400 to-pink-500 hover:from-pink-500 hover:via-rose-500 hover:to-pink-600')
         : (darkMode 
-            ? 'from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
-            : 'from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600'),
+            ? 'from-blue-500 via-indigo-500 to-purple-600 hover:from-blue-600 hover:via-indigo-600 hover:to-purple-700'
+            : 'from-blue-400 via-indigo-400 to-purple-500 hover:from-blue-500 hover:via-indigo-500 hover:to-purple-600'),
 
     cardBg: darkMode 
-      ? 'bg-gray-800/50 backdrop-blur-sm border border-gray-700'
-      : 'bg-white border border-gray-200',
+      ? colorTheme === 'purple' ? 'bg-purple-900/30 backdrop-blur-sm border border-purple-700/50'
+        : colorTheme === 'green' ? 'bg-emerald-900/30 backdrop-blur-sm border border-emerald-700/50'
+        : colorTheme === 'pink' ? 'bg-pink-900/30 backdrop-blur-sm border border-pink-700/50'
+        : 'bg-gray-800/30 backdrop-blur-sm border border-gray-700/50'
+      : colorTheme === 'purple' ? 'bg-purple-50 border border-purple-200'
+        : colorTheme === 'green' ? 'bg-emerald-50 border border-emerald-200'
+        : colorTheme === 'pink' ? 'bg-pink-50 border border-pink-200'
+        : 'bg-white border border-gray-200',
     
     input: darkMode 
-      ? 'bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-      : 'bg-white border border-gray-300 text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent',
+      ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent backdrop-blur-sm'
+      : 'bg-white/80 border border-gray-300 text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent backdrop-blur-sm',
   };
 
   const handleLogin = (e) => {
@@ -402,7 +530,7 @@ const App = () => {
 
   const cycleColorTheme = () => {
     playSound('click');
-    const themes = ['classic', 'bogged', 'trial'];
+    const themes = ['classic', 'purple', 'green', 'pink', 'bogged', 'trial'];
     const idx = themes.indexOf(colorTheme);
     setColorTheme(themes[(idx + 1) % themes.length]);
   };
@@ -419,8 +547,45 @@ const App = () => {
     setSortOrder(sortOrder === 'latest' ? 'oldest' : 'latest');
   };
 
+  const handleLike = (commentId) => {
+    playSound('click');
+    setLikeCounts(prev => ({
+      ...prev,
+      [commentId]: (prev[commentId] || 0) + 1
+    }));
+  };
+
+  const startMiniGame = () => {
+    playSound('secret');
+    setShowMiniGame(true);
+    setMiniGameScore(0);
+    setMiniGameActive(true);
+    setTimeout(() => {
+      setMiniGameActive(false);
+    }, 10000); // Game lasts 10 seconds
+  };
+
+  const catchMiniGame = () => {
+    if (miniGameActive) {
+      playSound('ding');
+      setMiniGameScore(prev => prev + 1);
+      setMiniGamePosition(Math.random() * 100);
+    }
+  };
+
+  const headerGradient = () => {
+    switch(colorTheme) {
+      case 'purple': return 'bg-gradient-to-r from-purple-800 via-violet-700 to-purple-900';
+      case 'green': return 'bg-gradient-to-r from-emerald-800 via-teal-700 to-emerald-900';
+      case 'pink': return 'bg-gradient-to-r from-pink-800 via-rose-700 to-pink-900';
+      case 'bogged': return 'bg-gradient-to-r from-red-800 via-amber-700 to-red-900';
+      case 'trial': return 'bg-gradient-to-r from-purple-800 via-cyan-700 to-purple-900';
+      default: return 'bg-gradient-to-r from-green-800 via-emerald-700 to-green-900';
+    }
+  };
+
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${themeClasses.bg}`}>
+    <div className={`min-h-screen transition-all duration-500 ${themeClasses.bg}`}>
       {/* Theme Controls (Top Right) */}
       <div className="fixed top-4 right-4 z-50 flex gap-2">
         <button
@@ -439,8 +604,8 @@ const App = () => {
           onClick={cycleColorTheme}
           className={`p-2.5 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 transform hover:scale-105 ${
             darkMode 
-              ? 'bg-purple-600 text-white hover:bg-purple-500' 
-              : 'bg-purple-500 text-white hover:bg-purple-400'
+              ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600' 
+              : 'bg-gradient-to-r from-purple-400 to-pink-400 text-white hover:from-purple-500 hover:to-pink-500'
           }`}
           title="Cycle color theme"
           aria-label="Cycle color theme"
@@ -450,13 +615,7 @@ const App = () => {
       </div>
 
       {/* Header */}
-      <header className={`relative overflow-hidden ${
-        colorTheme === 'bogged' 
-          ? 'bg-gradient-to-r from-red-800 to-amber-700' 
-          : colorTheme === 'trial' 
-            ? 'bg-gradient-to-r from-purple-800 to-cyan-700' 
-            : 'bg-gradient-to-r from-green-800 to-emerald-700'
-      } shadow-xl`}>
+      <header className={`relative overflow-hidden ${headerGradient()} shadow-xl`}>
         <div className="absolute inset-0 bg-black opacity-25"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center animate-fade-in-up">
@@ -540,10 +699,10 @@ const App = () => {
             {sortedNewsItems.map((news, idx) => (
               <article 
                 key={news.id} 
-                className={`bg-gray-800/50 backdrop-blur-sm rounded-xl border overflow-hidden 
+                className={`rounded-xl border overflow-hidden 
                   transition-all duration-500 
                   hover:shadow-2xl hover:-translate-y-1
-                  group animate-fade-in-stagger`}
+                  group animate-fade-in-stagger ${themeClasses.cardBg}`}
                 style={{ animationDelay: `${idx * 100}ms` }}
                 onMouseEnter={() => playSound('click')}
               >
@@ -629,6 +788,54 @@ const App = () => {
                       <MessageSquare className={`h-5 w-5 mr-2 ${themeClasses.primary} animate-bounce-slow`} />
                       Discussion
                     </h4>
+                    
+                    {/* Show fake comments if they exist */}
+                    {FAKE_COMMENTS[news.id] && (
+                      <div className="space-y-4 mb-6">
+                        {FAKE_COMMENTS[news.id].map(comment => (
+                          <div key={comment.id} className={`p-4 rounded-xl ${
+                            darkMode ? 'bg-gray-800/40' : 'bg-gray-100'
+                          }`}>
+                            <div className="flex items-start space-x-3">
+                              <div className="flex-shrink-0">
+                                <div className="w-8 h-8 rounded-full overflow-hidden">
+                                  <img 
+                                    src={comment.avatar} 
+                                    alt={comment.author} 
+                                    className="w-full h-full object-cover"
+                                  />
+                                </div>
+                              </div>
+                              <div className="flex-grow">
+                                <div className="flex items-center justify-between">
+                                  <div>
+                                    <span className={`font-semibold ${
+                                      darkMode ? 'text-blue-300' : 'text-blue-600'
+                                    }`}>{comment.author}</span>
+                                    <span className={`text-xs ml-2 ${
+                                      darkMode ? 'text-gray-500' : 'text-gray-500'
+                                    }`}>{comment.time}</span>
+                                  </div>
+                                  <button 
+                                    onClick={() => handleLike(comment.id)}
+                                    className={`flex items-center space-x-1 ${
+                                      darkMode ? 'text-gray-400 hover:text-red-400' : 'text-gray-500 hover:text-red-500'
+                                    }`}
+                                  >
+                                    <Heart className={`h-4 w-4 ${likeCounts[comment.id] > comment.likes ? 'fill-red-500 text-red-500' : ''}`} />
+                                    <span className="text-xs">{likeCounts[comment.id] || comment.likes}</span>
+                                  </button>
+                                </div>
+                                <p className={`mt-2 ${
+                                  darkMode ? 'text-gray-300' : 'text-gray-700'
+                                }`}>{comment.text}</p>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
                     <div className={`bg-blue-900/40 border border-blue-700/70 rounded-xl p-4 mb-6 ${
                       darkMode ? '' : 'bg-blue-50'
                     }`}>
@@ -691,9 +898,7 @@ const App = () => {
                           </div>
                           <button
                             type="submit"
-                            className={`w-full font-bold py-3 px-4 rounded-xl transition-all duration-500 transform hover:scale-[1.02] active:scale-95 shadow-lg ${
-                              themeClasses.buttonGrad
-                            } text-white relative overflow-hidden group`}
+                            className={`w-full font-bold py-3 px-4 rounded-xl transition-all duration-500 transform hover:scale-[1.02] active:scale-95 shadow-lg bg-gradient-to-r ${themeClasses.buttonGrad} text-white relative overflow-hidden group`}
                           >
                             <span className="relative z-10 flex items-center justify-center space-x-2">
                               <Shield className="h-4 w-4" />
@@ -744,7 +949,7 @@ const App = () => {
                             className={`${
                               verifyingComment[news.id] 
                                 ? (darkMode ? 'bg-gray-600' : 'bg-gray-300') 
-                                : themeClasses.buttonGrad
+                                : `bg-gradient-to-r ${themeClasses.buttonGrad}`
                             } text-white font-bold py-2.5 px-5 rounded-lg transition-all duration-300 flex items-center space-x-2`}
                           >
                             {verifyingComment[news.id] ? (
@@ -863,7 +1068,7 @@ const App = () => {
                     { q: "Do you log IP addresses of website visitors?", a: "No, we don't. This website has no backend server to track or store visitor data such as IP addresses, cookies, or personal information. We respect your privacy.", by: "- Eyewatercanwaters2" },
                     { q: "Does it cost to join the server?", a: "No, it's completely free. The server is funded by Ibiklackeur, and we welcome all friends (and friends of friends) to join our community!", by: "- Ibiklackeur" },
                     { q: "How can I get admin/moderator access?", a: "I don't give out admin roles. If you're helpful, respectful, and contribute positively to the community for a long time, I may consider you for a special role — but never for power or influence.", by: "- Eyewatercanwaters2 & Ibiklackeur" },
-                    { q: "Who are the server owners?", a: "For Discord, Ibiklackeur owns the server. For the Minecraft server, it’s Jiemos, Ibiklackeur & Ashborn.", by: "- Ibiklackeur, Eyewatercanwaters2" }
+                    { q: "Who are the server owners?", a: "For Discord, Ibiklackeur owns the server. For the Minecraft server, it's Jiemos, Ibiklackeur & Ashborn.", by: "- Ibiklackeur, Eyewatercanwaters2" }
                   ].map((faq, i) => (
                     <div 
                       key={i}
@@ -1029,9 +1234,7 @@ const App = () => {
               </div>
               <button
                 onClick={copyServerAddress}
-                className={`w-full mt-4 font-bold py-3 px-4 rounded-xl transition-all duration-500 transform hover:scale-[1.02] active:scale-95 shadow-lg ${
-                  themeClasses.buttonGrad
-                } text-white relative overflow-hidden`}
+                className={`w-full mt-4 font-bold py-3 px-4 rounded-xl transition-all duration-500 transform hover:scale-[1.02] active:scale-95 shadow-lg bg-gradient-to-r ${themeClasses.buttonGrad} text-white relative overflow-hidden`}
               >
                 <span className="flex items-center justify-center space-x-2">
                   <Shield className="h-4 w-4" />
@@ -1132,6 +1335,113 @@ const App = () => {
         🤫
       </button>
 
+      {/* Mini Game Button */}
+      <button
+        onClick={startMiniGame}
+        className={`fixed bottom-24 right-6 w-14 h-14 rounded-full flex items-center justify-center text-green-400 shadow-2xl border transition-all duration-500 hover:scale-110 hover:rotate-6 animate-float z-50 ${
+          darkMode 
+            ? 'bg-gray-800/80 border-green-500/40 hover:bg-gray-700/90 hover:text-green-300' 
+            : 'bg-gray-200 border-green-300 hover:bg-gray-300 hover:text-green-700'
+        }`}
+        title="Catch the Creeper!"
+        aria-label="Play mini game"
+      >
+        🎮
+      </button>
+
+      {/* Mini Game Modal */}
+      {showMiniGame && (
+        <div 
+          className={`fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-lg ${
+            darkMode ? 'bg-black/95' : 'bg-white/95'
+          }`}
+          onClick={() => setShowMiniGame(false)}
+        >
+          <div 
+            className={`rounded-2xl max-w-md w-full p-6 text-center relative overflow-hidden ${
+              darkMode ? 'bg-gray-900/95 border border-green-500/50' : 'bg-white border border-green-300'
+            }`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-400 animate-pulse-slow"></div>
+            <button 
+              onClick={() => {
+                setShowMiniGame(false);
+                playSound('click');
+              }}
+              className={`absolute top-3 right-3 text-xl font-bold w-8 h-8 rounded-full flex items-center justify-center ${
+                darkMode ? 'text-gray-400 hover:bg-gray-800/70' : 'text-gray-500 hover:bg-gray-200'
+              }`}
+            >
+              ×
+            </button>
+            
+            <h3 className="text-2xl font-bold mb-4 flex items-center justify-center">
+              <span className={`text-transparent bg-clip-text bg-gradient-to-r ${
+                darkMode ? 'from-green-400 to-emerald-400' : 'from-green-600 to-emerald-600'
+              }`}>
+                🎮 CATCH THE CREEPER!
+              </span>
+            </h3>
+            
+            <div className="mb-6">
+              <div className="relative h-48 bg-gray-800/30 rounded-xl overflow-hidden border border-gray-700/50">
+                {/* Creeper target */}
+                <div 
+                  className="absolute top-0 left-0 w-16 h-16 cursor-pointer transition-all duration-300"
+                  style={{ top: `${miniGamePosition}%`, left: `${miniGamePosition}%` }}
+                  onClick={catchMiniGame}
+                >
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-4xl animate-bounce">💥</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="mt-4 flex justify-between items-center">
+                <div className={`text-lg font-bold ${
+                  darkMode ? 'text-green-400' : 'text-green-600'
+                }`}>
+                  Score: <span className="text-2xl">{miniGameScore}</span>
+                </div>
+                <div className={`text-sm ${
+                  darkMode ? 'text-gray-400' : 'text-gray-600'
+                }`}>
+                  {miniGameActive ? '🎯 Click the creeper!' : '⏰ Time\'s up!'}
+                </div>
+              </div>
+            </div>
+            
+            <div className={`rounded-xl p-4 text-sm ${
+              darkMode ? 'bg-black/40' : 'bg-gray-100'
+            }`}>
+              <p className={`font-semibold ${
+                darkMode ? 'text-gray-300' : 'text-gray-800'
+              }`}>
+                🏆 <span className={darkMode ? 'text-yellow-400' : 'text-yellow-600'}>High Score Challenge:</span>
+              </p>
+              <ul className={`text-xs space-y-1 mt-2 ${
+                darkMode ? 'text-gray-400' : 'text-gray-600'
+              }`}>
+                <li>• Ibik: <span className={darkMode ? 'text-yellow-400' : 'text-yellow-600'}>42 points</span></li>
+                <li>• Kira: <span className={darkMode ? 'text-yellow-400' : 'text-yellow-600'}>38 points</span></li>
+                <li>• Ashborn: <span className={darkMode ? 'text-yellow-400' : 'text-yellow-600'}>35 points</span></li>
+              </ul>
+            </div>
+            
+            <div className={`mt-5 pt-4 border-t ${
+              darkMode ? 'border-gray-800/70' : 'border-gray-300'
+            }`}>
+              <p className={`text-xs ${
+                darkMode ? 'text-gray-500 animate-pulse' : 'text-gray-500 animate-pulse'
+              }`}>
+                🕹️ Game ends in {miniGameActive ? 'a few seconds...' : '0 seconds!'}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Easter Egg Modal */}
       {showEasterEgg && (
         <div 
@@ -1223,6 +1533,24 @@ const App = () => {
           </div>
         </div>
       )}
+
+      {/* Tiny Player Icon Easter Egg */}
+      <div 
+        className="fixed bottom-4 left-4 z-50 cursor-pointer group"
+        onClick={() => {
+          playSound('click');
+          startMiniGame();
+        }}
+      >
+        <div className="relative">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-r from-green-400 to-blue-500 flex items-center justify-center shadow-lg animate-pulse-slow group-hover:animate-bounce">
+            <span className="text-lg">👤</span>
+          </div>
+          <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-ping opacity-75">
+            !
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
