@@ -13,7 +13,7 @@ const App = () => {
   // Initialize visible state for each news item
   useEffect(() => {
     const initialVisible = {};
-    [1, 2, 3, 4, 5, 6, 7, 8, 9].forEach(id => {
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(id => {
       initialVisible[id] = false;
     });
     setVisibleComments(initialVisible);
@@ -37,8 +37,18 @@ const App = () => {
 
   // Mock news data — updated with Bogged/Trial Chamber/Harley Leakz
   const newsItems = [
-    {
+     {
       id: 1,
+      title: "Corruption...",
+      content: "We found out Ibiklackeur gave himself maces diamond blocks, extended bans due to spite, wrongfully accused members of cheats, tried to ip log us with fake links. Due to Ibiklackeur's actions the server will be closed untill he apologizes or fix what he done wrong.",
+      author: "Ashborn",
+      date: "Dec 21, 2025",
+      time: "18:26",
+      category: "exposed",
+      readTime: "1 min"
+    },
+    {
+      id: 2,
       title: "Fundraiser!💰",
       content: "We worked hard coding and building this website, please consider donating me some robux!",
       author: "Ibiklackeur",
@@ -48,7 +58,7 @@ const App = () => {
       readTime: "1 min"
     },
     {
-      id: 2,
+      id: 3,
       title: "New Survival World Launched!",
       content: "After weeks of planning our new survival world for our Classic Duels's Minecraft server, we finally launched it with an official website!",
       author: "Eyewatercanwaters2",
@@ -58,7 +68,7 @@ const App = () => {
       readTime: "1 min"
     },
     {
-      id: 3,
+      id: 4,
       title: "Weekly Build Contest",
       content: "Would anyone wan't to participate in a weekly Build Contest? If so then make sure you send beautiful screenshots of your build in our channel on Discord.",
       author: "Ashborn",
@@ -68,7 +78,7 @@ const App = () => {
       readTime: "1 min"
     },
     {
-      id: 4,
+      id: 5,
       title: "Server Start-up Scheduled.",
       content: "We'll be adding essential mods and features to our server, be sure to wait for the announcements of the release. We plan to officaly start the server on Dec 14, 10:50 AM.",
       author: "Jiemos",
@@ -78,7 +88,7 @@ const App = () => {
       readTime: "1 min"
     },
     {
-      id: 5,
+      id: 6,
       title: "New Plugin Recommendation: Tough As Nails.",
       content: "Adding this mod would help give a challenge to all players, including myself.",
       author: "Ibiklackeur",
@@ -88,7 +98,7 @@ const App = () => {
       readTime: "30 sec"
     },
     {
-      id: 6,
+      id: 7,
       title: "Holiday Event Planning",
       content: "A beautiful, nice, fun event for this Christmas. We plan to have a theme park built by then, DM Jiemos if you would wanna help!",
       author: "Jiemos",
@@ -98,7 +108,7 @@ const App = () => {
       readTime: "2 min"
     },
     {
-      id: 7,
+      id: 8,
       title: "🚨 Bogged Incident Report",
       content: "Following multiple Bogged ambushes (see Dec 14 log, lines #384, #400–403), we've reinforced the Ancient City with torches and iron golems..",
       author: "Jiemos",
@@ -108,7 +118,7 @@ const App = () => {
       readTime: "1 min"
     },
     {
-      id: 8,
+      id: 9,
       title: "🏆 Trial Chamber Discovery!",
       content: "Kira and ibikl finally located the third Trial Chamber! they got a full set of diamond gear, a trial key, and suspiciously no Bogged. DM Jiemos for coordinates (trust).",
       author: "Ibiklackeur",
@@ -118,7 +128,7 @@ const App = () => {
       readTime: "1 min"
     },
     {
-      id: 9,
+      id: 10,
       title: "🤫 'Who is harley leakz!",
       content: "Multiple players reported to us saying Harley Leakz has sent them random server ips, when they joined they saw a giant statue that they couldn't make out in the distance. Who is Harley Leakz??? ",
       author: "Ibiklackeur",
