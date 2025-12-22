@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   Calendar, Clock, Users, MessageSquare, Shield, Server, Gamepad2, Trophy, Send, 
   Mail, User, Eye, EyeOff, FileText, Link, CheckCircle, Image, HelpCircle, 
-  Sun, Moon, Palette 
+  Sun, Moon, Palette, ChevronDown, ArrowUpDown
 } from 'lucide-react';
 
 // 🔊 Tiny sound effects (0.2s each, base64, no network requests)
 const SOUNDS = {
-  ding: 'data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV......',
+  ding: 'data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV......',
   click: 'data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAABpAAADwAABUVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV...0',
   secret: 'data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAABpAAADwAABUVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV...A'
 };
@@ -45,6 +45,7 @@ const App = () => {
   const [verifyingComment, setVerifyingComment] = useState({});
   const [showEasterEgg, setShowEasterEgg] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [sortOrder, setSortOrder] = useState('latest'); // 'latest' or 'oldest'
 
   // ✨ Theme state
   const [darkMode, setDarkMode] = useState(() => {
@@ -71,7 +72,7 @@ const App = () => {
   // Initialize visible comments
   useEffect(() => {
     const initial = {};
-    [1,2,3,4,5,6,7,8,9,10].forEach(id => initial[id] = false);
+    [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].forEach(id => initial[id] = false);
     setVisibleComments(initial);
   }, []);
 
@@ -92,7 +93,8 @@ const App = () => {
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
   }, [playSound]);
-  // ✅ Your full news data — 10 items
+
+  // ✅ Your full news data — 15 items (added 5 new ones)
   const newsItems = [
     {
       id: 1,
@@ -102,99 +104,174 @@ const App = () => {
       date: "Dec 21, 2025",
       time: "18:26",
       category: "exposed",
-      readTime: "1 min"
+      readTime: "1 min",
+      timestamp: new Date(2025, 11, 21, 18, 26).getTime() // Dec 21, 2025
     },
     {
       id: 2,
       title: "Fundraiser!💰",
       content: "We worked hard coding and building this website, please consider donating me some robux!",
       author: "Ibiklackeur",
-      date: "Dec 14, 2025",
-      time: "18:26",
+      date: "Dec 20, 2025",
+      time: "14:30",
       category: "charity",
-      readTime: "1 min"
+      readTime: "1 min",
+      timestamp: new Date(2025, 11, 20, 14, 30).getTime()
     },
     {
       id: 3,
       title: "New Survival World Launched!",
       content: "After weeks of planning our new survival world for our Classic Duels's Minecraft server, we finally launched it with an official website!",
       author: "Eyewatercanwaters2",
-      date: "Dec 13, 2025",
+      date: "Dec 19, 2025",
       time: "13:30",
       category: "major-update",
-      readTime: "1 min"
+      readTime: "1 min",
+      timestamp: new Date(2025, 11, 19, 13, 30).getTime()
     },
     {
       id: 4,
       title: "Weekly Build Contest",
       content: "Would anyone wan't to participate in a weekly Build Contest? If so then make sure you send beautiful screenshots of your build in our channel on Discord.",
       author: "Ashborn",
-      date: "Dec 13, 2025",
+      date: "Dec 18, 2025",
       time: "13:15",
       category: "contest",
-      readTime: "1 min"
+      readTime: "1 min",
+      timestamp: new Date(2025, 11, 18, 13, 15).getTime()
     },
     {
       id: 5,
       title: "Server Start-up Scheduled.",
       content: "We'll be adding essential mods and features to our server, be sure to wait for the announcements of the release. We plan to officaly start the server on Dec 14, 10:50 AM.",
       author: "Jiemos",
-      date: "Dec 13, 2025",
+      date: "Dec 17, 2025",
       time: "13:09",
       category: "maintenance",
-      readTime: "1 min"
+      readTime: "1 min",
+      timestamp: new Date(2025, 11, 17, 13, 9).getTime()
     },
     {
       id: 6,
       title: "New Plugin Recommendation: Tough As Nails.",
       content: "Adding this mod would help give a challenge to all players, including myself.",
       author: "Ibiklackeur",
-      date: "Dec 13, 2025",
+      date: "Dec 16, 2025",
       time: "6:45",
       category: "feature",
-      readTime: "30 sec"
+      readTime: "30 sec",
+      timestamp: new Date(2025, 11, 16, 6, 45).getTime()
     },
     {
       id: 7,
       title: "Holiday Event Planning",
       content: "A beautiful, nice, fun event for this Christmas. We plan to have a theme park built by then, DM Jiemos if you would wanna help!",
       author: "Jiemos",
-      date: "Dec 1, 2025",
+      date: "Dec 15, 2025",
       time: "19:20",
       category: "event",
-      readTime: "2 min"
+      readTime: "2 min",
+      timestamp: new Date(2025, 11, 15, 19, 20).getTime()
     },
     {
       id: 8,
       title: "🚨 Bogged Incident Report",
       content: "Following multiple Bogged ambushes (see Dec 14 log, lines #384, #400–403), we've reinforced the Ancient City with torches and iron golems..",
       author: "Jiemos",
-      date: "Dec 15, 2025",
+      date: "Dec 14, 2025",
       time: "09:14",
       category: "updates",
-      readTime: "1 min"
+      readTime: "1 min",
+      timestamp: new Date(2025, 11, 14, 9, 14).getTime()
     },
     {
       id: 9,
       title: "🏆 Trial Chamber Discovery!",
       content: "Kira and ibikl finally located the third Trial Chamber! they got a full set of diamond gear, a trial key, and suspiciously no Bogged. DM Jiemos for coordinates (trust).",
       author: "Ibiklackeur",
-      date: "Dec 16, 2025",
+      date: "Dec 13, 2025",
       time: "14:22",
       category: "major-update",
-      readTime: "1 min"
+      readTime: "1 min",
+      timestamp: new Date(2025, 11, 13, 14, 22).getTime()
     },
     {
       id: 10,
       title: "🤫 'Who is harley leakz!",
       content: "Multiple players reported to us saying Harley Leakz has sent them random server ips, when they joined they saw a giant statue that they couldn't make out in the distance. Who is Harley Leakz??? ",
       author: "Ibiklackeur",
-      date: "Dec 17, 2025",
+      date: "Dec 12, 2025",
       time: "22:07",
       category: "mystery",
-      readTime: "2 min"
+      readTime: "2 min",
+      timestamp: new Date(2025, 11, 12, 22, 7).getTime()
+    },
+    // NEW NEWS ITEMS ADDED BELOW
+    {
+      id: 11,
+      title: "🎄 Christmas Event Finalized!",
+      content: "The Christmas theme park is complete! Featuring snowball fights, present hunts, and a giant Santa statue. Event starts Dec 24 at 6 PM server time.",
+      author: "Jiemos",
+      date: "Dec 11, 2025",
+      time: "16:45",
+      category: "event",
+      readTime: "1 min",
+      timestamp: new Date(2025, 11, 11, 16, 45).getTime()
+    },
+    {
+      id: 12,
+      title: "⚡ Server Performance Boost",
+      content: "We've optimized server performance! Reduced lag by 40% with new chunk loading algorithms. The difference is noticeable in the Nether hub.",
+      author: "Eyewatercanwaters2",
+      date: "Dec 10, 2025",
+      time: "11:20",
+      category: "major-update",
+      readTime: "1 min",
+      timestamp: new Date(2025, 11, 10, 11, 20).getTime()
+    },
+    {
+      id: 13,
+      title: "🛡️ New Anti-Cheat System",
+      content: "Implemented a new, less intrusive anti-cheat system. False positives reduced by 85%. Report any issues to Ashborn directly.",
+      author: "Ashborn",
+      date: "Dec 9, 2025",
+      time: "09:30",
+      category: "feature",
+      readTime: "1 min",
+      timestamp: new Date(2025, 11, 9, 9, 30).getTime()
+    },
+    {
+      id: 14,
+      title: "🏗️ Community Build Project",
+      content: "Starting a mega build: A floating island city! Everyone is welcome to contribute. First planning meeting this Saturday in Discord VC.",
+      author: "Kira",
+      date: "Dec 8, 2025",
+      time: "20:15",
+      category: "community",
+      readTime: "1 min",
+      timestamp: new Date(2025, 11, 8, 20, 15).getTime()
+    },
+    {
+      id: 15,
+      title: "📊 Server Statistics Released",
+      content: "Monthly stats: 12 active players, 482 hours total playtime, 127,000 blocks placed. Most mined block: stone. Most deaths: falling (32%).",
+      author: "Ibiklackeur",
+      date: "Dec 7, 2025",
+      time: "14:00",
+      category: "updates",
+      readTime: "2 min",
+      timestamp: new Date(2025, 11, 7, 14, 0).getTime()
     }
   ];
+
+  // Sort news based on selected order
+  const sortedNewsItems = [...newsItems].sort((a, b) => {
+    if (sortOrder === 'latest') {
+      return b.timestamp - a.timestamp; // Newest first
+    } else {
+      return a.timestamp - b.timestamp; // Oldest first
+    }
+  });
 
   // Server stats
   const serverStats = {
@@ -249,6 +326,7 @@ const App = () => {
       case 'exposed': return 'bg-red-500';
       case 'mystery': return 'bg-indigo-500';
       case 'updates': return 'bg-orange-500';
+      case 'community': return 'bg-teal-500';
       default: return 'bg-gray-500';
     }
   };
@@ -335,6 +413,12 @@ const App = () => {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  const toggleSortOrder = () => {
+    playSound('click');
+    setSortOrder(sortOrder === 'latest' ? 'oldest' : 'latest');
+  };
+
   return (
     <div className={`min-h-screen transition-colors duration-300 ${themeClasses.bg}`}>
       {/* Theme Controls (Top Right) */}
@@ -432,14 +516,28 @@ const App = () => {
                   <span className="absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-60"></span>
                 </span>
               </h2>
-              <span className={`px-4 py-2 rounded-full text-sm font-semibold ${
-                darkMode ? 'bg-blue-600 text-blue-100' : 'bg-blue-500 text-white'
-              }`}>
-                {newsItems.length} updates
-              </span>
+              <div className="flex items-center space-x-4">
+                <button
+                  onClick={toggleSortOrder}
+                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg transition-all duration-300 font-semibold ${
+                    darkMode 
+                      ? 'bg-gray-700 hover:bg-gray-600 text-gray-200' 
+                      : 'bg-gray-200 hover:bg-gray-300 text-gray-800'
+                  }`}
+                >
+                  <ArrowUpDown className="h-4 w-4" />
+                  <span>Sort: {sortOrder === 'latest' ? 'Latest First' : 'Oldest First'}</span>
+                  <ChevronDown className="h-4 w-4 ml-1" />
+                </button>
+                <span className={`px-4 py-2 rounded-full text-sm font-semibold ${
+                  darkMode ? 'bg-blue-600 text-blue-100' : 'bg-blue-500 text-white'
+                }`}>
+                  {sortedNewsItems.length} updates
+                </span>
+              </div>
             </div>
 
-            {newsItems.map((news, idx) => (
+            {sortedNewsItems.map((news, idx) => (
               <article 
                 key={news.id} 
                 className={`bg-gray-800/50 backdrop-blur-sm rounded-xl border overflow-hidden 
@@ -451,9 +549,16 @@ const App = () => {
               >
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <span className={`px-3 py-1.5 rounded-full text-xs font-bold text-white ${getCategoryColor(news.category)} shadow-md`}>
-                      {news.category.replace('-', ' ').toUpperCase()}
-                    </span>
+                    <div className="flex items-center space-x-3">
+                      <span className={`px-3 py-1.5 rounded-full text-xs font-bold text-white ${getCategoryColor(news.category)} shadow-md`}>
+                        {news.category.replace('-', ' ').toUpperCase()}
+                      </span>
+                      {sortOrder === 'latest' && idx === 0 && (
+                        <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-red-500 text-white animate-pulse">
+                          🚨 LATEST
+                        </span>
+                      )}
+                    </div>
                     <div className={`flex items-center space-x-4 text-sm ${
                       darkMode ? 'text-gray-400' : 'text-gray-500'
                     }`}>
