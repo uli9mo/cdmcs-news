@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Calendar, Clock, Users, MessageSquare, Shield, Server, Gamepad2, Trophy, Send, Mail, User, Eye, EyeOff, FileText, Link, CheckCircle, Image, HelpCircle } from 'lucide-react';
 
 const App = () => {
@@ -9,6 +9,7 @@ const App = () => {
   const [visibleComments, setVisibleComments] = useState({});
   const [verifyingComment, setVerifyingComment] = useState({});
   const [showEasterEgg, setShowEasterEgg] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   // Initialize visible state for each news item
   useEffect(() => {
@@ -35,9 +36,8 @@ const App = () => {
     return () => window.removeEventListener('keydown', handleEsc);
   }, []);
 
-  // Mock news data — updated with Bogged/Trial Chamber/Harley Leakz
   const newsItems = [
-     {
+    {
       id: 1,
       title: "Corruption...",
       content: "We found out Ibiklackeur gave himself maces diamond blocks, extended bans due to spite, wrongfully accused members of cheats, tried to ip log us with fake links. Due to Ibiklackeur's actions the server will be closed untill he apologizes or fix what he done wrong.",
@@ -139,7 +139,6 @@ const App = () => {
     }
   ];
 
-  // Server stats
   const serverStats = {
     playersOnline: 0,
     totalPlayers: 12,
@@ -148,7 +147,6 @@ const App = () => {
     worldSize: "4.82 GB"
   };
 
-  // Active players with real avatars
   const activePlayers = [
     { name: "Kira", status: "Offline", time: "2 hour", avatar: "https://cdn.discordapp.com/avatars/1271440596195737693/2dc56e1377af394802df23561eff2e13.png" },
     { name: "Asparagus21345", status: "Offline", time: "8 hour", avatar: "https://placehold.co/32x32/6366f1/ffffff?text=A" },
@@ -189,6 +187,9 @@ const App = () => {
       case 'feature': return 'bg-green-500';
       case 'event': return 'bg-pink-500';
       case 'charity': return 'bg-amber-500';
+      case 'exposed': return 'bg-red-500';
+      case 'mystery': return 'bg-indigo-500';
+      case 'updates': return 'bg-orange-500';
       default: return 'bg-gray-500';
     }
   };
@@ -217,22 +218,28 @@ const App = () => {
     }));
   };
 
+  const copyServerAddress = () => {
+    navigator.clipboard.writeText('cdmcs-official.aternos.me:25565');
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-blue-950 to-purple-950 text-gray-100">
       {/* Header */}
-      <header className="relative overflow-hidden bg-gradient-to-r from-green-800 to-emerald-700">
-        <div className="absolute inset-0 bg-black opacity-20"></div>
+      <header className="relative overflow-hidden bg-gradient-to-r from-green-800/90 to-emerald-700/90 shadow-xl">
+        <div className="absolute inset-0 bg-black opacity-25"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="text-center">
+          <div className="text-center animate-fade-in-up">
             <div className="flex justify-center mb-6">
-              <div className="bg-white/20 backdrop-blur-sm p-4 rounded-full">
-                <Gamepad2 className="h-16 w-16 text-white" />
+              <div className="bg-white/20 backdrop-blur-md p-4 rounded-full shadow-lg ring-1 ring-white/30 hover:ring-2 hover:ring-emerald-400/50 transition-all duration-500 hover:scale-105">
+                <Gamepad2 className="h-16 w-16 text-white drop-shadow-lg" />
               </div>
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
-              CDMCS NEWS!
+            <h1 className="text-5xl md:text-6xl font-extrabold text-white mb-4 tracking-tight">
+              CDMCS <span className="text-emerald-300">NEWS!</span>
             </h1>
-            <p className="text-xl text-emerald-100 max-w-3xl mx-auto">
+            <p className="text-xl text-emerald-100 max-w-3xl mx-auto leading-relaxed">
               Your daily important update on what's happening in our Minecraft Server...😄
             </p>
           </div>
@@ -240,31 +247,28 @@ const App = () => {
       </header>
 
       {/* Stats Bar */}
-      <div className="bg-gray-800/50 backdrop-blur-sm border-b border-gray-700">
+      <div className="bg-gray-800/60 backdrop-blur-sm border-b border-gray-700/70">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4 py-4">
-            <div className="flex items-center space-x-2">
-              <Users className="h-5 w-5 text-blue-400" />
-              <span className="text-white font-medium">{serverStats.playersOnline}/{serverStats.totalPlayers} online</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Server className="h-5 w-5 text-green-400" />
-              <span className="text-gray-300">v{serverStats.version}</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Clock className="h-5 w-5 text-purple-400" />
-              <span className="text-gray-300">{serverStats.uptime}</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Shield className="h-5 w-5 text-yellow-400" />
-              <span className="text-gray-300">Whitelist Active</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Calendar className="h-5 w-5 text-pink-400" />
-              <span className="text-gray-300">
-                {currentTime.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
-              </span>
-            </div>
+            {[
+              { icon: <Users className="h-5 w-5" />, color: "text-blue-400", label: `${serverStats.playersOnline}/${serverStats.totalPlayers} online` },
+              { icon: <Server className="h-5 w-5" />, color: "text-green-400", label: `v${serverStats.version}` },
+              { icon: <Clock className="h-5 w-5" />, color: "text-purple-400", label: serverStats.uptime },
+              { icon: <Shield className="h-5 w-5" />, color: "text-yellow-400", label: "Whitelist Active" },
+              { icon: <Calendar className="h-5 w-5" />, color: "text-pink-400", label: currentTime.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) }
+            ].map((stat, i) => (
+              <div 
+                key={i}
+                className="flex items-center space-x-2 bg-gray-800/40 p-2 rounded-lg hover:bg-gray-700/60 transition-all duration-300 group"
+              >
+                <span className={`${stat.color} group-hover:scale-110 transition-transform`}>
+                  {stat.icon}
+                </span>
+                <span className="text-gray-200 font-medium group-hover:text-white transition-colors">
+                  {stat.label}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -272,149 +276,160 @@ const App = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* News Feed */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-8">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-3xl font-bold text-white">Latest News</h2>
-              <span className="px-3 py-1 bg-blue-600 text-blue-100 rounded-full text-sm font-medium">
+              <h2 className="text-3xl font-extrabold text-white flex items-center">
+                <span className="relative">
+                  Latest News
+                  <span className="absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-60"></span>
+                </span>
+              </h2>
+              <span className="px-4 py-2 bg-blue-600 text-blue-100 rounded-full text-sm font-semibold animate-pulse-slow">
                 {newsItems.length} updates
               </span>
             </div>
 
-            {newsItems.map((news) => (
+            {newsItems.map((news, idx) => (
               <article 
                 key={news.id} 
-                className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 overflow-hidden hover:border-blue-500 transition-all duration-300 hover:shadow-lg"
+                className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700/70 overflow-hidden 
+                  hover:border-blue-500/70 transition-all duration-500 
+                  hover:shadow-2xl hover:-translate-y-1 transform
+                  group animate-fade-in-stagger"
+                style={{ animationDelay: `${idx * 100}ms` }}
               >
                 <div className="p-6">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold text-white ${getCategoryColor(news.category)}`}>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className={`px-3 py-1.5 rounded-full text-xs font-bold text-white ${getCategoryColor(news.category)} shadow-md`}>
                       {news.category.replace('-', ' ').toUpperCase()}
                     </span>
                     <div className="flex items-center space-x-4 text-gray-400 text-sm">
-                      <span>{news.date}</span>
+                      <span className="flex items-center">
+                        <Calendar className="h-3 w-3 mr-1" />
+                        {news.date}
+                      </span>
                       <span className="flex items-center">
                         <Clock className="h-3 w-3 mr-1" />
                         {news.readTime}
                       </span>
                     </div>
                   </div>
-                  
-                  <h3 className="text-xl font-bold text-white mb-3">{news.title}</h3>
-                  
-                  <p className="text-gray-300 mb-4 leading-relaxed">
+                  <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-blue-300 transition-colors">
+                    {news.title}
+                  </h3>
+                  <p className="text-gray-300 mb-5 leading-relaxed">
                     {news.content}
                   </p>
-                  
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+                      <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-blue-500/30 group-hover:ring-blue-400/50 transition-shadow">
                         <img 
                           src={getAuthorAvatar(news.author)} 
                           alt={news.author} 
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                           onError={(e) => {
                             e.target.src = `https://placehold.co/32x32/4f46e5/ffffff?text=${news.author.charAt(0)}`;
                           }}
                         />
                       </div>
-                      <span className="text-blue-300 font-medium">{news.author}</span>
+                      <span className="text-blue-300 font-semibold group-hover:text-blue-200 transition-colors">{news.author}</span>
                     </div>
                     <button 
                       onClick={() => toggleComments(news.id)}
-                      className="text-blue-400 hover:text-blue-300 flex items-center space-x-1"
+                      className="flex items-center space-x-2 text-blue-400 hover:text-blue-300 font-medium transition-all duration-300 group-hover:scale-105"
                     >
-                      {visibleComments[news.id] ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                      <span className="text-sm">
-                        {visibleComments[news.id] ? 'Hide' : 'Show'} Discussion
-                      </span>
+                      {visibleComments[news.id] ? <EyeOff className="h-4 w-4 animate-pulse" /> : <Eye className="h-4 w-4" />}
+                      <span>{visibleComments[news.id] ? 'Hide' : 'Show'} Discussion</span>
                     </button>
                   </div>
                 </div>
 
                 {/* Discussion Section */}
-                {visibleComments[news.id] && (
-                  <div className="border-t border-gray-700 bg-gray-900/30 p-6">
+                <div 
+                  className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                    visibleComments[news.id] 
+                      ? 'max-h-[1000px] opacity-100' 
+                      : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <div className="border-t border-gray-700/70 bg-gray-900/40 p-6">
                     <h4 className="text-lg font-bold text-white mb-4 flex items-center">
-                      <MessageSquare className="h-5 w-5 mr-2 text-blue-400" />
+                      <MessageSquare className="h-5 w-5 mr-2 text-blue-400 animate-bounce-slow" />
                       Discussion
                     </h4>
-                    
-                    <div className="bg-blue-900/30 border border-blue-700 rounded-lg p-4 mb-6">
+                    <div className="bg-blue-900/40 border border-blue-700/70 rounded-xl p-4 mb-6">
                       <div className="flex items-start">
-                        <div className="flex-shrink-0 mt-0.5">
+                        <div className="flex-shrink-0 mt-1">
                           <MessageSquare className="h-5 w-5 text-blue-400" />
                         </div>
                         <div className="ml-3">
                           <p className="text-blue-200 text-sm">
-                            <span className="font-medium">Comment Policy:</span> All comments are manually reviewed by admins for server security.
+                            <span className="font-semibold">Comment Policy:</span> All comments are manually reviewed by admins for server security.
                           </p>
                           <p className="text-blue-300 text-xs mt-1">
-                            ⏱️ Verification typically takes 1-2 minutes. Approved comments will appear.
+                            ⏱️ Verification typically takes 1–2 minutes. Approved comments will appear.
                           </p>
                         </div>
                       </div>
                     </div>
 
-                    {/* Comment Form */}
                     {!isAuthenticated ? (
-                      <div className="bg-gray-800 rounded-lg p-4">
-                        <h5 className="font-medium text-white mb-3">Join the discussion</h5>
-                        <form onSubmit={handleLogin} className="space-y-3">
-                          <div className="flex space-x-3">
-                            <div className="flex-1">
-                              <label htmlFor="name" className="sr-only">Name</label>
-                              <div className="relative">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                  <User className="h-5 w-5 text-gray-400" />
-                                </div>
-                                <input
-                                  type="text"
-                                  id="name"
-                                  value={userName}
-                                  onChange={(e) => setUserName(e.target.value)}
-                                  placeholder="Your Minecraft name"
-                                  className="block w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                  required
-                                />
-                              </div>
+                      <div className="bg-gray-800/70 rounded-xl p-5 border border-gray-700/50">
+                        <h5 className="font-semibold text-white mb-4">Join the discussion</h5>
+                        <form onSubmit={handleLogin} className="space-y-4">
+                          <div className="relative group">
+                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                              <User className="h-5 w-5" />
                             </div>
+                            <input
+                              type="text"
+                              value={userName}
+                              onChange={(e) => setUserName(e.target.value)}
+                              placeholder="Your Minecraft name"
+                              className="block w-full pl-11 pr-4 py-3 bg-gray-700/80 border border-gray-600 rounded-xl text-white placeholder-gray-400 
+                                focus:outline-none focus:ring-2 focus:ring-blue-500/80 focus:border-transparent 
+                                transition-all duration-300 hover:bg-gray-700"
+                              required
+                            />
                           </div>
-                          <div className="flex space-x-3">
-                            <div className="flex-1">
-                              <label htmlFor="email" className="sr-only">Email</label>
-                              <div className="relative">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                  <Mail className="h-5 w-5 text-gray-400" />
-                                </div>
-                                <input
-                                  type="email"
-                                  id="email"
-                                  value={userEmail}
-                                  onChange={(e) => setUserEmail(e.target.value)}
-                                  placeholder="your@email.com"
-                                  className="block w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                  required
-                                />
-                              </div>
+                          <div className="relative group">
+                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                              <Mail className="h-5 w-5" />
                             </div>
+                            <input
+                              type="email"
+                              value={userEmail}
+                              onChange={(e) => setUserEmail(e.target.value)}
+                              placeholder="your@email.com"
+                              className="block w-full pl-11 pr-4 py-3 bg-gray-700/80 border border-gray-600 rounded-xl text-white placeholder-gray-400 
+                                focus:outline-none focus:ring-2 focus:ring-blue-500/80 focus:border-transparent 
+                                transition-all duration-300 hover:bg-gray-700"
+                              required
+                            />
                           </div>
                           <button
                             type="submit"
-                            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2"
+                            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 
+                              text-white font-bold py-3 px-4 rounded-xl 
+                              transition-all duration-500 transform hover:scale-[1.02] active:scale-95 
+                              shadow-lg hover:shadow-blue-500/30 relative overflow-hidden group"
                           >
-                            <Shield className="h-4 w-4" />
-                            <span>Sign In to Comment</span>
+                            <span className="relative z-10 flex items-center justify-center space-x-2">
+                              <Shield className="h-4 w-4" />
+                              <span>Sign In to Comment</span>
+                            </span>
+                            <span className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 opacity-0 group-hover:opacity-20 transition-opacity"></span>
                           </button>
                         </form>
                       </div>
                     ) : (
                       <form 
                         onSubmit={(e) => handleCommentSubmit(e, news.id)} 
-                        className="space-y-3"
+                        className="space-y-4"
                       >
                         <div className="flex items-start space-x-3">
                           <div className="flex-shrink-0 mt-1">
-                            <div className="w-8 h-8 rounded-full overflow-hidden">
+                            <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-green-500/30">
                               <img 
                                 src={getAuthorAvatar(userName)} 
                                 alt={userName} 
@@ -430,13 +445,15 @@ const App = () => {
                               id={`comment-input-${news.id}`}
                               rows="2"
                               placeholder={`Share your thoughts on "${news.title}"...`}
-                              className="block w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                              className="block w-full px-4 py-3 bg-gray-700/80 border border-gray-600 rounded-xl text-white placeholder-gray-400 
+                                focus:outline-none focus:ring-2 focus:ring-blue-500/80 focus:border-transparent 
+                                resize-none transition-all duration-300 hover:bg-gray-700"
                               required
                             />
                           </div>
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-sm text-gray-400">Signed in as {userName}</span>
+                          <span className="text-sm text-gray-400">Signed in as <span className="text-green-300 font-medium">{userName}</span></span>
                           <button
                             type="submit"
                             disabled={verifyingComment[news.id]}
@@ -444,7 +461,9 @@ const App = () => {
                               verifyingComment[news.id] 
                                 ? 'bg-gray-600 cursor-not-allowed' 
                                 : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
-                            } text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 flex items-center space-x-2`}
+                            } text-white font-bold py-2.5 px-5 rounded-lg 
+                              transition-all duration-300 flex items-center space-x-2 
+                              transform hover:scale-[1.02] active:scale-95 shadow-md`}
                           >
                             {verifyingComment[news.id] ? (
                               <>
@@ -459,270 +478,184 @@ const App = () => {
                             )}
                           </button>
                         </div>
-                        
                         {verifyingComment[news.id] && (
-                          <div className="mt-3 p-3 bg-amber-900/20 border border-amber-700 rounded-lg">
+                          <div className="mt-4 p-4 bg-amber-900/30 border border-amber-700/70 rounded-xl animate-pulse">
                             <div className="flex items-center text-amber-300">
                               <div className="w-4 h-4 border-2 border-amber-400 border-t-transparent rounded-full animate-spin mr-2"></div>
-                              <span className="text-sm font-medium">Verifying comment with server security system...</span>
+                              <span className="font-semibold">Verifying comment with server security system...</span>
                             </div>
                             <p className="text-amber-400 text-xs mt-1 ml-6">
-                              Please wait - all comments are manually reviewed for anti-cheat compliance
+                              Please wait — all comments are manually reviewed for anti-cheat compliance
                             </p>
                           </div>
                         )}
                       </form>
                     )}
                   </div>
-                )}
+                </div>
               </article>
             ))}
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
+          <div className="space-y-8">
             {/* Server Logs */}
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 overflow-hidden">
+            <div className="bg-gray-800/60 backdrop-blur-sm rounded-xl border border-gray-700/70 overflow-hidden hover:border-amber-500/50 transition-all duration-500 hover:shadow-xl">
               <div className="p-6">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-xl font-bold text-white flex items-center">
-                    <FileText className="h-5 w-5 mr-2 text-amber-400" />
-                    Server Logs
-                  </h3>
-                </div>
-                <p className="text-gray-400 text-sm mb-4">
+                <h3 className="text-xl font-bold text-white flex items-center">
+                  <FileText className="h-5 w-5 mr-2 text-amber-400" />
+                  Server Logs
+                </h3>
+                <p className="text-gray-400 text-sm mt-2 mb-4">
                   Daily server logs😄 (In the links below)
                 </p>
-
-                   
-                
-                <div className="bg-gray-900/50 rounded-lg p-4 min-h-[200px]">
-                  <div className="text-amber-300 font-mono text-sm space-y-2">
-                   // STARTS HERE BTW FUTURE IDIOTS 
-                                <div className="flex items-start">
-                      <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
-                      <span>
-                        <a href="https://mclo.gs/P3bdC7j" 
-                           className="text-blue-300 hover:text-blue-200 hover:underline"
-                           target="_blank" rel="noopener noreferrer">
-                          Dec 19, 2025 Server Log
-                        </a>
-                      </span>
-                    </div>
-                    <div className="flex items-start">
-                      <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
-                      <span>
-                        <a href="https://mclo.gs/7OJvEiK" 
-                           className="text-blue-300 hover:text-blue-200 hover:underline"
-                           target="_blank" rel="noopener noreferrer">
-                          Dec 18, 2025 Server Log
-                        </a>
-                      </span>
-                    </div>
-                    <div className="flex items-start">
-                      <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
-                      <span>
-                        <a href="https://mclo.gs/wpL50I4" 
-                           className="text-blue-300 hover:text-blue-200 hover:underline"
-                           target="_blank" rel="noopener noreferrer">
-                          Dec 15, 2025 Server Log
-                        </a>
-                      </span>
-                    </div>
-                    <div className="flex items-start">
-                      <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
-                      <span>
-                        <a href="https://mclo.gs/zQjJY4i" 
-                           className="text-blue-300 hover:text-blue-200 hover:underline"
-                           target="_blank" rel="noopener noreferrer">
-                          Dec 14, 2025 Server Log
-                        </a>
-                      </span>
-                    </div>
-                    <div className="flex items-start">
-                      <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0" />
-                      <span>
-                        <a href="https://example.com/logs/dec13" 
-                           className="text-blue-300 hover:text-blue-200 hover:underline"
-                           target="_blank" rel="noopener noreferrer">
-                          Dec 13, 2025 Server Log
-                        </a>
-                      </span>
-                    </div>
+                <div className="bg-gray-900/60 rounded-xl p-4 min-h-[200px]">
+                  <div className="text-amber-300 font-mono text-sm space-y-3">
+                    {[
+                      { date: "Dec 19, 2025", url: "https://mclo.gs/P3bdC7j" },
+                      { date: "Dec 18, 2025", url: "https://mclo.gs/7OJvEiK" },
+                      { date: "Dec 15, 2025", url: "https://mclo.gs/wpL50I4" },
+                      { date: "Dec 14, 2025", url: "https://mclo.gs/zQjJY4i" },
+                      { date: "Dec 13, 2025", url: "https://example.com/logs/dec13" }
+                    ].map((log, i) => (
+                      <div 
+                        key={i} 
+                        className="flex items-start group cursor-pointer"
+                        onClick={() => window.open(log.url, '_blank')}
+                      >
+                        <Link className="h-4 w-4 text-amber-400 mt-1 mr-2 flex-shrink-0 group-hover:text-amber-300 transition-colors" />
+                        <span className="text-blue-300 group-hover:text-blue-200 hover:underline transition-colors">
+                          {log.date} Server Log
+                        </span>
+                      </div>
+                    ))}
                   </div>
-                  
-                  <div className="mt-4 pt-3 border-t border-gray-700 text-gray-500 text-xs">
+                  <div className="mt-4 pt-3 border-t border-gray-700/50 text-gray-500 text-xs">
                     Logs updated after each server session
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* FAQ Section — FULLY FIXED */}
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 overflow-hidden">
+            {/* FAQ Section */}
+            <div className="bg-gray-800/60 backdrop-blur-sm rounded-xl border border-gray-700/70 overflow-hidden hover:border-blue-500/50 transition-all duration-500 hover:shadow-xl">
               <div className="p-6">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-xl font-bold text-white flex items-center">
-                    <HelpCircle className="h-5 w-5 mr-2 text-blue-400" />
-                    FAQ
-                  </h3>
-                </div>
-                <div className="space-y-4">
-                  <div className="bg-gray-700/30 p-4 rounded-lg">
-                    <h4 className="font-bold text-blue-300 mb-2">❓ Do Jiemos and Ibiklackeur cheat?</h4>
-                    <p className="text-gray-300 text-sm">
-                      <span className="text-green-400 font-medium">No, we don't.</span> We post server logs daily for full transparency, and all admin actions are logged and visible to the community.
-                      <br/><br/>
-                      <span className="text-xs text-gray-500">- Jiemos & Ibiklackeur</span>
-                    </p>
-                  </div>
-                  <div className="bg-gray-700/30 p-4 rounded-lg">
-                    <h4 className="font-bold text-blue-300 mb-2">❓ Do you log IP addresses of website visitors?</h4>
-                    <p className="text-gray-300 text-sm">
-                      <span className="text-green-400 font-medium">No, we don't.</span> This website has no backend server to track or store visitor data such as IP addresses, cookies, or personal information. We respect your privacy.
-                      <br/><br/>
-                      <span className="text-xs text-gray-500">- Eyewatercanwaters2</span>
-                    </p>
-                  </div>
-                  <div className="bg-gray-700/30 p-4 rounded-lg">
-                    <h4 className="font-bold text-blue-300 mb-2">❓ Does it cost to join the server?</h4>
-                    <p className="text-gray-300 text-sm">
-                      <span className="text-green-400 font-medium">No, it's completely free.</span> The server is funded by Ibiklackeur, and we welcome all friends (and friends of friends) to join our community!
-                      <br/><br/>
-                      <span className="text-xs text-gray-500">- Ibiklackeur</span>
-                    </p>
-                  </div>
-                  <div className="bg-gray-700/30 p-4 rounded-lg">
-                    <h4 className="font-bold text-blue-300 mb-2">❓ How can I get admin/moderator access?</h4>
-                    <p className="text-gray-300 text-sm">
-                      <span className="text-green-400 font-medium">I don't give out admin roles.</span> If you're helpful, respectful, and contribute positively to the community for a long time, I may consider you for a special role — but never for power or influence.
-                      <br/><br/>
-                      <span className="text-xs text-gray-500">- Eyewatercanwaters2 & Ibiklackeur</span>
-                    </p>
-                  </div>
-                  <div className="bg-gray-700/30 p-4 rounded-lg">
-                    <h4 className="font-bold text-blue-300 mb-2">❓ Who are the server owners?</h4>
-                    <p className="text-gray-300 text-sm">
-                      <span className="text-green-400 font-medium">For Discord, Ibiklackeur owns the server. For the Minecraft server, it’s Jiemos, Ibiklackeur & Ashborn.</span>
-                      <br/><br/>
-                      <span className="text-xs text-gray-500">- Ibiklackeur, Eyewatercanwaters2</span>
-                    </p>
-                  </div>
+                <h3 className="text-xl font-bold text-white flex items-center">
+                  <HelpCircle className="h-5 w-5 mr-2 text-blue-400" />
+                  FAQ
+                </h3>
+                <div className="space-y-4 mt-4">
+                  {[
+                    { q: "Do Jiemos and Ibiklackeur cheat?", a: "No, we don't. We post server logs daily for full transparency, and all admin actions are logged and visible to the community.", by: "- Jiemos & Ibiklackeur" },
+                    { q: "Do you log IP addresses of website visitors?", a: "No, we don't. This website has no backend server to track or store visitor data such as IP addresses, cookies, or personal information. We respect your privacy.", by: "- Eyewatercanwaters2" },
+                    { q: "Does it cost to join the server?", a: "No, it's completely free. The server is funded by Ibiklackeur, and we welcome all friends (and friends of friends) to join our community!", by: "- Ibiklackeur" },
+                    { q: "How can I get admin/moderator access?", a: "I don't give out admin roles. If you're helpful, respectful, and contribute positively to the community for a long time, I may consider you for a special role — but never for power or influence.", by: "- Eyewatercanwaters2 & Ibiklackeur" },
+                    { q: "Who are the server owners?", a: "For Discord, Ibiklackeur owns the server. For the Minecraft server, it’s Jiemos, Ibiklackeur & Ashborn.", by: "- Ibiklackeur, Eyewatercanwaters2" }
+                  ].map((faq, i) => (
+                    <div 
+                      key={i}
+                      className="bg-gray-700/40 p-4 rounded-xl hover:bg-gray-700/60 transition-colors group cursor-pointer"
+                      onClick={() => {
+                        // Optional: expand/collapse later
+                      }}
+                    >
+                      <h4 className="font-bold text-blue-300 mb-2 group-hover:text-blue-200 transition-colors">❓ {faq.q}</h4>
+                      <p className="text-gray-300 text-sm">
+                        <span className="text-green-400 font-medium">✓</span> {faq.a}
+                        <br/><br/>
+                        <span className="text-xs text-gray-500">{faq.by}</span>
+                      </p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
 
             {/* Gallery */}
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 overflow-hidden">
+            <div className="bg-gray-800/60 backdrop-blur-sm rounded-xl border border-gray-700/70 overflow-hidden hover:border-pink-500/50 transition-all duration-500 hover:shadow-xl">
               <div className="p-6">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-xl font-bold text-white flex items-center">
-                    <Image className="h-5 w-5 mr-2 text-pink-400" />
-                    Gallery
-                  </h3>
-                </div>
-                <p className="text-gray-400 text-sm mb-4">
-                  Our Minecraft moments 😄
-                </p>
-                
+                <h3 className="text-xl font-bold text-white flex items-center">
+                  <Image className="h-5 w-5 mr-2 text-pink-400" />
+                  Gallery
+                </h3>
+                <p className="text-gray-400 text-sm mb-4">Our Minecraft moments 😄</p>
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="aspect-square rounded-lg overflow-hidden border border-gray-600">
-                    <img 
-                      src="https://placehold.co/300x300/4ade80/000000?text=Build" 
-                      alt="Minecraft build" 
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div className="aspect-square rounded-lg overflow-hidden border border-gray-600">
-                    <img 
-                      src="https://placehold.co/300x300/8b5cf6/000000?text=Adventure" 
-                      alt="Minecraft adventure" 
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div className="aspect-square rounded-lg overflow-hidden border border-gray-600">
-                    <img 
-                      src="https://placehold.co/300x300/0ea5e9/000000?text=Redstone" 
-                      alt="Minecraft redstone" 
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div className="aspect-square rounded-lg overflow-hidden border border-gray-600">
-                    <img 
-                      src="https://placehold.co/300x300/f59e0b/000000?text=Fun" 
-                      alt="Minecraft fun" 
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
+                  {[
+                    { color: "4ade80", text: "Build" },
+                    { color: "8b5cf6", text: "Adventure" },
+                    { color: "0ea5e9", text: "Redstone" },
+                    { color: "f59e0b", text: "Fun" }
+                  ].map((img, i) => (
+                    <div 
+                      key={i}
+                      className="aspect-square rounded-xl overflow-hidden border border-gray-600/70 
+                        hover:scale-[1.03] hover:rotate-1 transition-all duration-500 cursor-pointer"
+                    >
+                      <img 
+                        src={`https://placehold.co/300x300/${img.color}/000000?text=${img.text}`} 
+                        alt={img.text} 
+                        className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                      />
+                    </div>
+                  ))}
                 </div>
-                
-                <div className="mt-4 pt-3 border-t border-gray-700 text-center">
-                  <button className="text-blue-400 hover:text-blue-300 text-sm font-medium">
-                    Check Discord for the gallery contest ⭐⭐⭐
+                <div className="mt-4 pt-3 border-t border-gray-700/50 text-center">
+                  <button className="text-blue-400 hover:text-blue-300 font-medium flex items-center justify-center mx-auto group">
+                    Check Discord for the gallery contest
+                    <span className="ml-1 inline-block group-hover:translate-x-1 transition-transform">⭐</span>
                   </button>
                 </div>
               </div>
             </div>
 
             {/* Active Players */}
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 p-6">
+            <div className="bg-gray-800/60 backdrop-blur-sm rounded-xl border border-gray-700/70 p-6 hover:border-blue-500/50 transition-all duration-500 hover:shadow-xl">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-xl font-bold text-white flex items-center">
                   <Users className="h-5 w-5 mr-2 text-blue-400" />
                   Active Players
                 </h3>
-                <span className="text-blue-400 font-bold">5</span>
+                <span className="text-blue-400 font-bold px-3 py-1 bg-blue-500/20 rounded-full">5</span>
               </div>
-              
               <div className="space-y-3">
-                {activePlayers.map((player, index) => (
+                {activePlayers.filter(p => p.name).map((player, i) => (
                   <div 
-                    key={index} 
-                    className="flex items-center justify-between p-3 bg-gray-700/30 rounded-lg hover:bg-gray-700/50 transition-colors"
+                    key={i} 
+                    className="flex items-center justify-between p-3.5 bg-gray-700/40 rounded-xl 
+                      hover:bg-gray-700/60 transition-all duration-300 group cursor-pointer"
                   >
                     <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
-                        {player.avatar ? (
-                          <img 
-                            src={player.avatar} 
-                            alt={player.name} 
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              e.target.src = `https://placehold.co/32x32/4f46e5/ffffff?text=${player.name.charAt(0)}`;
-                            }}
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-gradient-to-r from-green-400 to-emerald-500 flex items-center justify-center">
-                            <span className="text-xs font-bold text-white">{player.name.charAt(0)}</span>
-                          </div>
-                        )}
+                      <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-blue-500/20 group-hover:ring-blue-400/40 transition-shadow">
+                        <img 
+                          src={player.avatar} 
+                          alt={player.name} 
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                          onError={(e) => {
+                            e.target.src = `https://placehold.co/32x32/4f46e5/ffffff?text=${player.name.charAt(0)}`;
+                          }}
+                        />
                       </div>
                       <div>
-                        <p className="text-white font-medium text-sm">{player.name}</p>
+                        <p className="text-white font-semibold text-sm group-hover:text-blue-200">{player.name}</p>
                         <p className="text-gray-400 text-xs">{player.status}</p>
                       </div>
                     </div>
-                    <span className="text-gray-400 text-xs">{player.time}</span>
+                    <span className="text-gray-400 text-xs group-hover:text-gray-300">{player.time}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Server Info */}
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 p-6">
+            <div className="bg-gray-800/60 backdrop-blur-sm rounded-xl border border-gray-700/70 p-6 hover:border-green-500/50 transition-all duration-500 hover:shadow-xl">
               <h3 className="text-xl font-bold text-white mb-4 flex items-center">
                 <Server className="h-5 w-5 mr-2 text-green-400" />
                 Server Info
               </h3>
-              
               <div className="space-y-3">
                 <div className="flex justify-between">
-                  <span className="text-gray-400">IP Address</span>
-                  <span className="text-white font-mono">cdmcs-official.aternos.me</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Port</span>
-                  <span className="text-white font-mono">25565</span>
+                  <span className="text-gray-400">IP + Port</span>
+                  <span className="text-white font-mono break-all">cdmcs-official.aternos.me:25565</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-400">Version</span>
@@ -733,36 +666,45 @@ const App = () => {
                   <span className="text-white">{serverStats.worldSize}</span>
                 </div>
               </div>
-
-              <button className="w-full mt-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2">
-                <Shield className="h-4 w-4" />
-                <span>Copy server address!</span>
+              <button
+                onClick={copyServerAddress}
+                className="w-full mt-4 bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 
+                  text-white font-bold py-3 px-4 rounded-xl 
+                  transition-all duration-500 transform hover:scale-[1.02] active:scale-95 shadow-lg
+                  relative overflow-hidden group"
+              >
+                <span className="flex items-center justify-center space-x-2">
+                  <Shield className="h-4 w-4" />
+                  <span>{copied ? '✓ Copied!' : 'Copy server address!'}</span>
+                </span>
+                {copied && (
+                  <CheckCircle className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-green-300 animate-ping" />
+                )}
               </button>
             </div>
 
             {/* Recent Achievements */}
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 p-6">
+            <div className="bg-gray-800/60 backdrop-blur-sm rounded-xl border border-gray-700/70 p-6 hover:border-yellow-500/50 transition-all duration-500 hover:shadow-xl">
               <h3 className="text-xl font-bold text-white mb-4 flex items-center">
-                <Trophy className="h-5 w-5 mr-2 text-yellow-400" />
+                <Trophy className="h-5 w-5 mr-2 text-yellow-400 animate-spin-slow" />
                 Recent Achievements
               </h3>
-              
-              <div className="space-y-3">
-                <div className="p-3 bg-yellow-900/30 rounded-lg">
-                  <p className="text-yellow-200 font-medium">First to find a Trial Chamber!😄</p>
-                  <p className="text-yellow-300 text-sm">Kira</p>
-                  <p className="text-gray-400 text-xs mt-1">Congrats!</p>
-                </div>
-                <div className="p-3 bg-green-900/30 rounded-lg">
-                  <p className="text-green-200 font-medium">First to make a farm!😄</p>
-                  <p className="text-green-300 text-sm">Asparagus21345</p>
-                  <p className="text-gray-400 text-xs mt-1">Congratulations!</p>
-                </div>
-                <div className="p-3 bg-purple-900/30 rounded-lg">
-                  <p className="text-purple-200 font-medium">First to survive Bogged x4! 😅</p>
-                  <p className="text-purple-300 text-sm">Ibikl</p>
-                  <p className="text-gray-400 text-xs mt-1">Legend status</p>
-                </div>
+              <div className="space-y-4">
+                {[
+                  { title: "First to find a Trial Chamber!😄", who: "Kira", cls: "yellow", emoji: "🏆" },
+                  { title: "First to make a farm!😄", who: "Asparagus21345", cls: "green", emoji: "🌱" },
+                  { title: "First to survive Bogged x4! 😅", who: "Ibikl", cls: "purple", emoji: "🛡️" }
+                ].map((ach, i) => (
+                  <div 
+                    key={i}
+                    className={`p-4 rounded-xl bg-${ach.cls}-900/30 border-l-4 border-${ach.cls}-500 
+                      hover:bg-${ach.cls}-800/40 transition-colors group cursor-pointer`}
+                  >
+                    <p className={`text-${ach.cls}-200 font-bold`}>{ach.emoji} {ach.title}</p>
+                    <p className={`text-${ach.cls}-300 text-sm`}>{ach.who}</p>
+                    <p className="text-gray-400 text-xs mt-1">Legendary!</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -770,30 +712,34 @@ const App = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-900/80 backdrop-blur-sm border-t border-gray-800 mt-12">
+      <footer className="bg-gray-900/90 backdrop-blur-sm border-t border-gray-800/70 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
-            <div className="flex justify-center mb-4">
-              <Gamepad2 className="h-8 w-8 text-emerald-400" />
+            <div className="flex justify-center mb-4 animate-bounce-slow">
+              <Gamepad2 className="h-8 w-8 text-emerald-400 drop-shadow-lg" />
             </div>
-            <p className="text-gray-400">
+            <p className="text-gray-300">
               Made with ❤️ by your friend group for the Classic Duels Minecraft Server
             </p>
-            <p className="text-gray-500 text-sm mt-2">
+            <p className="text-gray-500 text-sm mt-1">
               Thanks to Jelly, and Ashborn for building this website.
             </p>
-            <p className="text-gray-500 text-sm mt-2">
+            <p className="text-gray-600 text-sm mt-2 italic">
               "Where friendships are built block by block"
             </p>
           </div>
         </div>
       </footer>
 
-      {/* 🔒 SECRET EASTER EGG */}
+      {/* Easter Egg Button */}
       <button
         onClick={() => setShowEasterEgg(true)}
-        className="fixed bottom-6 right-6 w-14 h-14 bg-gray-800/70 hover:bg-gray-700/80 backdrop-blur-sm rounded-full flex items-center justify-center text-purple-400 hover:text-purple-300 shadow-lg border border-purple-500/30 transition-all duration-300 hover:scale-110 z-50"
+        className="fixed bottom-6 right-6 w-14 h-14 bg-gray-800/80 hover:bg-gray-700/90 backdrop-blur-md 
+          rounded-full flex items-center justify-center text-purple-400 hover:text-purple-300 
+          shadow-2xl border border-purple-500/40 transition-all duration-500 
+          hover:scale-110 hover:rotate-6 animate-float"
         title="Shhh... secret"
+        aria-label="Open secret intel"
       >
         🤫
       </button>
@@ -801,60 +747,60 @@ const App = () => {
       {/* Easter Egg Modal */}
       {showEasterEgg && (
         <div 
-          className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/95 backdrop-blur-lg z-50 flex items-center justify-center p-4 animate-fade-in"
           onClick={() => setShowEasterEgg(false)}
         >
           <div 
-            className="bg-gray-900/95 border border-purple-500/40 rounded-2xl max-w-md w-full p-6 text-center relative overflow-hidden"
+            className="bg-gray-900/95 border border-purple-500/50 rounded-2xl max-w-md w-full p-6 text-center relative overflow-hidden animate-slide-up"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-pink-500"></div>
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-400 animate-pulse-slow"></div>
             <button 
               onClick={() => setShowEasterEgg(false)}
-              className="absolute top-3 right-3 text-gray-400 hover:text-white text-xl font-bold"
+              className="absolute top-3 right-3 text-gray-400 hover:text-white text-2xl font-bold w-8 h-8 rounded-full hover:bg-gray-800/70 transition-colors"
             >
               ×
             </button>
-            <div className="mb-4">
+            <div className="mb-5">
               <img 
                 src="https://media.discordapp.net/attachments/1426762383514402949/1449881569446727802/image.png?ex=6941d46f&is=694082ef&hm=bfd136abdc8c47ad55435715b5025811f742aa16583020a347ed0c4bf8ef6ce1&=&format=webp&quality=lossless&width=550&height=277" 
                 alt="Bogged Attack" 
-                className="mx-auto rounded-lg border border-purple-500/30 shadow-lg"
+                className="mx-auto rounded-xl border border-purple-500/40 shadow-2xl max-w-full"
               />
             </div>
-            <h3 className="text-xl font-bold text-purple-300 mb-3">🤫 CLASSIFIED SERVER INTEL</h3>
-            <div className="space-y-3 mb-4">
-              <div className="bg-purple-900/20 p-3 rounded-lg border-l-4 border-purple-500">
-                <p className="text-gray-300 italic">
-                  <span className="text-purple-400 font-bold">"boi what"</span><br/>
-                  <span className="text-xs text-gray-500">- ibikl, line #269</span>
-                </p>
-              </div>
-              <div className="bg-purple-900/20 p-3 rounded-lg border-l-4 border-amber-500">
-                <p className="text-gray-300 italic">
-                  <span className="text-amber-400 font-bold">"holy send it"</span><br/>
-                  <span className="text-xs text-gray-500">- asparagus21345, line #271</span>
-                </p>
-              </div>
-              <div className="bg-purple-900/20 p-3 rounded-lg border-l-4 border-red-500">
-                <p className="text-gray-300 italic">
-                  <span className="text-red-400 font-bold">"NIGGER LATER"</span><br/>
-                  <span className="text-xs text-gray-500">- ibikl, line #273 (pre-Bogged)</span>
-                </p>
-              </div>
+            <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-4">
+              🤫 CLASSIFIED SERVER INTEL
+            </h3>
+            <div className="space-y-4 mb-5">
+              {[
+                { text: `"boi what"`, author: "- ibikl, line #269", border: "border-purple-500" },
+                { text: `"holy send it"`, author: "- asparagus21345, line #271", border: "border-amber-500" },
+                { text: `"NIGGER LATER"`, author: "- ibikl, line #273 (pre-Bogged)", border: "border-red-500" }
+              ].map((quote, i) => (
+                <div 
+                  key={i}
+                  className={`bg-gray-800/50 p-4 rounded-xl border-l-4 ${quote.border} animate-fade-in-up`}
+                  style={{ animationDelay: `${(i+1)*200}ms` }}
+                >
+                  <p className="text-gray-200 italic">
+                    <span className="text-purple-300 font-bold">{quote.text}</span><br/>
+                    <span className="text-xs text-gray-500">{quote.author}</span>
+                  </p>
+                </div>
+              ))}
             </div>
-            <div className="bg-black/30 rounded-lg p-3 text-sm">
-              <p className="text-gray-400">
-                📊 <span className="text-red-400 font-bold">Ibik's Bogged Incident:</span>
+            <div className="bg-black/40 rounded-xl p-4 text-sm">
+              <p className="text-gray-300 font-semibold">
+                📊 <span className="text-red-400">Ibik's Bogged Incident:</span>
               </p>
-              <ul className="text-gray-500 text-xs space-y-1 mt-1">
+              <ul className="text-gray-400 text-xs space-y-1 mt-2">
                 <li>• Shot by Bogged: <span className="text-red-400">lines #384, #400, #401, #402</span></li>
-                <li>• Final Bogged hit → "<span className="text-red-400">WTF</span>" (line #403)</li>
+                <li>• Final Bogged hit → <span className="text-red-400">"WTF"</span> (line #403)</li>
                 <li>• Also drowned (line #463)</li>
               </ul>
             </div>
-            <div className="mt-4 pt-3 border-t border-gray-800">
-              <p className="text-xs text-gray-500">
+            <div className="mt-5 pt-4 border-t border-gray-800/70">
+              <p className="text-xs text-gray-500 animate-pulse">
                 🔒 This intel self-destructs in 5...4...3...
               </p>
             </div>
@@ -864,5 +810,53 @@ const App = () => {
     </div>
   );
 };
+
+// Custom animations via Tailwind plugin (injected globally)
+if (typeof document !== 'undefined') {
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes fade-in-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fade-in-stagger {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slide-up {
+      from { opacity: 0; transform: translateY(40px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes pulse-slow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    @keyframes bounce-slow {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .animate-fade-in-up { animation: fade-in-up 0.6s ease-out forwards; }
+    .animate-fade-in-stagger { animation: fade-in-stagger 0.5s ease-out forwards; }
+    .animate-slide-up { animation: slide-up 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+    .animate-fade-in { animation: fade-in 0.3s ease-in; }
+    .animate-float { animation: float 3s ease-in-out infinite; }
+    .animate-pulse-slow { animation: pulse-slow 2s infinite; }
+    .animate-bounce-slow { animation: bounce-slow 2s infinite; }
+    .animate-spin-slow { animation: spin-slow 8s linear infinite; }
+  `;
+  document.head.appendChild(style);
+}
 
 export default App;
