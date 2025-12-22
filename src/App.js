@@ -53,7 +53,7 @@ const FAKE_COMMENTS = {
       avatar: "https://cdn.discordapp.com/avatars/1345578724732567564/e6192c86ac8410150345cb811d0ca429.png",
       text: "Yes I'll tell you what happened if you want.",
       time: "45 minutes ago",
-      likes: 5
+      likes: 3
     },
     {
       id: 103,
@@ -71,25 +71,25 @@ const FAKE_COMMENTS = {
       avatar: "https://cdn.discordapp.com/avatars/1345578724732567564/e6192c86ac8410150345cb811d0ca429.png",
       text: "Hope I win the build battle everyone give me 10 stars! in the server",
       time: "2 hours ago",
-      likes: 8
+      likes: 4
     },
     {
       id: 402,
-      author: "Kira",
+      author: "Ibiklackeur",
       avatar: "https://cdn.discordapp.com/avatars/1271440596195737693/2dc56e1377af394802df23561eff2e13.png",
-      text: "My castle is gonna win for sure! 🏰",
+      text: "My castle is gonna win fs! 🏰",
       time: "1 hour ago",
-      likes: 6
+      likes: 3
     }
   ],
   3: [ // New Survival World
     {
       id: 301,
-      author: "Dristach391",
-      avatar: "https://cdn.discordapp.com/avatars/1238944179837734947/92283dd7964213b9ea0ae19679a83c60.png",
-      text: "The new world is amazing! Found diamonds already! 💎",
+      author: "Ashborn",
+      avatar: "https://cdn.discordapp.com/avatars/1271440596195737693/2dc56e1377af394802df23561eff2e13.png",
+      text: "liked it when it was peaceful",
       time: "5 hours ago",
-      likes: 12
+      likes: 2
     }
   ],
   9: [ // Trial Chamber
@@ -382,13 +382,13 @@ const App = () => {
 
   // Active players
   const activePlayers = [
-    { name: "Kira", status: "Offline", time: "2 hour", avatar: "https://cdn.discordapp.com/avatars/1271440596195737693/2dc56e1377af394802df23561eff2e13.png" },
-    { name: "Asparagus21345", status: "Offline", time: "8 hour", avatar: "https://placehold.co/32x32/6366f1/ffffff?text=A" },
+    { name: "Kira", status: "Offline", time: "9 hour", avatar: "https://cdn.discordapp.com/avatars/1271440596195737693/2dc56e1377af394802df23561eff2e13.png" },
+    { name: "Asparagus21345", status: "Offline", time: "11 hour", avatar: "https://placehold.co/32x32/6366f1/ffffff?text=A" },
     { name: "Ibikl", status: "Offline", time: "4 hour", avatar: "https://pticaarchive.wordpress.com/wp-content/uploads/2012/10/naked-banana.jpg?w=620" },
-    { name: "Senkaium", status: "Offline", time: "2 hours", avatar: "https://placehold.co/32x32/8b5cf6/ffffff?text=S" },
-    { name: "Dristach391", status: "Offline", time: "1 hour", avatar: "https://cdn.discordapp.com/avatars/1238944179837734947/92283dd7964213b9ea0ae19679a83c60.png" },
-    { name: "", status: "", time: "", avatar: "" },
-    { name: "", status: "", time: "", avatar: "" },
+    { name: "Senkaium", status: "Offline", time: "4 hours", avatar: "https://placehold.co/32x32/8b5cf6/ffffff?text=S" },
+    { name: "Dristach391", status: "Offline", time: "2 hour", avatar: "https://cdn.discordapp.com/avatars/1238944179837734947/92283dd7964213b9ea0ae19679a83c60.png" },
+    { name: "Ashiet", status: "Offline", time: "1 hour", avatar: "https://cdn.discordapp.com/avatars/1271440596195737693/2dc56e1377af394802df23561eff2e13.png" },
+    { name: "Evtlovesfood", status: "Offline", time: "2 hour", avatar: "" },
     { name: "", status: "", time: "", avatar: "" }
   ];
 
@@ -1302,12 +1302,12 @@ const App = () => {
               }`} />
             </div>
             <p className={darkMode ? 'text-gray-300' : 'text-gray-700'}>
-              Made with ❤️ by your friend group for the Classic Duels Minecraft Server
+              Made with ❤️ by your friends for the Classic Duels Minecraft Server
             </p>
             <p className={`text-sm mt-1 ${
               darkMode ? 'text-gray-500' : 'text-gray-600'
             }`}>
-              Thanks to Jelly, and Ashborn for building this website.
+              Thanks to Jelly, Ibiklackeur, and Ashborn for building this website.
             </p>
             <p className={`text-sm mt-2 italic ${
               darkMode ? 'text-gray-600' : 'text-gray-500'
@@ -1424,7 +1424,7 @@ const App = () => {
                 darkMode ? 'text-gray-400' : 'text-gray-600'
               }`}>
                 <li>• Ibik: <span className={darkMode ? 'text-yellow-400' : 'text-yellow-600'}>42 points</span></li>
-                <li>• Kira: <span className={darkMode ? 'text-yellow-400' : 'text-yellow-600'}>38 points</span></li>
+                <li>• Eyewatercanwaters2: <span className={darkMode ? 'text-yellow-400' : 'text-yellow-600'}>37 points</span></li>
                 <li>• Ashborn: <span className={darkMode ? 'text-yellow-400' : 'text-yellow-600'}>35 points</span></li>
               </ul>
             </div>
