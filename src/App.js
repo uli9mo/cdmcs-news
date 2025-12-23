@@ -5,7 +5,7 @@ import {
   Sun, Moon, Palette, ChevronDown, ArrowUpDown, Sparkles, Heart, ThumbsUp, Bomb
 } from 'lucide-react';
 
-// 🔊 Tiny sound effects (0.2s each, base64, no network requests)
+// 🔊 sound effects uhh change it if u want lmao they're BASE 64 AND 0.2 SECONDS LONG BTW 
 const SOUNDS = {
   ding: 'data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV......',
   click: 'data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAABpAAADwAABUVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV...0',
@@ -17,7 +17,7 @@ const useSound = () => {
   const refs = useRef({});
 
   useEffect(() => {
-    // Preload all sounds
+    // THIS PRELOADS ALL SOUND
     Object.keys(SOUNDS).forEach(key => {
       refs.current[key] = new Audio(SOUNDS[key]);
     });
@@ -37,7 +37,7 @@ const useSound = () => {
   return play;
 };
 
-// Pre-made fake comments for each news item with fixed times
+// COMMENTS
 const FAKE_COMMENTS = {
   1: [ // Corruption news
     {
@@ -54,7 +54,7 @@ const FAKE_COMMENTS = {
       avatar: "https://cdn.discordapp.com/avatars/1345578724732567564/e6192c86ac8410150345cb811d0ca429.png",
       text: "Yes I'll tell you what happened if you want.",
       time: "Dec 22, 2025 19:15",
-      likes: 5
+      likes: 3
     },
     {
       id: 103,
@@ -65,30 +65,30 @@ const FAKE_COMMENTS = {
       likes: 2
     }
   ],
-  4: [ // Build Contest
+  4: [ // Build contest
     {
       id: 401,
       author: "Eyewatercanwaters2",
       avatar: "https://cdn.discordapp.com/avatars/1345578724732567564/e6192c86ac8410150345cb811d0ca429.png",
       text: "Hope I win the build battle everyone give me 10 stars! in the server",
       time: "Dec 22, 2025 13:45",
-      likes: 8
+      likes: 2
     },
     {
       id: 402,
-      author: "Kira",
-      avatar: "https://cdn.discordapp.com/avatars/1271440596195737693/2dc56e1377af394802df23561eff2e13.png",
-      text: "My castle is gonna win for sure! 🏰",
+      author: "Ashborn",
+      avatar: "https://cdn.discordapp.com/avatars/822808474072121345/51bacd23a923b3480a785113146dda26.png?size=512",
+      text: "nope mine is",
       time: "Dec 22, 2025 14:20",
-      likes: 6
+      likes: 3
     }
   ],
   3: [ // New Survival World
     {
       id: 301,
-      author: "Dristach391",
-      avatar: "https://cdn.discordapp.com/avatars/1238944179837734947/92283dd7964213b9ea0ae19679a83c60.png",
-      text: "The new world is amazing! Found diamonds already! 💎",
+      author: "Ashborn",
+      avatar: "https://cdn.discordapp.com/avatars/822808474072121345/51bacd23a923b3480a785113146dda26.png?size=512",
+      text: "wish it was peaceful again",
       time: "Dec 22, 2025 14:05",
       likes: 12
     }
@@ -96,8 +96,8 @@ const FAKE_COMMENTS = {
   9: [ // Trial Chamber
     {
       id: 901,
-      author: "Kira",
-      avatar: "https://cdn.discordapp.com/avatars/1271440596195737693/2dc56e1377af394802df23561eff2e13.png",
+      author: "Ibiklackeur",
+      avatar: "https://pticaarchive.wordpress.com/wp-content/uploads/2012/10/naked-banana.jpg?w=620",
       text: "That trial chamber was insane! So much loot!",
       time: "Dec 22, 2025 09:45",
       likes: 15
@@ -125,7 +125,7 @@ const App = () => {
   const [dragonEggPosition, setDragonEggPosition] = useState({ x: 10, y: 85 });
   const [showDragonEgg, setShowDragonEgg] = useState(false);
 
-  // ✨ Theme state
+  // this is the theme state
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem('cdmcs-dark-mode');
     if (saved !== null) return JSON.parse(saved);
@@ -137,7 +137,7 @@ const App = () => {
 
   const playSound = useSound();
 
-  // Persist preferences
+  
   useEffect(() => {
     localStorage.setItem('cdmcs-dark-mode', JSON.stringify(darkMode));
     document.documentElement.classList.toggle('dark', darkMode);
@@ -147,14 +147,14 @@ const App = () => {
     localStorage.setItem('cdmcs-color-theme', colorTheme);
   }, [colorTheme]);
 
-  // Initialize visible comments
+ 
   useEffect(() => {
     const initial = {};
     [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].forEach(id => initial[id] = false);
     setVisibleComments(initial);
   }, []);
 
-  // Initialize like counts
+  // like counts
   useEffect(() => {
     const initialLikes = {};
     Object.keys(FAKE_COMMENTS).forEach(newsId => {
@@ -165,13 +165,13 @@ const App = () => {
     setLikeCounts(initialLikes);
   }, []);
 
-  // Update time
+  
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  // Mini-game movement
+  // movmement
   useEffect(() => {
     if (!miniGameActive || !showMiniGame) return;
 
@@ -185,7 +185,7 @@ const App = () => {
     return () => clearInterval(interval);
   }, [miniGameActive, showMiniGame]);
 
-  // Dragon egg teleport
+  // dragon egg
   useEffect(() => {
     if (!showDragonEgg) return;
 
@@ -199,7 +199,7 @@ const App = () => {
     return () => clearInterval(interval);
   }, [showDragonEgg]);
 
-  // Close easter egg on Esc
+  // 
   useEffect(() => {
     const handler = e => { 
       if (e.key === 'Escape') { 
@@ -212,7 +212,7 @@ const App = () => {
     return () => window.removeEventListener('keydown', handler);
   }, [playSound]);
 
-  // ✅ Your full news data — 15 items
+  // 
   const newsItems = [
     {
       id: 1,
@@ -381,16 +381,16 @@ const App = () => {
     }
   ];
 
-  // Sort news based on selected order
+  // S
   const sortedNewsItems = [...newsItems].sort((a, b) => {
     if (sortOrder === 'latest') {
-      return b.timestamp - a.timestamp; // Newest first
+      return b.timestamp - a.timestamp; // Ne
     } else {
-      return a.timestamp - b.timestamp; // Oldest first
+      return a.timestamp - b.timestamp; // Oldes
     }
   });
 
-  // Server stats
+  // Serve
   const serverStats = {
     playersOnline: 0,
     totalPlayers: 12,
@@ -399,7 +399,7 @@ const App = () => {
     worldSize: "4.82 GB"
   };
 
-  // Active players - all with Steve icon if no avatar
+  //  all with Steve icon if no avatar
   const activePlayers = [
     { name: "Kira", status: "Offline", time: "2 hour", avatar: "https://cdn.discordapp.com/avatars/1271440596195737693/2dc56e1377af394802df23561eff2e13.png" },
     { name: "Asparagus21345", status: "Offline", time: "8 hour", avatar: "" },
@@ -428,12 +428,12 @@ const App = () => {
       case 'dristach391':
         return 'https://cdn.discordapp.com/avatars/1238944179837734947/92283dd7964213b9ea0ae19679a83c60.png';
       default:
-        // Return Steve icon for unknown players
-        return 'https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/51/Steve_%28texture%29_JE5.png/revision/latest/scale-to-width-down/150?cb=20240216023952';
+        // steve if they got no icon lmfao
+        return 'data:image/jpeg;base64,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';
     }
   };
 
-  // 🔥 DARKER category colors for better visibility
+  // dark categories
   const getCategoryColor = (category) => {
     switch (category) {
       case 'major-update': return 'bg-purple-700'; // Darker purple
@@ -450,7 +450,7 @@ const App = () => {
     }
   };
 
-  // ✨ Enhanced Theme helpers with multi-gradient support
+  // uhhh i forgot 
   const themeClasses = {
     bg: darkMode 
       ? colorTheme === 'bogged' ? 'bg-gradient-to-br from-red-950 via-amber-950 to-red-900 text-amber-100' 
@@ -583,7 +583,7 @@ const App = () => {
     setMiniGameActive(true);
     setTimeout(() => {
       setMiniGameActive(false);
-    }, 10000); // Game lasts 10 seconds
+    }, 10000); // 10 secs
   };
 
   const catchMiniGame = () => {
@@ -600,7 +600,7 @@ const App = () => {
       setTntExploded(true);
       setTimeout(() => {
         setTntExploded(false);
-        // Move TNT to new random position
+        // move da tnt to a random position
         setTntPosition({
           x: Math.random() * 80 + 10,
           y: Math.random() * 80 + 10
@@ -613,7 +613,7 @@ const App = () => {
     playSound('ding');
     setShowDragonEgg(!showDragonEgg);
     if (!showDragonEgg) {
-      // Set initial position
+      // set
       setDragonEggPosition({
         x: Math.random() * 80 + 10,
         y: Math.random() * 80 + 10
@@ -666,8 +666,8 @@ const App = () => {
     }
   };
 
-  // Steve icon URL
-  const STEVE_ICON = 'https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/51/Steve_%28texture%29_JE5.png/revision/latest/scale-to-width-down/150?cb=20240216023952';
+  // Steve iron url
+  const STEVE_ICON = 'data:image/jpeg;base64,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';
 
   return (
     <div className={`min-h-screen transition-all duration-500 ${themeClasses.bg}`}>
@@ -874,7 +874,7 @@ const App = () => {
                       Discussion
                     </h4>
                     
-                    {/* Show fake comments if they exist */}
+                    {/* Sist */}
                     {FAKE_COMMENTS[news.id] && (
                       <div className="space-y-4 mb-6">
                         {FAKE_COMMENTS[news.id].map(comment => (
@@ -1185,7 +1185,7 @@ const App = () => {
               </div>
             </div>
 
-            {/* Gallery */}
+            {/* gallery */}
             <div className={`rounded-xl overflow-hidden ${
               themeClasses.cardBg
             } transition-all duration-500 hover:shadow-xl`}>
@@ -1238,7 +1238,7 @@ const App = () => {
               </div>
             </div>
 
-            {/* Active Players */}
+            {/* active payers  */}
             <div className={`rounded-xl p-6 ${
               themeClasses.cardBg
             } transition-all duration-500 hover:shadow-xl`}>
@@ -1406,7 +1406,7 @@ const App = () => {
         </div>
       </footer>
 
-      {/* Easter Egg Button (Single button now) */}
+      {/* easter egg button */}
       <button
         onClick={() => {
           setShowEasterEgg(true);
@@ -1423,7 +1423,7 @@ const App = () => {
         🤫
       </button>
 
-      {/* Movable TNT Block */}
+      {/* movable TNT Block */}
       <div 
         className={`fixed ${tntExploded ? 'z-60' : 'z-40'} cursor-grab active:cursor-grabbing transition-all duration-300 ${tntExploded ? 'scale-150 opacity-0' : 'scale-100 opacity-100'}`}
         style={{ 
@@ -1481,7 +1481,7 @@ const App = () => {
         </div>
       </div>
 
-      {/* Easter Egg Modal */}
+      {/* Easter Egg  */}
       {showEasterEgg && (
         <div 
           className={`fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-lg ${
@@ -1576,7 +1576,7 @@ const App = () => {
   );
 };
 
-// 🔧 Inject global animations (no extra CSS file needed)
+//  Inject no css needed bc we got that)
 if (typeof document !== 'undefined') {
   const style = document.createElement('style');
   style.textContent = `
