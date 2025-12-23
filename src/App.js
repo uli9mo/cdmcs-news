@@ -2,14 +2,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   Calendar, Clock, Users, MessageSquare, Shield, Server, Gamepad2, Trophy, Send, 
   Mail, User, Eye, EyeOff, FileText, Link, CheckCircle, Image, HelpCircle, 
-  Sun, Moon, Palette, ChevronDown, ArrowUpDown, Sparkles, Heart, ThumbsUp
+  Sun, Moon, Palette, ChevronDown, ArrowUpDown, Sparkles, Heart, ThumbsUp, Bomb
 } from 'lucide-react';
 
 // 🔊 Tiny sound effects (0.2s each, base64, no network requests)
 const SOUNDS = {
   ding: 'data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV......',
   click: 'data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAABpAAADwAABUVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV...0',
-  secret: 'data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAABpAAADwAABUVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV...A'
+  secret: 'data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAABpAAADwAABUVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV...A',
+  explosion: 'data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV......'
 };
 
 const useSound = () => {
@@ -36,7 +37,7 @@ const useSound = () => {
   return play;
 };
 
-// Pre-made fake comments for each news item
+// Pre-made fake comments for each news item with fixed times
 const FAKE_COMMENTS = {
   1: [ // Corruption news
     {
@@ -44,7 +45,7 @@ const FAKE_COMMENTS = {
       author: "Jiemos",
       avatar: "https://i.natgeofe.com/k/6f2282df-1c6a-474a-9216-ed97b3dce858/Panda-Bamboo_Panda-Quiz_KIDS_1021.jpg?wp=1&w=1084.125&h=721.875",
       text: "Is this real, never knew ibiklackeur would do this...",
-      time: "1 hour ago",
+      time: "Dec 22, 2025 18:45",
       likes: 3
     },
     {
@@ -52,15 +53,15 @@ const FAKE_COMMENTS = {
       author: "Eyewatercanwaters2",
       avatar: "https://cdn.discordapp.com/avatars/1345578724732567564/e6192c86ac8410150345cb811d0ca429.png",
       text: "Yes I'll tell you what happened if you want.",
-      time: "45 minutes ago",
-      likes: 3
+      time: "Dec 22, 2025 19:15",
+      likes: 5
     },
     {
       id: 103,
       author: "Ibiklackeur",
       avatar: "https://pticaarchive.wordpress.com/wp-content/uploads/2012/10/naked-banana.jpg?w=620",
       text: "Guys guys, this already ended we made amends lets just forget about it..",
-      time: "1 day later",
+      time: "Dec 22, 2025 20:30",
       likes: 2
     }
   ],
@@ -70,26 +71,26 @@ const FAKE_COMMENTS = {
       author: "Eyewatercanwaters2",
       avatar: "https://cdn.discordapp.com/avatars/1345578724732567564/e6192c86ac8410150345cb811d0ca429.png",
       text: "Hope I win the build battle everyone give me 10 stars! in the server",
-      time: "2 hours ago",
-      likes: 4
+      time: "Dec 22, 2025 13:45",
+      likes: 8
     },
     {
       id: 402,
-      author: "Ibiklackeur",
+      author: "Kira",
       avatar: "https://cdn.discordapp.com/avatars/1271440596195737693/2dc56e1377af394802df23561eff2e13.png",
-      text: "My castle is gonna win fs! 🏰",
-      time: "1 hour ago",
-      likes: 3
+      text: "My castle is gonna win for sure! 🏰",
+      time: "Dec 22, 2025 14:20",
+      likes: 6
     }
   ],
   3: [ // New Survival World
     {
       id: 301,
-      author: "Ashborn",
-      avatar: "https://cdn.discordapp.com/avatars/822808474072121345/51bacd23a923b3480a785113146dda26.png?size=512",
-      text: "liked it when it was peaceful",
-      time: "5 hours ago",
-      likes: 2
+      author: "Dristach391",
+      avatar: "https://cdn.discordapp.com/avatars/1238944179837734947/92283dd7964213b9ea0ae19679a83c60.png",
+      text: "The new world is amazing! Found diamonds already! 💎",
+      time: "Dec 22, 2025 14:05",
+      likes: 12
     }
   ],
   9: [ // Trial Chamber
@@ -98,7 +99,7 @@ const FAKE_COMMENTS = {
       author: "Kira",
       avatar: "https://cdn.discordapp.com/avatars/1271440596195737693/2dc56e1377af394802df23561eff2e13.png",
       text: "That trial chamber was insane! So much loot!",
-      time: "Yesterday",
+      time: "Dec 22, 2025 09:45",
       likes: 15
     }
   ]
@@ -119,6 +120,10 @@ const App = () => {
   const [miniGameScore, setMiniGameScore] = useState(0);
   const [miniGamePosition, setMiniGamePosition] = useState(50);
   const [miniGameActive, setMiniGameActive] = useState(false);
+  const [tntPosition, setTntPosition] = useState({ x: 85, y: 90 });
+  const [tntExploded, setTntExploded] = useState(false);
+  const [dragonEggPosition, setDragonEggPosition] = useState({ x: 10, y: 85 });
+  const [showDragonEgg, setShowDragonEgg] = useState(false);
 
   // ✨ Theme state
   const [darkMode, setDarkMode] = useState(() => {
@@ -179,6 +184,20 @@ const App = () => {
 
     return () => clearInterval(interval);
   }, [miniGameActive, showMiniGame]);
+
+  // Dragon egg teleport
+  useEffect(() => {
+    if (!showDragonEgg) return;
+
+    const interval = setInterval(() => {
+      setDragonEggPosition({
+        x: Math.random() * 90,
+        y: Math.random() * 90
+      });
+    }, 3000); // Teleport every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [showDragonEgg]);
 
   // Close easter egg on Esc
   useEffect(() => {
@@ -380,16 +399,16 @@ const App = () => {
     worldSize: "4.82 GB"
   };
 
-  // Active players
+  // Active players - all with Steve icon if no avatar
   const activePlayers = [
-    { name: "Kira", status: "Offline", time: "9 hour", avatar: "https://cdn.discordapp.com/avatars/1271440596195737693/2dc56e1377af394802df23561eff2e13.png" },
-    { name: "Asparagus21345", status: "Offline", time: "11 hour", avatar: "https://placehold.co/32x32/6366f1/ffffff?text=A" },
+    { name: "Kira", status: "Offline", time: "2 hour", avatar: "https://cdn.discordapp.com/avatars/1271440596195737693/2dc56e1377af394802df23561eff2e13.png" },
+    { name: "Asparagus21345", status: "Offline", time: "8 hour", avatar: "" },
     { name: "Ibikl", status: "Offline", time: "4 hour", avatar: "https://pticaarchive.wordpress.com/wp-content/uploads/2012/10/naked-banana.jpg?w=620" },
-    { name: "Senkaium", status: "Offline", time: "4 hours", avatar: "https://placehold.co/32x32/8b5cf6/ffffff?text=S" },
-    { name: "Dristach391", status: "Offline", time: "2 hour", avatar: "https://cdn.discordapp.com/avatars/1238944179837734947/92283dd7964213b9ea0ae19679a83c60.png" },
-    { name: "Ashiet", status: "Offline", time: "1 hour", avatar: "https://cdn.discordapp.com/avatars/822808474072121345/51bacd23a923b3480a785113146dda26.png?size=512" },
-    { name: "Evtlovesfood", status: "Offline", time: "2 hour", avatar: "" },
-    { name: "", status: "", time: "", avatar: "" }
+    { name: "Senkaium", status: "Offline", time: "2 hours", avatar: "" },
+    { name: "Dristach391", status: "Offline", time: "1 hour", avatar: "https://cdn.discordapp.com/avatars/1238944179837734947/92283dd7964213b9ea0ae19679a83c60.png" },
+    { name: "Steve", status: "Offline", time: "5 hour", avatar: "" },
+    { name: "Alex", status: "Offline", time: "3 hour", avatar: "" },
+    { name: "Herobrine", status: "Offline", time: "12 hour", avatar: "" }
   ];
 
   const getAuthorAvatar = (authorName) => {
@@ -409,23 +428,25 @@ const App = () => {
       case 'dristach391':
         return 'https://cdn.discordapp.com/avatars/1238944179837734947/92283dd7964213b9ea0ae19679a83c60.png';
       default:
-        return `https://placehold.co/32x32/4f46e5/ffffff?text=${authorName.charAt(0)}`;
+        // Return Steve icon for unknown players
+        return 'https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/51/Steve_%28texture%29_JE5.png/revision/latest/scale-to-width-down/150?cb=20240216023952';
     }
   };
 
+  // 🔥 DARKER category colors for better visibility
   const getCategoryColor = (category) => {
     switch (category) {
-      case 'major-update': return 'bg-purple-500';
-      case 'contest': return 'bg-yellow-500';
-      case 'maintenance': return 'bg-blue-500';
-      case 'feature': return 'bg-green-500';
-      case 'event': return 'bg-pink-500';
-      case 'charity': return 'bg-amber-500';
-      case 'exposed': return 'bg-red-500';
-      case 'mystery': return 'bg-indigo-500';
-      case 'updates': return 'bg-orange-500';
-      case 'community': return 'bg-teal-500';
-      default: return 'bg-gray-500';
+      case 'major-update': return 'bg-purple-700'; // Darker purple
+      case 'contest': return 'bg-yellow-600'; // Darker yellow
+      case 'maintenance': return 'bg-blue-700'; // Darker blue
+      case 'feature': return 'bg-green-700'; // Darker green
+      case 'event': return 'bg-pink-700'; // Darker pink
+      case 'charity': return 'bg-amber-700'; // Darker amber
+      case 'exposed': return 'bg-red-700'; // Darker red
+      case 'mystery': return 'bg-indigo-700'; // Darker indigo
+      case 'updates': return 'bg-orange-700'; // Darker orange
+      case 'community': return 'bg-teal-700'; // Darker teal
+      default: return 'bg-gray-700'; // Darker gray
     }
   };
 
@@ -573,6 +594,67 @@ const App = () => {
     }
   };
 
+  const handleTntClick = () => {
+    if (!tntExploded) {
+      playSound('explosion');
+      setTntExploded(true);
+      setTimeout(() => {
+        setTntExploded(false);
+        // Move TNT to new random position
+        setTntPosition({
+          x: Math.random() * 80 + 10,
+          y: Math.random() * 80 + 10
+        });
+      }, 1500);
+    }
+  };
+
+  const handleDragonEggClick = () => {
+    playSound('ding');
+    setShowDragonEgg(!showDragonEgg);
+    if (!showDragonEgg) {
+      // Set initial position
+      setDragonEggPosition({
+        x: Math.random() * 80 + 10,
+        y: Math.random() * 80 + 10
+      });
+    }
+  };
+
+  const handleMoveTnt = (e) => {
+    if (e.type === 'mousedown' || e.type === 'touchstart') {
+      e.preventDefault();
+      const startX = e.clientX || e.touches[0].clientX;
+      const startY = e.clientY || e.touches[0].clientY;
+      const startTntX = tntPosition.x;
+      const startTntY = tntPosition.y;
+
+      const handleMove = (moveEvent) => {
+        const currentX = moveEvent.clientX || moveEvent.touches[0].clientX;
+        const currentY = moveEvent.clientY || moveEvent.touches[0].clientY;
+        const deltaX = currentX - startX;
+        const deltaY = currentY - startY;
+        
+        setTntPosition({
+          x: Math.max(0, Math.min(95, startTntX + deltaX / 10)),
+          y: Math.max(0, Math.min(95, startTntY + deltaY / 10))
+        });
+      };
+
+      const handleUp = () => {
+        document.removeEventListener('mousemove', handleMove);
+        document.removeEventListener('mouseup', handleUp);
+        document.removeEventListener('touchmove', handleMove);
+        document.removeEventListener('touchend', handleUp);
+      };
+
+      document.addEventListener('mousemove', handleMove);
+      document.addEventListener('mouseup', handleUp);
+      document.addEventListener('touchmove', handleMove);
+      document.addEventListener('touchend', handleUp);
+    }
+  };
+
   const headerGradient = () => {
     switch(colorTheme) {
       case 'purple': return 'bg-gradient-to-r from-purple-800 via-violet-700 to-purple-900';
@@ -583,6 +665,9 @@ const App = () => {
       default: return 'bg-gradient-to-r from-green-800 via-emerald-700 to-green-900';
     }
   };
+
+  // Steve icon URL
+  const STEVE_ICON = 'https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/51/Steve_%28texture%29_JE5.png/revision/latest/scale-to-width-down/150?cb=20240216023952';
 
   return (
     <div className={`min-h-screen transition-all duration-500 ${themeClasses.bg}`}>
@@ -713,7 +798,7 @@ const App = () => {
                         {news.category.replace('-', ' ').toUpperCase()}
                       </span>
                       {sortOrder === 'latest' && idx === 0 && (
-                        <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-red-500 text-white animate-pulse">
+                        <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-red-600 text-white animate-pulse">
                           🚨 LATEST
                         </span>
                       )}
@@ -749,7 +834,7 @@ const App = () => {
                           alt={news.author} 
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                           onError={(e) => {
-                            e.target.src = `https://placehold.co/32x32/4f46e5/ffffff?text=${news.author.charAt(0)}`;
+                            e.target.src = STEVE_ICON;
                           }}
                         />
                       </div>
@@ -803,6 +888,9 @@ const App = () => {
                                     src={comment.avatar} 
                                     alt={comment.author} 
                                     className="w-full h-full object-cover"
+                                    onError={(e) => {
+                                      e.target.src = STEVE_ICON;
+                                    }}
                                   />
                                 </div>
                               </div>
@@ -920,7 +1008,7 @@ const App = () => {
                                 alt={userName} 
                                 className="w-full h-full object-cover"
                                 onError={(e) => {
-                                  e.target.src = `https://placehold.co/32x32/10b981/ffffff?text=${userName.charAt(0)}`;
+                                  e.target.src = STEVE_ICON;
                                 }}
                               />
                             </div>
@@ -977,7 +1065,7 @@ const App = () => {
                             <p className={`text-amber-600 text-xs mt-1 ml-6 ${
                               darkMode ? 'text-amber-400' : ''
                             }`}>
-                              Please wait, all comments are manually reviewed for safety.
+                              Please wait — all comments are manually reviewed for anti-cheat compliance
                             </p>
                           </div>
                         )}
@@ -1067,8 +1155,7 @@ const App = () => {
                     { q: "Do Jiemos and Ibiklackeur cheat?", a: "No, we don't. We post server logs daily for full transparency, and all admin actions are logged and visible to the community.", by: "- Jiemos & Ibiklackeur" },
                     { q: "Do you log IP addresses of website visitors?", a: "No, we don't. This website has no backend server to track or store visitor data such as IP addresses, cookies, or personal information. We respect your privacy.", by: "- Eyewatercanwaters2" },
                     { q: "Does it cost to join the server?", a: "No, it's completely free. The server is funded by Ibiklackeur, and we welcome all friends (and friends of friends) to join our community!", by: "- Ibiklackeur" },
-                     { q: "Will jelly be punished for hacking? To a few players they think it's unreasonable due to Jelly being provoked from griefing and random kills. Regardless it's Ibiks call and he punished jelly with a 3 day ban, so yes he will be.", by: "- Ashborn, Jelly and Ibiklackeur" },
-                    { q: "How can I get admin/moderator access?", a: "I don't give out admin roles. If you're helpful, respectful, and contribute positively to the community for a long time, I may consider you for a special role  but never for power or influence.", by: "- Eyewatercanwaters2 & Ibiklackeur" },
+                    { q: "How can I get admin/moderator access?", a: "I don't give out admin roles. If you're helpful, respectful, and contribute positively to the community for a long time, I may consider you for a special role — but never for power or influence.", by: "- Eyewatercanwaters2 & Ibiklackeur" },
                     { q: "Who are the server owners?", a: "For Discord, Ibiklackeur owns the server. For the Minecraft server, it's Jiemos, Ibiklackeur & Ashborn.", by: "- Ibiklackeur, Eyewatercanwaters2" }
                   ].map((faq, i) => (
                     <div 
@@ -1180,11 +1267,11 @@ const App = () => {
                     <div className="flex items-center space-x-3">
                       <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-blue-500/20 group-hover:ring-blue-400/40 transition-shadow">
                         <img 
-                          src={player.avatar} 
+                          src={player.avatar || STEVE_ICON} 
                           alt={player.name} 
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform"
                           onError={(e) => {
-                            e.target.src = `https://placehold.co/32x32/4f46e5/ffffff?text=${player.name.charAt(0)}`;
+                            e.target.src = STEVE_ICON;
                           }}
                         />
                       </div>
@@ -1269,7 +1356,7 @@ const App = () => {
                     key={i}
                     className={`p-4 rounded-xl border-l-4 ${
                       darkMode 
-                        ? `bg-${ach.cls}-900/30 border-${ach.cls}-500 hover:bg-${ach.cls}-800/40` 
+                        ? `bg-${ach.cls}-900/30 border-${ach.cls}-600 hover:bg-${ach.cls}-800/40` 
                         : `bg-${ach.cls}-100 border-${ach.cls}-500 hover:bg-${ach.cls}-200`
                     } transition-colors cursor-pointer`}
                     onClick={() => playSound('click')}
@@ -1303,12 +1390,12 @@ const App = () => {
               }`} />
             </div>
             <p className={darkMode ? 'text-gray-300' : 'text-gray-700'}>
-              Made with ❤️ by your friends for the Classic Duels Minecraft Server
+              Made with ❤️ by your friend group for the Classic Duels Minecraft Server
             </p>
             <p className={`text-sm mt-1 ${
               darkMode ? 'text-gray-500' : 'text-gray-600'
             }`}>
-              Thanks to Jelly, Ibiklackeur, and Ashborn for building this website.
+              Thanks to Jelly, and Ashborn for building this website.
             </p>
             <p className={`text-sm mt-2 italic ${
               darkMode ? 'text-gray-600' : 'text-gray-500'
@@ -1319,7 +1406,7 @@ const App = () => {
         </div>
       </footer>
 
-      {/* Easter Egg Button */}
+      {/* Easter Egg Button (Single button now) */}
       <button
         onClick={() => {
           setShowEasterEgg(true);
@@ -1330,118 +1417,69 @@ const App = () => {
             ? 'bg-gray-800/80 border-purple-500/40 hover:bg-gray-700/90 hover:text-purple-300' 
             : 'bg-gray-200 border-purple-300 hover:bg-gray-300 hover:text-purple-700'
         }`}
-        title="Shhh... secret"
+        title="Shhh... secret intel"
         aria-label="Open secret intel"
       >
         🤫
       </button>
 
-      {/* Mini Game Button */}
-      <button
-        onClick={startMiniGame}
-        className={`fixed bottom-24 right-6 w-14 h-14 rounded-full flex items-center justify-center text-green-400 shadow-2xl border transition-all duration-500 hover:scale-110 hover:rotate-6 animate-float z-50 ${
-          darkMode 
-            ? 'bg-gray-800/80 border-green-500/40 hover:bg-gray-700/90 hover:text-green-300' 
-            : 'bg-gray-200 border-green-300 hover:bg-gray-300 hover:text-green-700'
-        }`}
-        title="Catch the Creeper!"
-        aria-label="Play mini game"
+      {/* Movable TNT Block */}
+      <div 
+        className={`fixed ${tntExploded ? 'z-60' : 'z-40'} cursor-grab active:cursor-grabbing transition-all duration-300 ${tntExploded ? 'scale-150 opacity-0' : 'scale-100 opacity-100'}`}
+        style={{ 
+          left: `${tntPosition.x}vw`, 
+          top: `${tntPosition.y}vh`,
+          pointerEvents: tntExploded ? 'none' : 'auto'
+        }}
+        onMouseDown={handleMoveTnt}
+        onTouchStart={handleMoveTnt}
+        onClick={handleTntClick}
       >
-        🎮
-      </button>
-
-      {/* Mini Game Modal */}
-      {showMiniGame && (
-        <div 
-          className={`fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-lg ${
-            darkMode ? 'bg-black/95' : 'bg-white/95'
-          }`}
-          onClick={() => setShowMiniGame(false)}
-        >
-          <div 
-            className={`rounded-2xl max-w-md w-full p-6 text-center relative overflow-hidden ${
-              darkMode ? 'bg-gray-900/95 border border-green-500/50' : 'bg-white border border-green-300'
-            }`}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-400 animate-pulse-slow"></div>
-            <button 
-              onClick={() => {
-                setShowMiniGame(false);
-                playSound('click');
-              }}
-              className={`absolute top-3 right-3 text-xl font-bold w-8 h-8 rounded-full flex items-center justify-center ${
-                darkMode ? 'text-gray-400 hover:bg-gray-800/70' : 'text-gray-500 hover:bg-gray-200'
-              }`}
-            >
-              ×
-            </button>
-            
-            <h3 className="text-2xl font-bold mb-4 flex items-center justify-center">
-              <span className={`text-transparent bg-clip-text bg-gradient-to-r ${
-                darkMode ? 'from-green-400 to-emerald-400' : 'from-green-600 to-emerald-600'
-              }`}>
-                🎮 CATCH THE CREEPER!
-              </span>
-            </h3>
-            
-            <div className="mb-6">
-              <div className="relative h-48 bg-gray-800/30 rounded-xl overflow-hidden border border-gray-700/50">
-                {/* Creeper target */}
-                <div 
-                  className="absolute top-0 left-0 w-16 h-16 cursor-pointer transition-all duration-300"
-                  style={{ top: `${miniGamePosition}%`, left: `${miniGamePosition}%` }}
-                  onClick={catchMiniGame}
-                >
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-4xl animate-bounce">💥</div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="mt-4 flex justify-between items-center">
-                <div className={`text-lg font-bold ${
-                  darkMode ? 'text-green-400' : 'text-green-600'
-                }`}>
-                  Score: <span className="text-2xl">{miniGameScore}</span>
-                </div>
-                <div className={`text-sm ${
-                  darkMode ? 'text-gray-400' : 'text-gray-600'
-                }`}>
-                  {miniGameActive ? '🎯 Click the creeper!' : '⏰ Time\'s up!'}
-                </div>
-              </div>
-            </div>
-            
-            <div className={`rounded-xl p-4 text-sm ${
-              darkMode ? 'bg-black/40' : 'bg-gray-100'
-            }`}>
-              <p className={`font-semibold ${
-                darkMode ? 'text-gray-300' : 'text-gray-800'
-              }`}>
-                🏆 <span className={darkMode ? 'text-yellow-400' : 'text-yellow-600'}>High Score Challenge:</span>
-              </p>
-              <ul className={`text-xs space-y-1 mt-2 ${
-                darkMode ? 'text-gray-400' : 'text-gray-600'
-              }`}>
-                <li>• Ibik: <span className={darkMode ? 'text-yellow-400' : 'text-yellow-600'}>42 points</span></li>
-                <li>• Eyewatercanwaters2: <span className={darkMode ? 'text-yellow-400' : 'text-yellow-600'}>37 points</span></li>
-                <li>• Ashborn: <span className={darkMode ? 'text-yellow-400' : 'text-yellow-600'}>35 points</span></li>
-              </ul>
-            </div>
-            
-            <div className={`mt-5 pt-4 border-t ${
-              darkMode ? 'border-gray-800/70' : 'border-gray-300'
-            }`}>
-              <p className={`text-xs ${
-                darkMode ? 'text-gray-500 animate-pulse' : 'text-gray-500 animate-pulse'
-              }`}>
-                🕹️ Game ends in {miniGameActive ? 'a few seconds...' : '0 seconds!'}
-              </p>
-            </div>
+        <div className="relative group">
+          <div className={`w-12 h-12 flex items-center justify-center text-2xl rounded-lg shadow-2xl transition-all duration-300 ${
+            darkMode 
+              ? 'bg-gradient-to-br from-red-700 to-red-900 border border-red-600 group-hover:from-red-600 group-hover:to-red-800' 
+              : 'bg-gradient-to-br from-red-500 to-red-700 border border-red-400 group-hover:from-red-400 group-hover:to-red-600'
+          } ${tntExploded ? 'animate-ping' : 'group-hover:scale-110 group-hover:rotate-12'}`}>
+            💣
           </div>
+          {!tntExploded && (
+            <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+              Drag me! (Click to explode)
+            </div>
+          )}
+          {tntExploded && (
+            <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 text-3xl animate-bounce">
+              💥
+            </div>
+          )}
         </div>
-      )}
+      </div>
+
+      {/* Dragon Egg */}
+      <div 
+        className={`fixed z-40 cursor-pointer transition-all duration-1000 ${showDragonEgg ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        style={{ 
+          left: `${dragonEggPosition.x}vw`, 
+          top: `${dragonEggPosition.y}vh` 
+        }}
+        onClick={handleDragonEggClick}
+      >
+        <div className="relative group">
+          <div className={`w-12 h-12 flex items-center justify-center text-2xl rounded-full shadow-2xl transition-all duration-500 ${
+            darkMode 
+              ? 'bg-gradient-to-br from-purple-700 to-black border border-purple-500 group-hover:from-purple-600 group-hover:to-gray-900' 
+              : 'bg-gradient-to-br from-purple-500 to-gray-800 border border-purple-300 group-hover:from-purple-400 group-hover:to-gray-700'
+          } ${showDragonEgg ? 'animate-pulse-slow group-hover:scale-110' : ''}`}>
+            🥚
+          </div>
+          {showDragonEgg && (
+            <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+              Dragon Egg (Teleports!)
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* Easter Egg Modal */}
       {showEasterEgg && (
@@ -1534,24 +1572,6 @@ const App = () => {
           </div>
         </div>
       )}
-
-      {/* Tiny Player Icon Easter Egg */}
-      <div 
-        className="fixed bottom-4 left-4 z-50 cursor-pointer group"
-        onClick={() => {
-          playSound('click');
-          startMiniGame();
-        }}
-      >
-        <div className="relative">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-r from-green-400 to-blue-500 flex items-center justify-center shadow-lg animate-pulse-slow group-hover:animate-bounce">
-            <span className="text-lg">👤</span>
-          </div>
-          <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-ping opacity-75">
-            !
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
